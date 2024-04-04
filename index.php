@@ -14,7 +14,7 @@
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
   </head>
   <body>
-  <a href="https://www.technovation.org" class="logo-holder">
+  <a href="#" class="logo-holder">
         <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="logo" class="logo" />
       </a>
   <div class="container">
@@ -27,15 +27,18 @@
             <div class="col-md-9 col-lg-8 mx-auto">
             
               <h3 class="login-heading mb-4">Inicio sesión</h3> 
-
+              <?php
+                include "archivos/conexion.php";
+                include "archivos/controlador_index.php";
+                ?>
               <!-- Sign In Form -->
-              <form>
+              <form method="POST" action="">
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                  <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com" required autofocus>
                   <label for="floatingInput">Correo electrónico</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                  <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Password" required>
                   <label for="floatingPassword">Contraseña</label>
                 </div>
 
@@ -45,11 +48,12 @@
                     Recuérdame
                   </label>
                 </div>
+                
 
                 <div class="d-grid">
-                  <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Inicia</button>
+                  <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit" name="iniciar">Inicia</button>
                   <div class="text-center">
-                    <a class="small" href="#">Recupera tu contraseña</a>
+                    <a class="small" href="registro.php">Registrarse</a>
                   </div>
                 </div>
 

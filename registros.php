@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<a href="https://www.technovation.org" class="logo-holder">
+<a href="#" class="logo-holder">
         <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="logo" class="logo" />
       </a>
     <section class="content">
@@ -69,6 +69,7 @@
                                     <th scope="col">Apellidos</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Contraseña</th>
                                     <th scope="col">Cargo</th>
                                     
                                 </tr>
@@ -91,6 +92,9 @@
                                         </td>
                                         <td>
                                             <?php echo mb_strtoupper($guardar['email']); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo mb_strtoupper($guardar['contraseña']); ?>
                                         </td>
                                         <td>
                                             <?php echo mb_strtoupper($guardar['cargo']); ?>

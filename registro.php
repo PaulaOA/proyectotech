@@ -63,18 +63,23 @@
 
                                    <div class="form-group">
                                     <label for="apellidos">Apellidos</label>
-                                    <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Inserta tus apellidos" required>
+                                    <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Inserta tus apellidos" >
                                    </div> 
 
                                    <div class="form-group">
                                     <label for="fecha">Fecha de nacimiento</label>
-                                    <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Inserta tu segundo apellido" >
+                                    <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Inserta tu fecha de nacimiento" >
                                    </div> 
 
                                    <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="email" placeholder="Inserta tu email" >
+                                    <input type="text" class="form-control" name="email" id="email" placeholder="Inserta tu email" required>
                                    </div> 
+
+                                   <div class="form-group">
+                                    <label for="password">Contraseña</label>
+                                    <input type="text" class="form-control" name="contraseña" id="contraseña" placeholder="Inserta tu contraseña" required>
+                                   </div>
 
                                    <div class="form-group">
                                    <label for="cargo" class="form-label">¿Quién eres?</label>
