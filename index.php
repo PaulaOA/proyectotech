@@ -27,18 +27,15 @@
             <div class="col-md-9 col-lg-8 mx-auto">
             
               <h3 class="login-heading mb-4">Inicio sesión</h3> 
-              <?php
-                include "archivos/conexion.php";
-                include "archivos/controlador_index.php";
-                ?>
+             
               <!-- Sign In Form -->
               <form method="POST" action="">
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com" required autofocus>
+                  <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
                   <label for="floatingInput">Correo electrónico</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Password" required>
+                  <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Password">
                   <label for="floatingPassword">Contraseña</label>
                 </div>
 
@@ -48,10 +45,15 @@
                     Recuérdame
                   </label>
                 </div>
-                
+
+                <?php
+                include "archivos/conexion.php";
+                include "archivos/controlador_index.php";
+                ?>
 
                 <div class="d-grid">
-                  <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit" name="iniciar">Inicia</button>
+                  <input type="submit" name="iniciar" class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" value="INICIAR">
+                  <!--<button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit" name="iniciar">Inicia</button>-->
                   <div class="text-center">
                     <a class="small" href="registro.php">Registrarse</a>
                   </div>

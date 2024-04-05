@@ -11,7 +11,7 @@
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 </head>
 <body>
-    <a href="https://www.technovation.org" class="logo-holder">
+    <a href="#" class="logo-holder">
         <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="logo" class="logo" />
     </a>
     <section class="content">

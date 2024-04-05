@@ -52,7 +52,7 @@
                         <h5>Registro de Usuarios</h5>
                         <?php
                         include "archivos/conexion.php";
-                        $consulta = $conn->query("SELECT*FROM registro");
+                        $consulta = $conn->query("SELECT * FROM registro");
                         $row = mysqli_num_rows($consulta);
                         ?>
                     </div>

@@ -12,7 +12,7 @@ if (!empty($_POST["iniciar"])) {
         }
 
     } else {
-        echo "Rellena los campos";
+        echo "<div class='alert alert-primary'>Rellena los campos</div>";
     }
     
 }
