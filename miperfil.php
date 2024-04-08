@@ -1,9 +1,8 @@
 <?php
 session_start();
 if (empty($_SESSION["nombre"])) {
-    header("location: index.php");   
+    header("location: inicio.php");   
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -48,23 +47,15 @@ if (empty($_SESSION["nombre"])) {
   </div>
 </nav>
 
-
-<div class="container">
-  <h1 class="mt-4">
+<div class="container">  
+  <h2 class="mt-4">
   <?php
-   echo "Hola,"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"];
+   echo "Perfil de"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"];
   ?>
-  </h1>
-  <p></p>
+  </h2>
+  <p>Aquí aparecerá toda la información de <?php echo $_SESSION["nombre"];?></p>
 </div>
 
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-   
-  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
 </html>
