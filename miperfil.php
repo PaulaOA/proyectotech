@@ -56,6 +56,32 @@ if (empty($_SESSION["nombre"])) {
   <p>Aquí aparecerá toda la información de <?php echo $_SESSION["nombre"];?></p>
 </div>
 
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Fecha</th>
+                <th>Email</th>
+                <th>Contraseña</th>
+                <th>Cargo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo $_SESSION["nombre"]; ?></td>
+                <td><?php echo $_SESSION["apellidos"]; ?></td>
+                <td><?php echo $_SESSION["fecha"]; ?></td>
+                <td><?php echo $_SESSION["email"]; ?></td>
+                <td><?php echo $_SESSION["contraseña"]; ?></td>
+                <td><?php echo $_SESSION["cargo"]; ?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
