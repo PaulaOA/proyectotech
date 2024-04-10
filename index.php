@@ -13,9 +13,14 @@
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
   </head>
   <body>
-  <a href="#" class="logo-holder">
-        <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="logo" class="logo" />
-      </a>
+  <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">
+    </a>
+  </div>
+  </nav>  
+ 
   <div class="container">
   <div class="row">
     <div class="col-md-2"></div>
@@ -25,7 +30,7 @@
           <div class="row">
             <div class="col-md-9 col-lg-8 mx-auto">
             
-              <h3 class="login-heading mb-4">Inicio sesión</h3> 
+              <h3 class="login-heading mb-4">Iniciar sesión</h3> 
              
               <!-- Sign In Form -->
               <form method="POST" action="">
@@ -53,8 +58,13 @@
                 <div class="d-grid">
                   <input type="submit" name="iniciar" class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" value="INICIAR">
                   <!--<button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit" name="iniciar">Inicia</button>-->
-                  <div class="text-center">
-                    <a class="small" href="registro.php">Registrarse</a>
+                  <div class="text-left">
+                  ¿Aún no te has registrado?
+                  <a class="small" href="registro.php">Registrarse</a>
+                  </div>
+                  <div class="text-left">
+                  ¿Problemas para acceder? 
+                  <a class="small" href="recuperar.php">Recuperar contraseña</a>
                   </div>
                 </div>
 

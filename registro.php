@@ -11,44 +11,34 @@
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 </head>
 <body>
-    <a href="#" class="logo-holder">
-        <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="logo" class="logo" />
+<nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">
     </a>
-    <section class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
-                    <nav class="navbar navbar-expand-lg bg-light">
-                        <div class="container-fluid"> 
-                            <a class="navbar-brand" href="index.php">Technovation Girl</a>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="index.php">Inicio</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="registros.php">Registros</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-                <div class="col-md-2"></div>
-            </div>
-        </div>
-    </section>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="inicio.php">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="registros.php">Registros</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br>    
 
     <section class="content">
         <div class="container">
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
-                    <div class="card bg-danger text-center text-white">
+                    <div class="card bg-primary text-center text-white">
                         <h3>Formulario de registro</h3>  
                     </div>
                     <form action="archivos/registrar.php" method="post">
@@ -94,7 +84,7 @@
                         </div>
                         <br>
                         <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-danger btn-lg">Registrar</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Registrar</button>
                         </div>
                     </form>
                 </div>
