@@ -9,6 +9,10 @@ if (!empty($_POST["iniciar"])) {
             $_SESSION["id"]=$datos->id;
             $_SESSION["nombre"]=$datos->nombre;
             $_SESSION["apellidos"]=$datos->apellidos;
+            $_SESSION["fecha"]=$datos->fecha;
+            $_SESSION["email"]=$datos->email;
+            $_SESSION["contraseña"]=$datos->contraseña;
+            $_SESSION["cargo"]=$datos->cargo;
             header("location: ./inicio.php");
         }else{
             echo "<div class='alert alert-danger'>Acceso denegado</div>";

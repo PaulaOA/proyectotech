@@ -73,7 +73,7 @@
 
                                    <div class="form-group">
                                    <label for="cargo" class="form-label">¿Quién eres?</label>
-                                   <select id="cargo" class="form-select">
+                                   <select id="cargo" class="form-select" name="cargo">
                                         <option selected>Elige una opción</option>
                                         <option>Mentor</option>
                                         <option>Participante</option>

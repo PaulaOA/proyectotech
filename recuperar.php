@@ -37,14 +37,14 @@
                     <div class="card bg-primary text-left text-white">
                         <h4>Restablece tu contraseña</h4>  
                     </div>
-                    <form action="" method="post">
+                    <form action="archivos/recovery.php" method="POST">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <br>
 
                                    <div class="form-group">
-                                    <label for="email">Coreo electrónico</label>
+                                    <label for="email">Correo electrónico</label>
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Introduce tu correo electónico" required>
                                    </div> 
                                 </div>
