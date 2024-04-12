@@ -67,7 +67,27 @@
                   <a class="small" href="recuperar.php">Recuperar contraseña</a>
                   </div>
                 </div>
+                <?php
+                if(isset($_GET['message'])){
+                
+                ?>
+                <div class="alert alert-primary" role="alert">
+                <?php
+                switch ($_GET['message']) {
+                  case 'ok';
+                  echo "Por favor, revisa tu correo electrónico";
+                  break;
 
+                  default;
+                  echo "Ha ocurrido un error, intentalo de nuevo"; 
+                  break;
+                }
+                ?>
+                </div> 
+                <?php
+                }
+                ?>
+                
               </form>
             </div>
           </div>
