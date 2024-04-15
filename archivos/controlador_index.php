@@ -4,7 +4,7 @@ if (!empty($_POST["iniciar"])) {
     if (!empty($_POST["email"]) and !empty($_POST["contraseña"])) {
         $email=$_POST["email"];
         $contraseña=$_POST["contraseña"];
-        $sql=$conn->query("SELECT * FROM registro WHERE email='$email' and contraseña='$contraseña'");
+        $sql=$conn->query("SELECT * FROM registro WHERE email='$email' AND contraseña='$contraseña'");
         if ($datos=$sql->fetch_object()) {
             $_SESSION["id"]=$datos->id;
             $_SESSION["nombre"]=$datos->nombre;
