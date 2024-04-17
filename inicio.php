@@ -15,6 +15,22 @@ if (empty($_SESSION["nombre"])) {
    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href= "css/bootstrap.min.css">
+    <style>
+    /* Estilo para las imágenes del carousel */
+    .carousel-item img {
+      width: 100%;
+      height: 300px; /* Altura deseada para las imágenes */
+      object-fit: cover; /* Ajustar la imagen para cubrir todo el contenedor */
+    }
+
+    .darken-img {
+      width: 100%;
+      height: 300px; /* Altura deseada para las imágenes */
+      object-fit: cover; /* Ajustar la imagen para cubrir todo el contenedor */
+      filter: brightness(50%); /* Oscurecer la imagen al 50% */
+    }
+
+    </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
@@ -49,6 +65,46 @@ if (empty($_SESSION["nombre"])) {
 </nav>
 
 
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active d-item">
+      <img src="images/imagen1.jpg" class="d-block w-100 darken-img" alt="slider 1">
+      <div class="carousel-caption top-0 mt-4">
+      <h1 class="display-1 fw-bolder text-capitalize">Proyectos<h1>
+      <a href="#" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+      </div>  
+    </div>
+    <div class="carousel-item d-item">
+      <img src="images/imagen2.jpg" class="d-block w-100 darken-img" alt="slider 2">
+      <div class="carousel-caption top-0 mt-4">
+      <h1 class="display-1 fw-bolder text-capitalize">Concursos<h1>
+      <a href="#" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+      </div>  
+    </div>
+    <div class="carousel-item d-item">
+      <img src="images/imagen3.jpg" class="d-block w-100 darken-img" alt="slider 3">
+      <div class="carousel-caption top-0 mt-4">
+      <h1 class="display-1 fw-bolder text-capitalize">Sobre nosotros<h1>
+      <a href="#" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>
+
+
 <div class="container">
   <h1 class="mt-4">
   <?php
@@ -58,13 +114,26 @@ if (empty($_SESSION["nombre"])) {
   <p></p>
 </div>
 
+<footer class="footer bg-dark text-white py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <p>© 2024 Technovation. <br>Todos los derechos reservados.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#"><i class="bi bi-facebook"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-twitter"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-instagram"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
 
+  
 
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-   
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
 </html>
