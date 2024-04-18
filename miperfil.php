@@ -84,9 +84,6 @@ if (empty($_SESSION["nombre"])) {
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">
-      <div class="col-md-8">
-        <p>© 2024 Technovation. Todos los derechos reservados.</p>
-      </div>
       <div class="text-center">
         <ul class="list-inline">
           <li class="list-inline-item"><a href="#"><i class="bi bi-facebook text-white"></i></a></li>
@@ -94,6 +91,9 @@ if (empty($_SESSION["nombre"])) {
           <li class="list-inline-item"><a href="#"><i class="bi bi-instagram text-white"></i></a></li>
           <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin text-white"></i></a></li>
         </ul>
+      </div>
+      <div class="text-center">
+        <p class="text-sm text-center">© 2024 Technovation. Todos los derechos reservados.</p>
       </div>
     </div>
   </div>
