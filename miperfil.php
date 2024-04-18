@@ -11,7 +11,7 @@ if (empty($_SESSION["nombre"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href= "css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
@@ -81,6 +81,23 @@ if (empty($_SESSION["nombre"])) {
     </table>
 </div>
 
+<footer class="footer bg-dark text-white py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <p>© 2024 Technovation. Todos los derechos reservados.</p>
+      </div>
+      <div class="text-center">
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#"><i class="bi bi-facebook text-white"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-twitter text-white"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-instagram text-white"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin text-white"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
 
     
 
