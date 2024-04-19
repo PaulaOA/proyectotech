@@ -12,11 +12,25 @@ if (empty($_SESSION["nombre"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href= "css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+  
+    <style>
+    /* Estilo personalizado para el área de carga */
+    .upload-area {
+      border: 2px dashed #ccc;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .upload-area:hover {
+      background-color: #f8f9fa;
+    }
+  </style>
+  
   </head>
   <body>
   <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
@@ -47,17 +61,23 @@ if (empty($_SESSION["nombre"])) {
   </div>
 </nav>
 
-<div class="container">  
-  <h2 class="mt-4">
+<div class="responsive bg-dark text-white py-4">
+  <div class="row">
+    <div class="col-md-8"> 
+    <h1>
   <?php
    echo "Perfil de"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"];
   ?>
-  </h2>
+  </h1>
   <p>Aquí aparecerá toda la información de <?php echo $_SESSION["nombre"];?></p>
+    </div>
+  </div>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-striped">
+<div class="col-md-5">
+    <div class="card mt-4 mb-4">
+      <div class="card-body">
+        <table class="table table-striped mb-2">
         <thead>
             <tr>
                 <th>Nombre</th>
@@ -78,7 +98,23 @@ if (empty($_SESSION["nombre"])) {
                 <td><?php echo $_SESSION["cargo"]; ?></td>
             </tr>
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card mt-4 mb-4">
+    <div class="card-header bg-primary text-white">Subida de contenido</div>
+    <div class="card-body">
+    <div class="col-md-10 justify-content-center">
+    <div class="input-group">
+      <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+      <button class="btn btn-outline-secondary btn-outline-success" type="button" id="inputGroupFileAddon04">Botón</button>
+    </div>
+    </div>
+  </div>
+  </div>
 </div>
 
 <footer class="footer bg-dark text-white py-4">
@@ -101,6 +137,6 @@ if (empty($_SESSION["nombre"])) {
 
     
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
