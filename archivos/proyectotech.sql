@@ -7,7 +7,7 @@ CREATE TABLE registro(
   id_usuario int AUTO_INCREMENT PRIMARY KEY,
   nombre varchar(60),
   apellidos varchar(60),
-  fecha date(60),    
+  fecha date,    
   email varchar(60) NOT NULL,
   contraseña varchar(60) NOT NULL,
   cargo varchar(60),
@@ -15,7 +15,7 @@ CREATE TABLE registro(
 );
 
 CREATE TABLE documentos(
-  id int AUTO_INCREMENT PRIMARY KEY
+  id int AUTO_INCREMENT PRIMARY KEY,
   nombre varchar(500),
   descripcion varchar(500)
 );
