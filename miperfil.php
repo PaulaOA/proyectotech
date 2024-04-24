@@ -76,6 +76,7 @@ if (empty($_SESSION["nombre"])) {
 
 <div class="col-md-5">
     <div class="card mt-4 mb-4">
+    <div class="card-header bg-primary text-white">Datos usuario</div>
       <div class="card-body">
         <table class="table table-striped mb-2">
         <thead>
@@ -103,19 +104,29 @@ if (empty($_SESSION["nombre"])) {
   </div>
 </div>
 
+<form action="./archivos/subir.php" method="POST" enctype="multipart/form-data">
 <div class="col-md-4">
   <div class="card mt-4 mb-4">
     <div class="card-header bg-primary text-white">Subida de contenido</div>
     <div class="card-body">
     <div class="col-md-10 justify-content-center">
-    <div class="input-group">
-      <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-      <button class="btn btn-outline-secondary btn-outline-success" type="button" id="inputGroupFileAddon04">Botón</button>
+    <p>Archivo</p>
+    <div class="input-group mb-4">
+      <label for="file"></label>
+      <input type="file" class="form-control" id="file" name="file" aria-describedby="file" aria-label="file">
+      <!--<button class="btn btn-outline-secondary btn-outline-success" type="button" id="inputGroupFileAddon04">Subir</button>-->
     </div>
+    <p>Descripción</p>
+    <div class="input-group mb-4">
+      <label for="desc"></label>
+      <input type="text" id="desc" name="desc" class="form-control">
+    </div>
+    <input type="submit" value="Subir" class="btn btn-outline-secondary btn-outline-success">
     </div>
   </div>
   </div>
 </div>
+</form>
 
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
