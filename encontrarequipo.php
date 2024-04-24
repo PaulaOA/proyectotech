@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (empty($_SESSION["nombre"])) {
+    header("location: index.php");   
+}
+$currentPage = 'encontrarequipo';
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -11,36 +18,16 @@
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+    <style>
+      .contenedor {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
-  <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="inicio.php">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="miperfil.php">Mi perfil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="crearequipo.php">Crea tu equipo</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="encontrarequipo.php">Encuentra tu equipo</a>
-        </li>
-        <a class="nav-item nav-link text-justify ml-3 hover-primary" href="archivos/controlador_cerrarsesion.php">Salir</a>
-      </ul>
-    </div>
-    </div>
-    </nav>
-
+    <div class="contenedor" id="contenedorEncontrarEquipo">
+      <?php include "menu-superior.php" ?>
 <br>
 
 <div class="container">
@@ -96,6 +83,88 @@
 </div>
 <br>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+          $(document).ready(function(){
+            $("#btnInicio").click(function(e){
+              e.preventDefault();
+                $("#contenedorEncontrarEquipo").load("inicio.php", function(){
+                  history.pushState(null,null,"inicio.php");
+                });
+                window.onpopstate = function(event){
+                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
+              };
+            });
+          });
+
+        </script>
+
+        <script>
+          $(document).ready(function(){
+            $("#btnMiPerfil").click(function(e){
+              e.preventDefault();
+                $("#contenedorEncontrarEquipo").load("miperfil.php", function(){
+                  history.pushState(null,null,"miperfil.php");
+                });
+                window.onpopstate = function(event){
+                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
+              };
+            });
+          });
+
+        </script>
+
+        <script>
+          $(document).ready(function(){
+            $("#btnCrearEquipo").click(function(e){
+              e.preventDefault();
+                $("#contenedorEncontrarEquipo").load("crearequipo.php", function(){
+                  history.pushState(null,null,"crearequipo.php");
+                });
+                window.onpopstate = function(event){
+                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
+              };
+            });
+          });
+
+        </script>
+
+         <script>
+          $(document).ready(function(){
+            $("#btnEncontrarEquipo").click(function(e){
+              e.preventDefault();
+                $("#contenedorEncontrarEquipo").load("encontrarequipo.php", function(){
+                  history.pushState(null,null,"encontrarequipo.php");
+                });
+                window.onpopstate = function(event){
+                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
+              };
+            });
+          });
+
+        </script>
+
+         <script>
+        $(document).ready(function(){
+        $("#btnSalir").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "archivos/controlador_cerrarsesion.php",
+                success: function(data){
+                    $("#contenedorEncontrarEquipo").load("index.php", function(){
+                      history.pushState(null,null,"index.php");
+                    });
+                    window.onpopstate = function(event){
+                    $("#contenedorEncontrarEquipo").load("index.php");
+                  };
+                    }
+                });
+            });
+        });
+    </script>
+
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">
@@ -114,6 +183,21 @@
   </div>
 </footer>
 
+<!-- Script para resaltar la palabra del menú-->
+
+<script>
+    var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+
+    var currentPage = filename.split('.')[0];
+
+    var element = document.getElementById('btn' + currentPage.charAt(0).toUpperCase() + currentPage.slice(1));
+    if (element) {
+        element.classList.add('active');
+    }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</div>
 </body>
 </html>
