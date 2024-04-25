@@ -19,3 +19,6 @@ CREATE TABLE documentos(
   nombre varchar(500),
   descripcion varchar(500)
 );
+
+INSERT INTO registro (nombre, apellidos, email, contraseña, admin) VALUES 
+("Admin", "Admin", "admin@proyectotech.com", "123456", 1);
