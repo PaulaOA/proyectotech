@@ -204,15 +204,13 @@ $currentPage = 'inicio';
 <!-- Script para resaltar la palabra del menú-->
 
 <script>
-    var url = window.location.pathname;
-    var filename = url.substring(url.lastIndexOf('/') + 1);
-
-    var currentPage = filename.split('.')[0];
-    
-    var element = document.getElementById('btn' + currentPage.charAt(0).toUpperCase() + currentPage.slice(1));
-    if (element) {
-        element.classList.add('active');
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentPage = "<?php echo $currentPage; ?>";
+        var element = document.getElementById('btn' + currentPage.charAt(0).toUpperCase() + currentPage.slice(1));
+        if (element) {
+            element.classList.add('active');
+        }
+    });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
