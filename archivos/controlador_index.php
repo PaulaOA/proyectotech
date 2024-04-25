@@ -9,22 +9,26 @@ session_start();
         $sql = "SELECT * FROM registro WHERE email='".$email."' AND contraseña='".$contraseña."'";
         $resultado= $conn->query($sql);
 
-        if ($resultado->num_rows > 0){
-            $datos = $resultado->fetch_object();
+         if ($resultado->num_rows > 0) {
+             $datos = $resultado->fetch_object();
+                $_SESSION["id"]=$datos->id_usuario;
+                $_SESSION["nombre"]=$datos->nombre;
+                $_SESSION["apellidos"]=$datos->apellidos;
+                $_SESSION["fecha"]=$datos->fecha;
+                $_SESSION["email"]=$datos->email;
+                $_SESSION["contraseña"]=$datos->contraseña;
+                $_SESSION["cargo"]=$datos->cargo;
 
-            $_SESSION["id"]=$datos->id_usuario;
-            $_SESSION["nombre"]=$datos->nombre;
-            $_SESSION["apellidos"]=$datos->apellidos;
-            $_SESSION["fecha"]=$datos->fecha;
-            $_SESSION["email"]=$datos->email;
-            $_SESSION["contraseña"]=$datos->contraseña;
-            $_SESSION["cargo"]=$datos->cargo;
-
-             echo "inicio"; 
-       
-         } else {
-            echo "accesoDenegado";
-        }  
+                if ($datos->admin == 1) {
+                    $_SESSION["admin"]=$datos->admin;
+                    echo "admin";
+                 } else {
+                    echo "inicio";
+                   }
+          } else {
+               echo "accesoDenegado";
+            }
+            
       }  else {
         echo "rellenaCampos";
     }

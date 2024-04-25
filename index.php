@@ -121,9 +121,16 @@
                         success: function(response){
                           $("#alertAccesoDenegado").hide();
                           $("#alertRellenaCampos").hide();
-                          if (response == "inicio"){
+                          if (response == "inicio") {
                             $("#contenedorIndex").load("inicio.php", function(){
                               history.pushState(null,null,"inicio.php");
+                            });
+                            window.onpopstate = function(event){
+                              $("#contenedorIndex").load("index.php");
+                               };
+                          } else if (response == "admin") {
+                            $("#contenedorIndex").load("admin.php", function(){
+                              history.pushState(null,null,"admin.php");
                             });
                             window.onpopstate = function(event){
                               $("#contenedorIndex").load("index.php");
