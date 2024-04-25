@@ -31,10 +31,10 @@ if (empty($_POST['nombre']) ||
             } else {
                    $insertar = "INSERT INTO registro (nombre, apellidos, fecha, email, contraseña, cargo) VALUES ('$nombre', '$apellidos', '$fecha', '$email', '$contraseña', '$cargo')";
 
-                if ($conn -> query($insertar) == true) {
-                    echo "registroCorrecto";
-                } else {
-                    echo "error";
+                    if ($conn -> query($insertar) == true) {
+                        echo "registroCorrecto";
+                    } else {
+                        echo "error";
                 }  
             }
         
