@@ -36,7 +36,28 @@ $currentPage = 'inicio';
         width: 100%;
         height: 100%;
       }
+    /* Estilos para el video */
+    .video-responsive {
+        position: relative;
+        padding-bottom: 56.25%; /* 16/9 ratio */
+        padding-top: 30px; /* IE6 workaround*/
+        height: 0;
+        overflow: hidden;
+      }
 
+    .video-responsive iframe,
+    .video-responsive object,
+    .video-responsive embed {  
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    iframe{
+          width: 100%;
+          height: 100vh;
+      }
     </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>
@@ -97,6 +118,37 @@ $currentPage = 'inicio';
   </h1>
   <p></p>
 </div>
+<hr>
+<!--MOSTRAR GALERIA DE VIDEOS SUBIDOS-->
+<?php 
+ require_once("./archivos/conexion.php");
+
+  $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC");
+  $queryVideo = mysqli_query($conn, $sqlVideo);
+  $totalVideo = mysqli_num_rows($queryVideo);
+  $DataVideo  = mysqli_fetch_array($queryVideo);
+?>
+
+
+    <div class="container">
+
+      <div class="row text-center">
+        <div class="col-6">
+          <?php 
+          if( $totalVideo >0){ ?>
+          <h2><?php echo $DataVideo['nombrevideo']; ?></h2>
+
+          <div class="video-responsive">
+            <iframe src="<?php echo $DataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+          </div>
+        <?php }else{ ?>
+        <h2>No hay contenido</h2>
+        <?php } ?>
+
+        </div>
+      </div>
+    </div>
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 

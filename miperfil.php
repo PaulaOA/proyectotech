@@ -56,10 +56,12 @@ $currentPage = 'miperfil';
   </div>
 </div>
 
-<div class="col-md-5">
+<div class="container">
+ <div class="row"> 
+<div class="col-md-6">
     <div class="card mt-4 mb-4">
     <div class="card-header bg-primary text-white">Datos usuario</div>
-      <div class="card-body">
+      <div class="card-body col-md-6">
         <table class="table table-striped mb-2">
         <thead>
             <tr>
@@ -85,30 +87,86 @@ $currentPage = 'miperfil';
     </div>
   </div>
 </div>
+</div>
+</div>
 
-<form action="./archivos/subir.php" method="POST" enctype="multipart/form-data">
-<div class="col-md-4">
-  <div class="card mt-4 mb-4">
-    <div class="card-header bg-primary text-white">Subida de contenido</div>
-    <div class="card-body">
-    <div class="col-md-10 justify-content-center">
-    <p>Archivo</p>
-    <div class="input-group mb-4">
-      <label for="file"></label>
-      <input type="file" class="form-control" id="file" name="file" aria-describedby="file" aria-label="file">
-      <!--<button class="btn btn-outline-secondary btn-outline-success" type="button" id="inputGroupFileAddon04">Subir</button>-->
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form action="./archivos/subir.php" method="POST" enctype="multipart/form-data">
+        <div class="card mt-4 mb-4">
+          <div class="card-header bg-primary text-white">Subida de contenido</div>
+          <div class="card-body">
+            <!-- Contenido del primer formulario -->
+            <div class="mb-3">
+              <label for="file" class="form-label">Archivo</label>
+              <input type="file" class="form-control" id="file" name="file" aria-describedby="file1">
+            </div>
+            <div class="mb-3">
+              <label for="desc" class="form-label">Descripción</label>
+              <input type="text" class="form-control" id="desc" name="desc">
+            </div>
+            <button type="submit" class="btn btn-outline-secondary btn-outline-success">Subir</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <p>Descripción</p>
-    <div class="input-group mb-4">
-      <label for="desc"></label>
-      <input type="text" id="desc" name="desc" class="form-control">
+    <div class="col-md-6">
+      <form action="./archivos/recibvideo.php" method="POST" enctype="multipart/form-data">
+        <div class="card mt-4 mb-4">
+          <div class="card-header bg-primary text-white">Subida de video <em>(Desde Youtube)</em></div>
+          <div class="card-body">
+            <!-- Contenido del segundo formulario -->
+            <div class="mb-3">
+              <label for="nombrevideo" class="form-label">Nombre del video</label>
+              <input type="text" class="form-control" id="nombrevideo" name="nombrevideo">
+            </div>
+            <div class="mb-3">
+              <label for="urlvideo" class="form-label">Url del video</label>
+              <input type="text" class="form-control" id="urlvideo" name="urlvideo">
+            </div>
+            <button type="submit" class="btn btn-outline-secondary btn-outline-success">Guardar video</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <input type="submit" value="Subir" class="btn btn-outline-secondary btn-outline-success">
-    </div>
-  </div>
   </div>
 </div>
-</form>
+<!--SUBIDA DE VIDEOS Y EDICION-->
+<hr>
+<?php 
+   require_once("./archivos/conexion.php");
+    $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC");
+    $queryVideo = mysqli_query($conn, $sqlVideo);
+
+  ?>
+<h2 class="text-center mt-5 mb-3">Mis videos</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Titulo del video</th>
+          <th>Video</th>
+           <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php
+        while ($dataVideo = mysqli_fetch_array($queryVideo)) { ?>
+        <tr>
+          <td><?php  echo $dataVideo['nombrevideo']; ?></td>
+          <td>
+            <iframe width="253" height="200" src="<?php echo $dataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </td>
+          <td>
+            <a href="./archivos/borrarvideo.php?idVideo=<?php echo $dataVideo['id']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');">Borrar video</a>
+          </td>
+        </tr>
+      <?php } ?>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 

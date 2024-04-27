@@ -4,7 +4,7 @@ include "conexion.php";
 $file_name = $_FILES['file']['name'];
 $file_tmp = $_FILES['file']['tmp_name'];
 $desc = $_POST['desc'];
-$ruta = "../files".$file_name;
+$ruta = "./files".$file_name;
 
 move_uploaded_file($file_tmp, $ruta);
 
