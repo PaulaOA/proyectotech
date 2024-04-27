@@ -50,23 +50,6 @@
     });
 </script>
 
-<div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalConfirmacionLabel">¿Desea cancelar?</h5>
-      </div>
-      <div class="modal-body">
-        Los cambios no se guardarán
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir editando</button>
-        <button type="button" class="btn btn-primary" id="btnQuieroCancelar">Sí, quiero cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="modalGuardarCambios" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -84,11 +67,53 @@
   </div>
 </div>
 
+<div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmacionLabel">¿Desea cancelar?</h5>
+      </div>
+      <div class="modal-body">
+        Los cambios no se guardarán
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir editando</button>
+        <button type="button" class="btn btn-primary" id="btnQuieroCancelar">Sí, quiero cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
     $(document).ready(function() {
         $("#btnQuieroCancelar").click(function() {
             $("#modalCancelar").modal("hide");
             $("#modalEditarUsuario").modal("hide");
+        });
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $("#btnConfirmar").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "actualizar-usuario.php",
+                method: "POST",
+                data: $("#formEditarUsuario").serialize(),
+                success: function(response) {
+                    if (response == "usuarioEditado") {
+                      $("#modalGuardarCambios").modal("hide");
+                      $("#modalEditarUsuario").modal("hide");
+                      $("#contenedorUsuarios").load("usuarios.php");
+                    } else {
+                      alert("No se pudieron guardar los cambios");
+                    }
+                }
+               
+            });
         });
     });
 </script>
