@@ -3,7 +3,7 @@ session_start();
 if (empty($_SESSION["admin"])) {
     header("location: index.php");   
 }
-
+$currentPage = 'admin';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -102,7 +102,7 @@ if (empty($_SESSION["admin"])) {
 
     <script>
           $(document).ready(function(){
-            $("#btnInicio").click(function(e){
+            $("#btnAdmin").click(function(e){
               e.preventDefault();
                 $("#contenedorAdmin").load("admin.php", function(){
                   history.pushState(null,null,"admin.php");

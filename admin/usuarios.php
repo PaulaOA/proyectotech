@@ -62,8 +62,8 @@ $usuarios = $conn->query($sql);
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-8 pl-4">
-        <div class="card mt-4 mb-4">
-        <div class="card-header bg-primary text-white">Gestión de usuarios</div>
+        <div class="card mt-4 mb-2">
+        <div class="card-header bg-primary text-white">Usuarios registrados</div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-striped mb-2">
@@ -77,6 +77,7 @@ $usuarios = $conn->query($sql);
                       <th class="text-center">Contraseña</th>
                       <th class="text-center">Cargo</th>
                       <th class="text-center">Editar</th>
+                      <th class="text-center">Borrar</th>
                   </tr>
               </thead>
               <tbody>
@@ -92,7 +93,10 @@ $usuarios = $conn->query($sql);
                       <td class="text-center"><?= $usuario['contraseña']; ?></td>
                       <td class="text-center"><?= $usuario['cargo']; ?></td>
                       <td class="text-center">
-                        <a href="#" class="editar-usuario" data-id="<?= $usuario['id_usuario']?>">Modificar datos</a>
+                        <a href="#" class="editar-usuario" data-id="<?= $usuario['id_usuario']?>"><i class="bi bi-pencil-square"></i></a>
+                      </td>
+                      <td class="text-center">
+                        <a href="#" class="borrar-usuario" data-id="<?= $usuario['id_usuario']?>" data-nombre="<?= $usuario['nombre']?>"><i class="bi bi-trash"></i></a>
                       </td>
                   </tr>
                 <?php endwhile ?>
@@ -101,9 +105,13 @@ $usuarios = $conn->query($sql);
           </div>
         </div>
       </div>
+      <div class="text-end mb-4">
+          <button class="btn btn-primary py-3 px-3" id="btnNuevoUsuario">Nuevo usuario</button>
+        </div>
     </div>
   </div>
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -126,91 +134,110 @@ $usuarios = $conn->query($sql);
             });
         });
     });
+
+    $(document).ready(function() {
+        $("#btnNuevoUsuario").click(function() {
+            $('#modalNuevoUsuario').modal('show');
+        });
+    });
 </script>
 
-<?php require "modales-edicion.php"; ?>
+<script>
+    $(document).ready(function() {
+        $(".borrar-usuario").click(function(e) {
+            e.preventDefault();
+            var id_usuario = $(this).data('id');
+            var nombre_usuario = $(this).data('nombre');
+            $("#idUsuarioEliminar").text(id_usuario);
+            $("#nombreUsuarioEliminar").text(nombre_usuario);
+            $('#modalEliminarUsuario').modal('show');
+
+            $("#btnEliminarUsuario").click(function(e) {
+            $.ajax({
+                url: "eliminar-usuario.php",
+                method: "POST",
+                data: { id_usuario: id_usuario },
+                success: function(response) {
+                    if (response == "usuarioEliminado") {
+                      $("#modalEliminarUsuario").modal("hide");
+                      $("#contenedorUsuarios").load("usuarios.php");
+                    } else {
+                      alert("No se pudo eliminar al usuario");
+                    }
+                }
+               
+            });
+        });
+        });
+    });
+</script>
+
+<?php require "modales-edicion-usuarios.php"; ?>
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
-    <script>
-          $(document).ready(function(){
-            $("#btnInicio").click(function(e){
-              e.preventDefault();
-                $("#contenedorUsuarios").load("../admin.php", function(){
-                  history.pushState(null,null,"../admin.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorUsuarios").load("usuarios.php");
-              };
-            });
-          });
+<script>
+  $(document).ready(function() {
+    window.onpopstate = function(event) {
+        $("#contenedorUsuarios").load(location.pathname);
+    };
+  });
 
-        </script>
-
-        <script>
-          $(document).ready(function(){
-            $("#btnUsuarios").click(function(e){
-              e.preventDefault();
-                $("#contenedorUsuarios").load("usuarios.php", function(){
-                  history.pushState(null,null,"usuarios.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorUsuarios").load("usuarios.php");
-              };
-            });
-          });
-
-        </script>
-
-        <script>
-          $(document).ready(function(){
-            $("#btnEquipos").click(function(e){
-              e.preventDefault();
-                $("#contenedorUsuarios").load("equipos.php", function(){
-                  history.pushState(null,null,"equipos.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorUsuarios").load("equipos.php");
-              };
-            });
-          });
-
-        </script>
-
-         <script>
-          $(document).ready(function(){
-            $("#btnProyectos").click(function(e){
-              e.preventDefault();
-                $("#contenedorUsuarios").load("proyectos.php", function(){
-                  history.pushState(null,null,"encontrarequipo.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorUsuarios").load("proyectos.php");
-              };
-            });
-          });
-
-        </script>
-
-         <script>
-        $(document).ready(function(){
-        $("#btnSalir").click(function(e){
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "../archivos/controlador_cerrarsesion.php",
-                success: function(data){
-                    $("#contenedorUsuarios").load("../index.php", function(){
-                      history.pushState(null,null,"../index.php");
-                    });
-                    window.onpopstate = function(event){
-                    $("#contenedorUsuarios").load("../index.php");
-                  };
-                    }
-                });
+      $(document).ready(function(){
+        $("#btnAdmin").click(function(e){
+          e.preventDefault();
+            $("#contenedorUsuarios").load("../admin.php", function(){
+              history.pushState(null,null,"../admin.php");
             });
         });
-    </script>
+      });
+
+      $(document).ready(function(){
+        $("#btnUsuarios").click(function(e){
+          e.preventDefault();
+            $("#contenedorUsuarios").load("usuarios.php", function(){
+              history.pushState(null,null,"usuarios.php");
+            });
+        });
+      });
+
+      $(document).ready(function(){
+        $("#btnEquipos").click(function(e){
+          e.preventDefault();
+            $("#contenedorUsuarios").load("equipos.php", function(){
+              history.pushState(null,null,"equipos.php");
+            });
+        });
+      });
+
+      $(document).ready(function(){
+        $("#btnProyectos").click(function(e){
+          e.preventDefault();
+            $("#contenedorUsuarios").load("proyectos.php", function(){
+              history.pushState(null,null,"proyectos.php");
+            });
+        });
+      });
+ </script>
+ <script>
+    $(document).ready(function(){
+    $("#btnSalir").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "../archivos/controlador_cerrarsesion.php",
+            success: function(data){
+                $("#contenedorUsuarios").load("../index.php", function(){
+                  history.pushState(null,null,"../index.php");
+                });
+                window.onpopstate = function(event){
+                $("#contenedorUsuarios").load("../index.php");
+              };
+                }
+            });
+        });
+    });
+</script>
 
 <footer class="footer bg-dark text-white py-4">
   <div class="container">

@@ -3,6 +3,10 @@ session_start();
 if (empty($_SESSION["nombre"])) {
     header("location: index.php");   
 }
+
+/*$nombre = $_SESSION["nombre"];
+$id_usuario = $_SESSION["id_usuario"];*/
+
 $currentPage = 'crearequipo';
 ?>
 <!DOCTYPE html>
@@ -23,6 +27,41 @@ $currentPage = 'crearequipo';
         width: 100%;
         height: 100%;
       }
+
+       .modal {
+          display: none; /* Por defecto, ocultar el modal */
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.7);
+          align-items: center;
+        }
+
+      .modal-content {
+          background-color: #fefefe;
+          margin: 20% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 40%;
+          max-width: 350px;
+          height: 220px;
+          z-index: 1100;
+        }
+
+     .btnModal {
+          display: block; 
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          width: 35%;
+          margin: 20px auto 0;
+          padding: 10px;
+        }
     </style>
   </head>
   <body>
@@ -35,25 +74,25 @@ $currentPage = 'crearequipo';
                 <div class="col-md-2"></div>
                 <div class="col-md-6">
                     <div class="card bg-primary text-left text-white">
-                        <h4>Crea tu equipo</h4>  
+                        <h4 style="margin-left: 10px;">Crea tu equipo</h4>  
                     </div>
-                    <form action="archivos/recovery.php" method="POST">
+                    <form id="formCrearEquipo" method="POST">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    
-
                                    <div class="form-group mt-2 mb-2">
-                                    <label for="contraseña">Nombre de equipo</label>
-                                    <input type="text" class="form-control" name="contraseña" id="contraseña" required>
+                                    <label for="nombreEquipo" style="margin-bottom: 10px;">Nombre de equipo</label>
+                                    <input type="text" class="form-control" name="nombreEquipo" id="nombreEquipo" required>
                                    </div> 
                                 </div>
                             </div>
                         </div>
                         
                         <div class="card-footer text-left">
-                            <button type="submit" class="btn btn-outline-success">Crea este equipo</button>
-                            <a class="middle" href="encontrarequipo.php">o encuentra tu equipo</a>
+                            <button class="btn btn-outline-success" id="btnCrearEsteEquipo">Crea este equipo</button>
+                            <div style="margin-top: 5px;">
+                            <a class="middle" href="#" id="btnEncuentraTuEquipo">o encuentra tu equipo</a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -63,67 +102,103 @@ $currentPage = 'crearequipo';
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+     <script>
+                  $(document).ready(function(){
+                    $("#btnCrearEsteEquipo").click(function(event){
+                      event.preventDefault();
+                      $.ajax({
+                        type: "POST",
+                        url: "archivos/nuevo-equipo.php",
+                        data: $("#formCrearEquipo").serialize(),
+                        success: function(response){
+                          if (response == "equipoCreado"){
+                            $("#modalEquipoCreado").css("display", "block");
+                          } else if (response == "rellenaCampos"){
+                            $("#modalRellenaCampos").css("display", "block");
+                          } else if (response == "errorSesion") {
+                            $("#modalError").css("display", "block");
+                          } else {
+                            alert ("Error");
+                          }
+                        }
+                      });
+                      return false;
+                    });
+                     $(".close, #btnAceptar").click(function(){
+                     $("#modalEquipoCreado, #modalRellenaCampos, #modalError").css("display", "none");
+                   });
+                  });
+                </script>
+
+       <div id="modalEquipoCreado" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">¡Equipo creado!</h1>
+            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
+          </div>
+        </div>
+
+        <div id="modalRellenaCampos" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Nombre Vacío</h1>
+            <p class="text-center">Introduce un nombre para tu equipo</p>
+            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
+          </div>
+        </div>
+
+         <div id="modalError" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
+            <p class="text-center">No se pudo crear el equipo</p>
+            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
+          </div>
+        </div>
+
+    <!-- Manejar botones menú superior -->
+
     <script>
+      $(document).ready(function() {
+        window.onpopstate = function(event) {
+        $("#contenedorCrearEquipo").load(location.pathname);
+        };
+      });
           $(document).ready(function(){
             $("#btnInicio").click(function(e){
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("inicio.php", function(){
                   history.pushState(null,null,"inicio.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorCrearEquipo").load("crearequipo.php");
-              };
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("miperfil.php", function(){
                   history.pushState(null,null,"miperfil.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorCrearEquipo").load("crearequipo.php");
-              };
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnCrearEquipo").click(function(e){
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("crearequipo.php", function(){
                   history.pushState(null,null,"crearequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorCrearEquipo").load("crearequipo.php");
-              };
             });
           });
 
-        </script>
-
-         <script>
           $(document).ready(function(){
-            $("#btnEncontrarEquipo").click(function(e){
+            $("#btnEncontrarEquipo, #btnEncuentraTuEquipo").click(function(e){
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorCrearEquipo").load("crearequipo.php");
-              };
             });
           });
-
         </script>
+        <script>
 
-         <script>
         $(document).ready(function(){
         $("#btnSalir").click(function(e){
             e.preventDefault();

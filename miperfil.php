@@ -90,6 +90,7 @@ $currentPage = 'miperfil';
 </div>
 </div>
 
+
 <div class="container">
   <div class="row">
     <div class="col-md-6">
@@ -133,7 +134,6 @@ $currentPage = 'miperfil';
   </div>
 </div>
 <!--SUBIDA DE VIDEOS Y EDICION-->
-<hr>
 <?php 
    require_once("./archivos/conexion.php");
     $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC");
@@ -166,73 +166,56 @@ $currentPage = 'miperfil';
       </tbody>
     </table>
   </div>
-</div>
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script>
+<script>
+      $(document).ready(function() {
+        window.onpopstate = function(event) {
+        $("#contenedorMiPerfil").load(location.pathname);
+        };
+      });
+
           $(document).ready(function(){
             $("#btnInicio").click(function(e){
               e.preventDefault();
                 $("#contenedorMiPerfil").load("inicio.php", function(){
                   history.pushState(null,null,"inicio.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorMiPerfil").load("miperfil.php");
-              };
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
               e.preventDefault();
                 $("#contenedorMiPerfil").load("miperfil.php", function(){
                   history.pushState(null,null,"miperfil.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorMiPerfil").load("miperfil.php");
-              };
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnCrearEquipo").click(function(e){
               e.preventDefault();
                 $("#contenedorMiPerfil").load("crearequipo.php", function(){
                   history.pushState(null,null,"crearequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorMiPerfil").load("miperfil.php");
-              };
             });
           });
 
-        </script>
-
-         <script>
           $(document).ready(function(){
             $("#btnEncontrarEquipo").click(function(e){
               e.preventDefault();
                 $("#contenedorMiPerfil").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorMiPerfil").load("miperfil.php");
-              };
             });
           });
+      </script>
 
-        </script>
-
-         <script>
+      <script>
         $(document).ready(function(){
         $("#btnSalir").click(function(e){
             e.preventDefault();

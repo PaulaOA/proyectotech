@@ -11,7 +11,7 @@ session_start();
 
          if ($resultado->num_rows > 0) {
              $datos = $resultado->fetch_object();
-                $_SESSION["id"]=$datos->id_usuario;
+                $_SESSION["id_usuario"]=$datos->id_usuario;
                 $_SESSION["nombre"]=$datos->nombre;
                 $_SESSION["apellidos"]=$datos->apellidos;
                 $_SESSION["fecha"]=$datos->fecha;

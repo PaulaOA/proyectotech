@@ -69,7 +69,6 @@ $currentPage = 'inicio';
 
  <?php include "menu-superior.php" ?>
 
-
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -109,7 +108,6 @@ $currentPage = 'inicio';
   </button>
 </div>
 
-
 <div class="container">
   <h1 class="mt-4">
   <?php
@@ -119,6 +117,7 @@ $currentPage = 'inicio';
   <p></p>
 </div>
 <hr>
+
 <!--MOSTRAR GALERIA DE VIDEOS SUBIDOS-->
 <?php 
  require_once("./archivos/conexion.php");
@@ -128,7 +127,6 @@ $currentPage = 'inicio';
   $totalVideo = mysqli_num_rows($queryVideo);
   $DataVideo  = mysqli_fetch_array($queryVideo);
 ?>
-
 
     <div class="container">
 
@@ -148,13 +146,19 @@ $currentPage = 'inicio';
 
         </div>
       </div>
-    </div>
+    </div> 
 
-<!-- MANEJAR BOTONES MENÚ SUPERIOR -->
+    <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script>
+<script>
+  $(document).ready(function() {
+    window.onpopstate = function(event) {
+        $("#contenedorInicio").load(location.pathname);
+    };
+  });
+
           $(document).ready(function(){
             $("#btnInicio").click(function(e){
               e.preventDefault();
@@ -167,9 +171,6 @@ $currentPage = 'inicio';
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
               e.preventDefault();
@@ -182,9 +183,6 @@ $currentPage = 'inicio';
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnCrearEquipo").click(function(e){
               e.preventDefault();
@@ -197,9 +195,6 @@ $currentPage = 'inicio';
             });
           });
 
-        </script>
-
-         <script>
           $(document).ready(function(){
             $("#btnEncontrarEquipo").click(function(e){
               e.preventDefault();

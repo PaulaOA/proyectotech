@@ -20,5 +20,14 @@ CREATE TABLE documentos(
   descripcion varchar(500)
 );
 
+CREATE TABLE equipos(
+  id_equipo int AUTO_INCREMENT PRIMARY KEY,
+  nombre_equipo varchar(60),
+  id_usuario int,
+  creador_equipo varchar(60),
+  mentor_equipo varchar(60),
+  FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
+);
+
 INSERT INTO registro (nombre, apellidos, email, contraseña, admin) VALUES 
 ("Admin", "Admin", "admin@proyectotech.com", "123456", 1);
