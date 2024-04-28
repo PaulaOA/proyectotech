@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'inicio') echo 'active'; ?>" href="#" id="btnInicio">Inicio</a>
+          <a class="nav-link <?php if ($currentPage === 'admin') echo 'active'; ?>" href="#" id="btnAdmin">Inicio</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php if ($currentPage === 'usuarios') echo 'active'; ?>" href="#" id="btnUsuarios">Usuarios</a>

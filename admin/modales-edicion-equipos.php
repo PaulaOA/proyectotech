@@ -1,29 +1,20 @@
-<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="modalEditarEquipo" tabindex="-1" aria-labelledby="modalEditarEquipoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
+        <h5 class="modal-title" id="modalEditarEquipoLabel">Editar Equipo</h5>
       </div>
       <div class="modal-body">
         
-        <form id="formEditarUsuario" method="POST">
-          <label for="id_usuario" style="margin-left: 10px;">ID</label>
-          <input type="number" name="id_usuario" id="id_usuario" class="form-control" value="<?= $usuario['id_usuario']?>" readonly>
-          <label for="nombre" class="texto-label">Nombre</label>
-          <input type="text" name="nombre" id="nombre" class="form-control" value="<?= $usuario['nombre']?>">
-          <label for="apellidos" class="texto-label">Apellidos</label>
-          <input type="text" name="apellidos" id="apellidos" class="form-control" value="<?= $usuario['apellidos']?>">
-          <label for="fecha" class="texto-label">Fecha</label>
-          <input type="date" name="fecha" id="fecha" class="form-control" value="<?= $usuario['fecha']?>">
-          <label for="email" class="texto-label">Email</label>
-          <input type="email" name="email" id="email" class="form-control" value="<?= $usuario['email']?>" readonly>
-          <label for="contraseña" class="texto-label">Contraseña</label>
-          <input type="password" name="contraseña" id="contraseña" class="form-control" value="<?= $usuario['contraseña']?>" readonly>
-          <label for="cargo" class="form-label texto-label">Cargo</label>
-          <select name="cargo" id="cargo" class="form-select">
-            <option <?php if ($usuario['cargo'] == 'Mentor') echo "selected" ?>>Mentor</option>
-            <option <?php if ($usuario['cargo'] == 'Participante') echo "selected" ?>>Participante</option>
-          </select>
+        <form id="formEditarEquipo" method="POST">
+          <label for="id_equipo" style="margin-left: 10px;">ID Equipo</label>
+          <input type="number" name="id_equipo" id="id_equipo" class="form-control" value="<?= $equipo['id_equipo']?>" readonly>
+          <label for="nombre" class="texto-label">Nombre Equipo</label>
+          <input type="text" name="nombre" id="nombre" class="form-control" value="<?= $equipo['nombre_equipo']?>">
+          <label for="creador" class="texto-label">Creador Equipo</label>
+          <input type="text" name="creador" id="creador" class="form-control" value="<?= $equipo['creador_equipo']?>">
+          <label for="mentor" class="texto-label">Mentor Equipo</label>
+          <input type="text" name="mentor" id="mentor" class="form-control" value="<?= $equipo['mentor_equipo']?>">
         </form>
       </div>
       <div class="modal-footer">
@@ -40,16 +31,13 @@
             $("#modalCancelar").modal("show");
         });
     });
-</script>
 
-<script>
     $(document).ready(function() {
         $("#btnGuardarCambios").click(function() {
             $("#modalGuardarCambios").modal("show");
         });
     });
 </script>
-
 <div class="modal fade" id="modalGuardarCambios" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -57,7 +45,7 @@
         <h5 class="modal-title" id="modalConfirmacionLabel">¿Guardar cambios?</h5>
       </div>
       <div class="modal-body">
-        Se modificarán los datos del usuario
+        Se modificarán los datos del equipo
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir editando</button>
@@ -66,7 +54,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -88,26 +75,24 @@
     $(document).ready(function() {
         $("#btnQuieroCancelar").click(function() {
             $("#modalCancelar").modal("hide");
-            $("#modalEditarUsuario").modal("hide");
+            $("#modalEditarEquipo").modal("hide");
         });
     });
 </script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
     $(document).ready(function() {
         $("#btnConfirmar").click(function(e) {
             e.preventDefault();
             $.ajax({
-                url: "actualizar-usuario.php",
+                url: "actualizar-equipo.php",
                 method: "POST",
-                data: $("#formEditarUsuario").serialize(),
+                data: $("#formEditarEquipo").serialize(),
                 success: function(response) {
-                    if (response == "usuarioEditado") {
+                    if (response == "equipoEditado") {
                       $("#modalGuardarCambios").modal("hide");
-                      $("#modalEditarUsuario").modal("hide");
-                      $("#contenedorUsuarios").load("usuarios.php");
+                      $("#modalEditarEquipo").modal("hide");
+                      $("#contenedorEquipos").load("equipos.php");
                     } else {
                       alert("No se pudieron guardar los cambios");
                     }
