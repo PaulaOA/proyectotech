@@ -1,12 +1,12 @@
 <?php 
-require("conexion.php");
+require_once("conexion.php");
 
 $fecha              = date("d-m-Y g:i a");
 $nombreVideo   		= $_POST['nombrevideo'];
 $urlVideo   		= $_POST['urlvideo'];
 
 //https://www.youtube.com/watch?v=MxhasqDtq1s
-$cantidad_url_video 	= strlen($urlvideo);
+$cantidad_url_video 	= strlen($urlVideo);
 if ($cantidad_url_video == '28') {
 	$cortar_url 			= str_replace ('https://youtu.be/','',$urlVideo);
 	$url_final_video 		= 'https://www.youtube.com/embed/' .$cortar_url; 

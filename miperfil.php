@@ -35,6 +35,10 @@ $currentPage = 'miperfil';
         width: 100%;
         height: 100%;
       }
+    
+    .texto-margen-izquierdo {
+      margin-left: 40px;
+    }  
   </style>
   
   </head>
@@ -46,12 +50,12 @@ $currentPage = 'miperfil';
 <div class="responsive bg-dark text-white py-4">
   <div class="row">
     <div class="col-md-8"> 
-    <h1>
+    <h1 class="texto-margen-izquierdo">
   <?php
    echo "Perfil de"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"];
   ?>
   </h1>
-  <p>Aquí aparecerá toda la información de <?php echo $_SESSION["nombre"];?></p>
+  <p class="texto-margen-izquierdo">Aquí aparecerá toda la información de <?php echo $_SESSION["nombre"];?></p>
     </div>
   </div>
 </div>
@@ -113,7 +117,7 @@ $currentPage = 'miperfil';
       </form>
     </div>
     <div class="col-md-6">
-      <form action="./archivos/recibvideo.php" method="POST" enctype="multipart/form-data">
+      <form action="./archivos/recibvideo.php" method="POST">
         <div class="card mt-4 mb-4">
           <div class="card-header bg-primary text-white">Subida de video <em>(Desde Youtube)</em></div>
           <div class="card-body">
@@ -146,7 +150,7 @@ $currentPage = 'miperfil';
       <thead>
         <tr>
           <th>Titulo del video</th>
-          <th>Video</th>
+          <th class="text-center">Video</th>
            <th>Acción</th>
         </tr>
       </thead>

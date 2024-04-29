@@ -122,7 +122,7 @@ $currentPage = 'inicio';
 <?php 
  require_once("./archivos/conexion.php");
 
-  $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC");
+  $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC LIMIT 1");
   $queryVideo = mysqli_query($conn, $sqlVideo);
   $totalVideo = mysqli_num_rows($queryVideo);
   $DataVideo  = mysqli_fetch_array($queryVideo);

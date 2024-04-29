@@ -42,7 +42,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="card bg-primary card-outline text-center">
+                    <div class="card bg-primary card-outline text-center text-white">
                         <h5>Registro de Usuarios</h5>
                         <?php
                         include "archivos/conexion.php";

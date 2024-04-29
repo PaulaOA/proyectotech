@@ -20,6 +20,13 @@ CREATE TABLE documentos(
   descripcion varchar(500)
 );
 
+CREATE TABLE videos(
+  id int AUTO_INCREMENT PRIMARY KEY,
+  nombrevideo varchar(250) NOT NULL,
+  urlvideo varchar(250) NOT NULL,
+  fecha varchar(50) NOT NULL
+);
+
 CREATE TABLE equipos(
   id_equipo int AUTO_INCREMENT PRIMARY KEY,
   nombre_equipo varchar(60),
