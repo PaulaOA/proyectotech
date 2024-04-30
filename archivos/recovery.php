@@ -8,10 +8,10 @@ require '../PHPMailer/Exception.php';
 require '../PHPMailer/PHPMailer.php';
 require '../PHPMailer/SMTP.php';
 
-//require_once('conexion.php');
+require_once('conexion.php');
 //require_once('controlador_index.php');
-//$email=$_POST['email'];
-//$sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
+$email=$_POST['email'];
+$sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
 //$result=$conn->query($sql);
 //$row = $result->fetch_assoc();
 
@@ -26,8 +26,8 @@ require '../PHPMailer/SMTP.php';
         $mail->SMTPAuth   = true;             
         $mail->Username   = 'pruebas.alexp@gmail.com';
         $mail->Password   = 'fmxhqcugqrkvixgh';   
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  
-        $mail->Port = 587;               
+        $mail->SMTPSecure =  'tls';  
+        $mail->Port = 465;               
     
         $mail->setFrom('pruebas.alexp@gmail.com', 'Alex');
         $mail->addAddress('alex.senda@gmail.com');
