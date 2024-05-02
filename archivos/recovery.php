@@ -20,16 +20,16 @@ $sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
 
     try {
         //Server settings
-        $mail->SMTPDebug = 0;
+        $mail->SMTPDebug = 2;
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
+        $mail->Host       = 'smtp-mail.outlook.com';
         $mail->SMTPAuth   = true;             
-        $mail->Username   = 'pruebas.alexp@gmail.com';
-        $mail->Password   = 'fmxhqcugqrkvixgh';   
-        $mail->SMTPSecure =  'tls';  
-        $mail->Port = 465;               
+        $mail->Username   = 'Alejandro.Perez015@universae360.com';
+        $mail->Password   = 'XXXXX';   
+        $mail->SMTPSecure =  'ssl';  
+        $mail->Port = 587;               
     
-        $mail->setFrom('pruebas.alexp@gmail.com', 'Alex');
+        $mail->setFrom('Alejandro.Perez015@universae360.com', 'Alex');
         $mail->addAddress('alex.senda@gmail.com');
     
         $mail->isHTML(true); 
