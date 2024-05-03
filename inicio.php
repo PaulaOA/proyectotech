@@ -231,9 +231,6 @@ $solicitudes = $conn->query($consultaEquipos);
                 $("#contenedorInicio").load("inicio.php", function(){
                   history.pushState(null,null,"inicio.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
             });
           });
 
@@ -243,9 +240,6 @@ $solicitudes = $conn->query($consultaEquipos);
                 $("#contenedorInicio").load("miperfil.php", function(){
                   history.pushState(null,null,"miperfil.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
             });
           });
 
@@ -255,9 +249,6 @@ $solicitudes = $conn->query($consultaEquipos);
                 $("#contenedorInicio").load("crearequipo.php", function(){
                   history.pushState(null,null,"crearequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
             });
           });
 
@@ -267,9 +258,15 @@ $solicitudes = $conn->query($consultaEquipos);
                 $("#contenedorInicio").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
+            });
+          });
+
+            $(document).ready(function(){
+            $("#btnMensajes, #btnVerAhora").click(function(e){
+              e.preventDefault();
+                $("#contenedorInicio").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
+                });
             });
           });
 

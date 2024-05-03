@@ -33,10 +33,6 @@ $currentPage = 'encontrarequipo';
     margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
     }
 
-    .navbar-nav .nav-link {
-    font-size: 18px; 
-    }
-
     footer {
     position: absolute;
     bottom: 0;
@@ -53,59 +49,81 @@ $currentPage = 'encontrarequipo';
 <br>
 
 <div class="container">
-  <div class="card">
-    <div class="card-body">
-    <div class="row">
-        <div class="col">
-    <form class="row-auto">
-        <div class="col-auto">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Búsqueda por nombre</label>
-        <div class="col-sm-6">
-            <input type="email" class="form-control" id="inputEmail3">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+         <form id="formEncuentraEquipo">
+            <div class="mb-3">
+                <label class="mb-3" for="busquedaNombre">Búsqueda por nombre</label>
+                <input type="text" class="form-control" id="busquedaNombre" name="busquedaNombre">
+            </div>
+            <div class="mb-3">
+                <label class="mb-3" for="busquedaCiudad">Búsqueda por ciudad</label>
+                <input type="text" class="form-control" id="busquedaCiudad" name="busquedaCiudad">
+            </div>
+            <button class="btn btn-primary btn-success" id="btnBuscarEquipos">Buscar</button>
+              <hr>
+             <fieldset class="row-auto">
+              <legend class="col-form-label col-sm-2 pt-0">División</legend>
+              <div class="col-sm-10">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                  <label class="form-check-label" for="gridRadios1">
+                    Senior
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                  <label class="form-check-label" for="gridRadios2">
+                    Junior
+                  </label>
+                </div>
+                <div class="form-check disabled">
+                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>
+                  <label class="form-check-label" for="gridRadios3">
+                    Sin asignar
+                  </label>
+                </div>
+              </div>
+              </fieldset> 
+            </form>
+          </div>
         </div>
-        </div>
-        <div class="col-auto">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Búsqueda por ciudad</label>
-        <div class="col-sm-6">
-            <input type="password" class="form-control" id="inputPassword3">
-        </div>
-        </div>
-    <br>
-    <button type="submit" class="btn btn-primary btn-success">Cerca de mí</button>   <button type="submit" class="btn btn-primary btn-danger">Cualquier lugar</button>
-    <hr>
-    <fieldset class="row-auto">
-    <legend class="col-form-label col-sm-2 pt-0">División</legend>
-    <div class="col-sm-10">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-        <label class="form-check-label" for="gridRadios1">
-          Senior
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-        <label class="form-check-label" for="gridRadios2">
-          Junior
-        </label>
-      </div>
-      <div class="form-check disabled">
-        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>
-        <label class="form-check-label" for="gridRadios3">
-          Sin asignar
-        </label>
       </div>
     </div>
-    </fieldset>
-    </form>
+    <div class="row justify-content-center mt-3">
+    <div class="col-md-10">
+    <div class="row"  id="resultadoBusqueda">
 
+                  
+            </div>
         </div>
-    </div>
-    </div>
-  </div>
-</div>
-<br>
+     </div>
+   </div>
+   <br>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+    $('#btnBuscarEquipos').click(function(e) {
+      e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: 'archivos/buscar-equipo.php',
+            data: $('#formEncuentraEquipo').serialize(),
+            success: function(response) {
+                $('#resultadoBusqueda').html(response);
+            },
+        });
+    });
+});
+
+</script>
+
+<!-- MANEJAR BOTONES MENÚ -->
 
     <script>
           $(document).ready(function(){
@@ -115,7 +133,7 @@ $currentPage = 'encontrarequipo';
                   history.pushState(null,null,"inicio.php");
                 });
                 window.onpopstate = function(event){
-                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
+                $("#contenedorEncontrarEquipo").html(response);
               };
             });
           });
@@ -162,6 +180,15 @@ $currentPage = 'encontrarequipo';
                 window.onpopstate = function(event){
                 $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
               };
+            });
+          });
+
+            $(document).ready(function(){
+            $("#btnMensajes").click(function(e){
+              e.preventDefault();
+                $("#contenedorEncontrarEquipo").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
+                });
             });
           });
 

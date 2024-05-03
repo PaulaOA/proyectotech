@@ -26,6 +26,18 @@ CREATE TABLE mentores(
   FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
 );
 
+CREATE TABLE equipos(
+  id_equipo int AUTO_INCREMENT PRIMARY KEY,
+  nombre_equipo varchar(60),
+  id_creador int,
+  id_mentor INT,
+  id_participante INT,
+  estado ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
+  FOREIGN KEY (id_creador) REFERENCES registro(id_usuario),
+  FOREIGN KEY (id_mentor) REFERENCES mentores(id_mentor),
+  FOREIGN KEY (id_participante) REFERENCES participantes(id_participante)
+);
+
 CREATE TABLE documentos(
   id int AUTO_INCREMENT PRIMARY KEY,
   nombre varchar(500),
@@ -37,18 +49,6 @@ CREATE TABLE videos(
   nombrevideo varchar(250) NOT NULL,
   urlvideo varchar(250) NOT NULL,
   fecha varchar(50) NOT NULL
-);
-
-CREATE TABLE equipos(
-  id_equipo int AUTO_INCREMENT PRIMARY KEY,
-  nombre_equipo varchar(60),
-  id_creador int,
-  id_mentor INT,
-  id_participante INT,
-  estado ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
-  FOREIGN KEY (id_creador) REFERENCES registro(id_usuario),
-  FOREIGN KEY (id_mentor) REFERENCES mentores(id_mentor),
-  FOREIGN KEY (id_participante) REFERENCES participantes(id_participante)
 );
 
 INSERT INTO registro (nombre, apellidos, email, contraseña, admin) VALUES 

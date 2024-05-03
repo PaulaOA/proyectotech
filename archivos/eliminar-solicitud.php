@@ -4,7 +4,7 @@ if (!empty($_POST['id_equipo'])) {
 
    $id_equipo = $_POST['id_equipo'];
 
-    include "archivos/conexion.php";
+    include "conexion.php";
 
     $sql = "DELETE FROM equipos WHERE id_equipo=$id_equipo";
 

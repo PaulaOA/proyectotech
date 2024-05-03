@@ -81,10 +81,6 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
     margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
     }
 
-    .navbar-nav .nav-link {
-    font-size: 18px; 
-    }
-
     footer {
     position: absolute;
     bottom: 0;
@@ -228,7 +224,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
               
                 $("#btnEliminarSolicitud").click(function(e) {
                   $.ajax({
-                      url: "eliminar-solicitud.php",
+                      url: "archivos/eliminar-solicitud.php",
                       method: "POST",
                       data: { id_equipo: id_equipo },
                       success: function(response) {
@@ -324,6 +320,15 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
+                });
+            });
+          });
+
+            $(document).ready(function(){
+            $("#btnMensajes").click(function(e){
+              e.preventDefault();
+                $("#contenedorCrearEquipo").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
                 });
             });
           });

@@ -23,9 +23,6 @@
     min-height: 100%;
     }
 
-    .navbar-nav .nav-link {
-    font-size: 18px; 
-    }
     body {
     margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
     }

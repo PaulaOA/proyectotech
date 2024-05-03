@@ -55,10 +55,6 @@ $currentPage = 'miperfil';
     margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
     }
 
-    .navbar-nav .nav-link {
-    font-size: 18px; 
-    }
-
     footer {
     position: absolute;
     bottom: 0;
@@ -243,6 +239,15 @@ $currentPage = 'miperfil';
               e.preventDefault();
                 $("#contenedorMiPerfil").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
+                });
+            });
+          });
+
+           $(document).ready(function(){
+            $("#btnMensajes").click(function(e){
+              e.preventDefault();
+                $("#contenedorMiPerfil").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
                 });
             });
           });
