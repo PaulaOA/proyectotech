@@ -1,17 +1,14 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
-require '../PHPMailer/Exception.php';
-require '../PHPMailer/PHPMailer.php';
-require '../PHPMailer/SMTP.php';
-
-require_once('conexion.php');
+require '../vendor/autoload.php';
+//require_once('conexion.php');
 //require_once('controlador_index.php');
-$email=$_POST['email'];
-$sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
+//$email=$_POST['email'];
+//$sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
 //$result=$conn->query($sql);
 //$row = $result->fetch_assoc();
 
@@ -25,12 +22,12 @@ $sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
         $mail->Host       = 'smtp-mail.outlook.com';
         $mail->SMTPAuth   = true;             
         $mail->Username   = 'Alejandro.Perez015@universae360.com';
-        $mail->Password   = 'XXXXX';   
-        $mail->SMTPSecure =  'ssl';  
-        $mail->Port = 587;               
-    
+        $mail->Password    = 'XXXXX';
+        $mail->SMTPSecure =  PHPMailer::ENCRYPTION_STARTTLS;  
+        $mail->Port = 587; 
+
         $mail->setFrom('Alejandro.Perez015@universae360.com', 'Alex');
-        $mail->addAddress('alex.senda@gmail.com');
+        $mail->addAddress('pruebas.alexp@gmail.com');
     
         $mail->isHTML(true); 
         $mail->Subject = 'Recuperacion de contraseña';
@@ -41,7 +38,7 @@ $sql="SELECT * FROM registro WHERE email='$email' AND STATUS = 1";
         //header ("Location: ../index.php?message=ok");
         //exit();
     } catch (Exception $e) {
-        echo 'Ha ocurrido un error',  $mail->ErrorInfo;
+        echo 'Ha ocurrido un error' . $mail->ErrorInfo;
         //header ("Location: ../index.php?message=error");
         //exit();
     }
