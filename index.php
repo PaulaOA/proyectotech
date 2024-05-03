@@ -18,11 +18,33 @@
         height: 100%;
       }
       
+      html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+  footer {
+    position: absolute;
+    margin-top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
+      
     </style>
   </head>
   <body>
     <div class="contenedor" id="contenedorIndex">
-  <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top">
+  <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top" style="height:90px;">
   <div class="container">
     <a class="navbar-brand" href="#">
       <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">

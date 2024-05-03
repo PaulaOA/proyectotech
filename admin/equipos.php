@@ -43,6 +43,28 @@ $equipos = $conn->query($sql);
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
     }
+
+       html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    background-color: #343a40; 
+    color: white; 
+    }
+
+     .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
   </style>
   
   </head>
@@ -51,7 +73,7 @@ $equipos = $conn->query($sql);
          <?php include "menu-admin.php" ?>
 
 <div class="responsive bg-dark text-white py-4">
-  <div class="row">
+  <div class="row" style="max-width: 100%">
     <div class="col-md-8"> 
     <h1 class="texto-margen-izquierdo">Panel de Administración</h1>
   <p class="texto-margen-izquierdo">Gestión de Equipos</p>
@@ -73,24 +95,40 @@ $equipos = $conn->query($sql);
                       <th class="text-center">Nombre equipo</th>
                       <th class="text-center">ID creador</th>
                       <th class="text-center">Nombre creador</th>
-                      <th class="text-center">Mentor equipo</th>
+                      <th class="text-center">ID mentor</th>
+                      <th class="text-center">Nombre mentor</th>
+                      <th class="text-center">Estado solicitud</th>
                       <th class="text-center">Editar</th>
-                     
+                      <th class="text-center">Eliminar</th>
                   </tr>
               </thead>
               <tbody>
                 <?php
                  while ($equipo = $equipos->fetch_assoc()):
+                  $consulta_mentor = "SELECT registro.nombre FROM registro INNER JOIN mentores ON registro.id_usuario = mentores.id_usuario WHERE mentores.id_mentor = " .$equipo['id_mentor'];
+                  $resultado_mentor = $conn->query($consulta_mentor);
+                  $nombre_mentor = $resultado_mentor->fetch_assoc()['nombre'];
+                  
+                  $consulta_creador = "SELECT registro.nombre FROM registro INNER JOIN equipos ON registro.id_usuario = equipos.id_creador WHERE equipos.id_creador =" .$equipo['id_creador'];
+                  $resultado_creador = $conn->query($consulta_creador);
+                  $nombre_creador = $resultado_creador->fetch_assoc()['nombre'];
                  ?>
                   <tr>
                       <td class="text-center"><?= $equipo['id_equipo']; ?></td>
                       <td class="text-center"><?= $equipo['nombre_equipo']; ?></td>
-                      <td class="text-center"><?= $equipo['id_usuario']; ?></td>
-                      <td class="text-center"><?= $equipo['creador_equipo']; ?></td>
-                      <td class="text-center"><?= $equipo['mentor_equipo']; ?></td>
+                      <td class="text-center"><?= $equipo['id_creador']; ?></td>
+                      <td class="text-center"><?= $nombre_creador; ?></td>
+                      <td class="text-center"><?= $equipo['id_mentor']; ?></td>
+                      <td class="text-center"><?= $nombre_mentor; ?></td>
+                      <td class="text-center"><?= $equipo['estado']; ?></td>
                       <td class="text-center">
                         <a href="#" class="editar-equipo" data-id="<?= $equipo['id_equipo']?>">
                           <i class="bi bi-pencil-square"></i>
+                        </a>
+                      </td>
+                        <td class="text-center">
+                        <a href="#" class="borrar-equipo" data-id="<?= $equipo['id_equipo']?>" data-nombre="<?= $equipo['nombre_equipo']?>">
+                         <i class="bi bi-trash"></i>
                         </a>
                       </td>
                   </tr>
@@ -100,6 +138,9 @@ $equipos = $conn->query($sql);
           </div>
         </div>
       </div>
+      <div class="text-end mb-4">
+          <button class="btn btn-primary py-3 px-3" id="btnNuevoEquipo">Nuevo equipo</button>
+        </div>
     </div>
   </div>
 </div>
@@ -123,6 +164,41 @@ $equipos = $conn->query($sql);
                     console.error("Error al obtener datos:", error);
                 }
             });
+        });
+    });
+     $(document).ready(function() {
+        $("#btnNuevoEquipo").click(function() {
+            $('#modalNuevoEquipo').modal('show');
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $(".borrar-equipo").click(function(e) {
+            e.preventDefault();
+            var id_equipo = $(this).data('id');
+            var nombre_equipo = $(this).data('nombre');
+            $("#idEquipoEliminar").text(id_equipo);
+            $("#nombreEquipoEliminar").text(nombre_equipo);
+            $('#modalEliminarEquipo').modal('show');
+
+            $("#btnEliminarEquipo").click(function(e) {
+            $.ajax({
+                url: "eliminar-equipo.php",
+                method: "POST",
+                data: { id_equipo: id_equipo },
+                success: function(response) {
+                    if (response == "equipoEliminado") {
+                      $("#modalEliminarEquipo").modal("hide");
+                      $("#contenedorEquipos").load("equipos.php");
+                    } else {
+                      alert("No se pudo eliminar el equipo");
+                    }
+                }
+               
+            });
+        });
         });
     });
 </script>

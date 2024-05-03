@@ -46,9 +46,13 @@ $currentPage = 'miperfil';
     position: relative;
     min-height: 100%;
     }
+   html {
+    position: relative;
+    min-height: 100%;
+    }
 
     body {
-    margin-bottom: 80px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
     }
 
     .navbar-nav .nav-link {

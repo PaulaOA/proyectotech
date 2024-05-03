@@ -23,6 +23,28 @@ $currentPage = 'encontrarequipo';
         width: 100%;
         height: 100%;
       }
+
+      html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+    .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
     </style>
   </head>
   <body>

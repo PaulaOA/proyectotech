@@ -1,4 +1,4 @@
- <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
+ <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top" style="height: 90px;"> 
   <div class="container">
     <a class="navbar-brand" href="#">
       <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">
