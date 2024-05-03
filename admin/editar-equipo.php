@@ -9,7 +9,12 @@ if (empty($_SESSION["admin"])) {
 if(isset($_GET['id_equipo'])){
   $id_equipo = $_GET['id_equipo'];
 
-  $sql = "SELECT * FROM equipos WHERE id_equipo = $id_equipo";
+ $sql = "SELECT equipos.*, registro.nombre AS nombre_mentor
+          FROM equipos
+          INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
+          INNER JOIN registro ON mentores.id_usuario = registro.id_usuario
+          WHERE equipos.id_equipo = $id_equipo";
+
   $result = $conn->query($sql);
   $equipo = $result->fetch_assoc();
 
@@ -51,15 +56,15 @@ if(isset($_GET['id_equipo'])){
   
   </head>
   <body>
-    <form id="formEditarEquipo" method="POST">
+    <form id="formEditarEquipo" method="POST">  
       <label for="id_equipo" style="margin-left: 10px;">ID Equipo</label>
       <input type="number" name="id_equipo" id="id_equipo" class="form-control" value="<?= $equipo['id_equipo']?>" readonly>
       <label for="nombre" class="texto-label">Nombre Equipo</label>
       <input type="text" name="nombre" id="nombre" class="form-control" value="<?= $equipo['nombre_equipo']?>">
-      <label for="creador" class="texto-label">Creador Equipo</label>
-      <input type="text" name="creador" id="creador" class="form-control" value="<?= $equipo['creador_equipo']?>">
-      <label for="mentor" class="texto-label">Mentor Equipo</label>
-      <input type="text" name="mentor" id="mentor" class="form-control" value="<?= $equipo['mentor_equipo']?>">
+      <label for="id_mentor" class="texto-label">ID Mentor</label>
+      <input type="text" name="id_mentor" id="id_mentor" class="form-control" value="<?= $equipo['id_mentor']?>">
+      <label for="nombre_mentor" class="texto-label">Nombre mentor</label>
+      <input type="text" name="nombre_mentor" id="nombre_mentor" class="form-control" value="<?= $equipo['nombre_mentor']?>">
     </form>
 </body>
 </html>

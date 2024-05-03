@@ -35,10 +35,35 @@ $currentPage = 'miperfil';
         width: 100%;
         height: 100%;
       }
+
     
     .texto-margen-izquierdo {
       margin-left: 40px;
     }  
+
+      
+      html {
+    position: relative;
+    min-height: 100%;
+    }
+   html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
+
   </style>
   
   </head>
@@ -214,6 +239,15 @@ $currentPage = 'miperfil';
               e.preventDefault();
                 $("#contenedorMiPerfil").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
+                });
+            });
+          });
+
+           $(document).ready(function(){
+            $("#btnMensajes").click(function(e){
+              e.preventDefault();
+                $("#contenedorMiPerfil").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
                 });
             });
           });

@@ -40,6 +40,28 @@ $currentPage = 'proyectos';
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
     }
+
+       html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 80px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
+
+     .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
   </style>
   
   </head>
@@ -48,7 +70,7 @@ $currentPage = 'proyectos';
          <?php include "menu-admin.php" ?>
 
 <div class="responsive bg-dark text-white py-4">
-  <div class="row">
+  <div class="row" style="max-width: 100%">
     <div class="col-md-8"> 
     <h1 class="texto-margen-izquierdo">Panel de Administración</h1>
   <p class="texto-margen-izquierdo">Gestión de Proyectos</p>

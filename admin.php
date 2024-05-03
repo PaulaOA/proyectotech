@@ -35,6 +35,28 @@ $currentPage = 'admin';
         height: 100%;
       }
 
+      html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 80px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+    .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
+
     </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>

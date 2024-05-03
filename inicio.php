@@ -1,10 +1,24 @@
 <?php
 session_start();
-if (empty($_SESSION["nombre"])) {
+require_once("archivos/conexion.php");
+$currentPage = 'inicio';
+
+if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
+} else {
+  $nombre = $_SESSION['nombre'];
+  $id_usuario = $_SESSION['id_usuario'];
 }
 
-$currentPage = 'inicio';
+if (!isset($_SESSION['modal_mostrado'])) {
+  $consultaEquipos = "SELECT equipos.*
+        FROM equipos
+        INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
+        INNER JOIN registro ON mentores.id_usuario = registro.id_usuario
+        WHERE equipos.estado = 'pendiente' 
+        AND mentores.id_usuario = " .$id_usuario;
+$solicitudes = $conn->query($consultaEquipos);
+}
 
 ?>
 <!DOCTYPE html>
@@ -58,6 +72,58 @@ $currentPage = 'inicio';
           width: 100%;
           height: 100vh;
       }
+         html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+      footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
+
+  .modal {
+      display: none; /* Por defecto, ocultar el modal */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      align-items: center;
+    }
+
+  .modal-content {
+      background-color: #fefefe;
+      margin: 20% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 40%;
+      max-width: 350px;
+      height: 220px;
+      z-index: 1100;
+    }
+
+ .btnModal {
+      display: block; 
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 35%;
+      margin: 20px auto 0;
+      padding: 10px;
+    }
+    
     </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>
@@ -165,9 +231,6 @@ $currentPage = 'inicio';
                 $("#contenedorInicio").load("inicio.php", function(){
                   history.pushState(null,null,"inicio.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
             });
           });
 
@@ -177,9 +240,6 @@ $currentPage = 'inicio';
                 $("#contenedorInicio").load("miperfil.php", function(){
                   history.pushState(null,null,"miperfil.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
             });
           });
 
@@ -189,9 +249,6 @@ $currentPage = 'inicio';
                 $("#contenedorInicio").load("crearequipo.php", function(){
                   history.pushState(null,null,"crearequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
             });
           });
 
@@ -201,9 +258,15 @@ $currentPage = 'inicio';
                 $("#contenedorInicio").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorInicio").load("inicio.php");
-              };
+            });
+          });
+
+            $(document).ready(function(){
+            $("#btnMensajes, #btnVerAhora").click(function(e){
+              e.preventDefault();
+                $("#contenedorInicio").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
+                });
             });
           });
 
@@ -227,6 +290,22 @@ $currentPage = 'inicio';
                 });
             });
         });
+    </script>
+    <script>
+      $(document).ready(function() {
+        <?php
+          if ($solicitudes->num_rows > 0) {
+          $_SESSION['modal_mostrado'] = true; 
+            ?>
+          $("#modalSolicitud").css("display", "block");
+        <?php } ?>
+      });
+
+      $(document).ready(function() {
+          $("#btnCancelar").click(function() {
+             $("#modalSolicitud").css("display", "none");
+          });
+      });
     </script>
 
 
@@ -259,6 +338,17 @@ $currentPage = 'inicio';
         }
     });
 </script>
+
+ <div id="modalSolicitud" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center">Solicitudes pendientes</h1>
+    <p class="text-center">Tienes solicitudes de equipo pendientes de responder</p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnVerAhora">Ver Ahora</button>
+      </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </div>

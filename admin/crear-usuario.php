@@ -20,6 +20,15 @@ if (empty($_POST['nombre']) ||
     $sql = "INSERT INTO registro (nombre, apellidos, fecha, email, contraseña, cargo, admin) VALUES ('".$nombre."', '".$apellidos."', '".$fecha."', '".$email."', '".$contraseña."', '".$cargo."', 0)";
 
          if ($conn->query($sql) === TRUE) {
+            $id_usuario = $conn->insert_id;
+
+            if ($cargo == "Mentor") {
+                $insertarMentor = "INSERT INTO mentores (id_usuario) VALUES ('$id_usuario')";
+                $conn->query($insertarMentor);
+            } else if ($cargo == "Participante") {
+                $insertarParticipante = "INSERT INTO participantes (id_usuario) VALUES ('$id_usuario')";
+                $conn->query($insertarParticipante);
+            }
             echo "usuarioCreado";
         } else {
             echo "Error al crear el usuario: " . $conn->error;

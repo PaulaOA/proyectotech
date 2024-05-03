@@ -1,13 +1,21 @@
 <?php
 session_start();
-if (empty($_SESSION["nombre"])) {
+require_once("archivos/conexion.php");
+$currentPage = 'crearequipo';
+if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
+} else {
+  $nombre = $_SESSION['nombre'];
+  $id_usuario = $_SESSION['id_usuario'];
 }
 
-/*$nombre = $_SESSION["nombre"];
-$id_usuario = $_SESSION["id_usuario"];*/
+$consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
+  FROM equipos
+  INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
+  INNER JOIN registro ON mentores.id_usuario = registro.id_usuario
+  WHERE equipos.id_creador = $id_usuario";
+  $solicitudes = $conn->query($consultaEquipos);
 
-$currentPage = 'crearequipo';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,6 +46,7 @@ $currentPage = 'crearequipo';
           height: 100%;
           background-color: rgba(0,0,0,0.7);
           align-items: center;
+          z-index: 1050;
         }
 
       .modal-content {
@@ -62,17 +71,40 @@ $currentPage = 'crearequipo';
           margin: 20px auto 0;
           padding: 10px;
         }
+
+      html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
     </style>
   </head>
   <body>
     <div class="contenedor" id="contenedorCrearEquipo">
 
-      <?php include "menu-superior.php" ?>
+      <?php
+      include "menu-superior.php";
+      include "archivos/conexion.php";
+      $sql = "SELECT registro.nombre, mentores.id_mentor FROM registro JOIN mentores ON registro.id_usuario = mentores.id_usuario";
+      $resultado = $conn->query($sql);
+      ?>
 
         <div class="container mt-4 mb-4">
             <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-6">
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
                     <div class="card bg-primary text-left text-white">
                         <h4 style="margin-left: 10px;">Crea tu equipo</h4>  
                     </div>
@@ -83,6 +115,19 @@ $currentPage = 'crearequipo';
                                    <div class="form-group mt-2 mb-2">
                                     <label for="nombreEquipo" style="margin-bottom: 10px;">Nombre de equipo</label>
                                     <input type="text" class="form-control" name="nombreEquipo" id="nombreEquipo" required>
+                                    <label for="mentor" class="texto-label" style="margin-bottom: 10px; margin-top: 10px;">Mentor Equipo</label>
+                                     <select name="id_mentor" id="id_mentor" class="form-control" style="margin-bottom:10px">
+                                      <option value="">Selecciona un mentor</option>
+                                      <?php 
+                                      if ($resultado->num_rows > 0) {
+                                        while ($fila = $resultado->fetch_assoc()) {
+                                          echo "<option value='".$fila['id_mentor']."'>".$fila['nombre']. "</option>";
+                                        }
+                                      } else {
+                                        echo "<option value=''>No existen mentores</option>";
+                                      }
+                                      ?>
+                                    </select>
                                    </div> 
                                 </div>
                             </div>
@@ -97,50 +142,132 @@ $currentPage = 'crearequipo';
                     </form>
                 </div>
                 <div class="col-md-2"></div>
+                <div class="col-md-5">
+                  <div class="card bg-secondary text-left text-white">
+                    <h4 style="margin-left: 10px;">Solicitudes de equipo</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped mb-2">
+                      <thead>
+                          <tr>
+                              <th class="text-center">Nombre equipo</th>
+                              <th class="text-center">Mentor</th>
+                              <th class="text-center">Estado</th>
+                              <th class="text-center">Eliminar</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <?php 
+                        while ($solicitud = $solicitudes->fetch_assoc()):
+                        ?>
+                          <tr>
+                              <td class="text-center"><?=$solicitud['nombre_equipo']?></td>
+                              <td class="text-center"><?=$solicitud['nombre_mentor']?></td>
+                              <td class="text-center"><?=$solicitud['estado']?></td>
+                               <td class="text-center">
+                                <?php if ($solicitud['estado'] == 'pendiente'): ?>
+                                <a href="#" class="borrar-solicitud" data-id="<?= $solicitud['id_equipo']?>" data-nombre="<?= $solicitud['nombre_equipo']?>">
+                                  <i class="bi bi-trash"></i>
+                                </a>
+                              <?php endif; ?>
+                              </td>
+                          </tr>
+                         <?php endwhile ?>
+                      </tbody>
+                    </table>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
             </div>
         </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
      <script>
-                  $(document).ready(function(){
-                    $("#btnCrearEsteEquipo").click(function(event){
-                      event.preventDefault();
-                      $.ajax({
-                        type: "POST",
-                        url: "archivos/nuevo-equipo.php",
-                        data: $("#formCrearEquipo").serialize(),
-                        success: function(response){
-                          if (response == "equipoCreado"){
-                            $("#modalEquipoCreado").css("display", "block");
-                          } else if (response == "rellenaCampos"){
-                            $("#modalRellenaCampos").css("display", "block");
-                          } else if (response == "errorSesion") {
-                            $("#modalError").css("display", "block");
+        $(document).ready(function(){
+          $("#btnCrearEsteEquipo").click(function(event){
+            event.preventDefault();
+            $.ajax({
+              type: "POST",
+              url: "archivos/nuevo-equipo.php",
+              data: $("#formCrearEquipo").serialize(),
+              success: function(response){
+                if (response == "solicitudEnviada"){
+                  $("#modalSolicitudEnviada").css("display", "block");
+                } else if (response == "rellenaCampos"){
+                  $("#modalRellenaCampos").css("display", "block");
+                } else if (response == "errorSesion") {
+                  $("#modalError").css("display", "block");
+                } else {
+                  alert ("Error");
+                }
+              }
+            });
+            return false;
+          });
+           $(".close, #btnAceptar").click(function(){
+           $("#modalSolicitudEnviada, #modalRellenaCampos, #modalError").css("display", "none");
+           $("#contenedorCrearEquipo").load("crearequipo.php")
+         });
+        });
+      </script>
+      <script>
+        $(document).ready(function() {
+            $(".borrar-solicitud").click(function(e) {
+                e.preventDefault();
+                var id_equipo = $(this).data('id');
+                var nombre_equipo = $(this).data('nombre');
+                $(".nombreEquipoEliminar").text(nombre_equipo);
+                $('#modalEliminarSolicitud').css("display", "block");
+              
+                $("#btnEliminarSolicitud").click(function(e) {
+                  $.ajax({
+                      url: "archivos/eliminar-solicitud.php",
+                      method: "POST",
+                      data: { id_equipo: id_equipo },
+                      success: function(response) {
+                          if (response == "solicitudEliminada") {
+                            $("#modalEliminarSolicitud").modal("hide");
+                            $("#contenedorCrearEquipo").load("crearequipo.php");
                           } else {
-                            alert ("Error");
+                            alert("No se pudo eliminar la solicitud");
                           }
-                        }
-                      });
-                      return false;
-                    });
-                     $(".close, #btnAceptar").click(function(){
-                     $("#modalEquipoCreado, #modalRellenaCampos, #modalError").css("display", "none");
-                   });
+                      }
                   });
-                </script>
+              });
+           $(".close, #btnCancelarEliminar").click(function(){
+           $("#modalEliminarSolicitud").css("display", "none");
+           $("#contenedorCrearEquipo").load("crearequipo.php")
+         });
+        });
+      });
+      </script>
 
-       <div id="modalEquipoCreado" class="modal">
+        <div id="modalEliminarSolicitud" class="modal">
           <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">¡Equipo creado!</h1>
+            <h1 class="h3 mb-3 fw-normal text-center">¿Eliminar solicitud?</h1>
+            <p>Los datos del equipo "<span class="nombreEquipoEliminar"></span>" serán eliminados</p>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="btnCancelarEliminar">Cancelar</button>
+              <button type="button" class="btn btn-danger" id="btnEliminarSolicitud">Eliminar Solicitud</button>
+            </div>
+          </div>
+        </div>
+
+       <div id="modalSolicitudEnviada" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">¡Solicitud enviada!</h1>
+            <p>El mentor responderá a tu solicitud</p>
             <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
           </div>
         </div>
 
         <div id="modalRellenaCampos" class="modal">
           <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">Nombre Vacío</h1>
-            <p class="text-center">Introduce un nombre para tu equipo</p>
+            <h1 class="h3 mb-3 fw-normal text-center">Solicitud incompleta</h1>
+            <p class="text-center">Por favor, elige un nombre y un mentor para tu equipo</p>
             <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
           </div>
         </div>
@@ -193,6 +320,15 @@ $currentPage = 'crearequipo';
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
+                });
+            });
+          });
+
+            $(document).ready(function(){
+            $("#btnMensajes").click(function(e){
+              e.preventDefault();
+                $("#contenedorCrearEquipo").load("mensajes.php", function(){
+                  history.pushState(null,null,"mensajes.php");
                 });
             });
           });

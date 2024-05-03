@@ -17,7 +17,6 @@ if (empty($_POST['nombre']) ||
         $repiteContraseña = $_POST['repiteContraseña'];
         $cargo = $_POST['cargo'];  
 
-
         include "conexion.php";
 
         $sql = "SELECT * FROM registro WHERE email='".$email."'";
@@ -32,6 +31,16 @@ if (empty($_POST['nombre']) ||
                    $insertar = "INSERT INTO registro (nombre, apellidos, fecha, email, contraseña, cargo) VALUES ('$nombre', '$apellidos', '$fecha', '$email', '$contraseña', '$cargo')";
 
                     if ($conn -> query($insertar) == true) {
+                        $id_usuario = $conn->insert_id;
+
+                        if ($cargo == "Mentor") {
+                            $insertarMentor = "INSERT INTO mentores (id_usuario) VALUES ('$id_usuario')";
+                            $conn->query($insertarMentor);
+                        } else if ($cargo == "Participante") {
+                            $insertarParticipante = "INSERT INTO participantes (id_usuario) VALUES ('$id_usuario')";
+                            $conn->query($insertarParticipante);
+                        }
+
                         echo "registroCorrecto";
                     } else {
                         echo "error";

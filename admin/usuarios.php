@@ -43,6 +43,29 @@ $usuarios = $conn->query($sql);
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
     }
+
+       html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 80px; 
+    }
+
+    footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    background-color: #343a40; 
+    color: white; 
+    }
+
+     .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
+
   </style>
   
   </head>
@@ -51,15 +74,15 @@ $usuarios = $conn->query($sql);
          <?php include "menu-admin.php" ?>
 
 <div class="responsive bg-dark text-white py-4">
-  <div class="row">
+  <div class="row" style="max-width: 100%">
     <div class="col-md-8"> 
     <h1 class="texto-margen-izquierdo">Panel de Administración</h1>
-  <p class="texto-margen-izquierdo">Gestión de Usuarios</p>
+      <p class="texto-margen-izquierdo">Gestión de Usuarios</p>
     </div>
   </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid" style="max-width: 100%;">
   <div class="row justify-content-center">
     <div class="col-md-8 pl-4">
         <div class="card mt-4 mb-2">
@@ -77,7 +100,7 @@ $usuarios = $conn->query($sql);
                       <th class="text-center">Contraseña</th>
                       <th class="text-center">Cargo</th>
                       <th class="text-center">Editar</th>
-                      <th class="text-center">Borrar</th>
+                      <th class="text-center">Eliminar</th>
                   </tr>
               </thead>
               <tbody>
@@ -93,10 +116,14 @@ $usuarios = $conn->query($sql);
                       <td class="text-center"><?= $usuario['contraseña']; ?></td>
                       <td class="text-center"><?= $usuario['cargo']; ?></td>
                       <td class="text-center">
-                        <a href="#" class="editar-usuario" data-id="<?= $usuario['id_usuario']?>"><i class="bi bi-pencil-square"></i></a>
+                        <a href="#" class="editar-usuario" data-id="<?= $usuario['id_usuario']?>">
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
                       </td>
                       <td class="text-center">
-                        <a href="#" class="borrar-usuario" data-id="<?= $usuario['id_usuario']?>" data-nombre="<?= $usuario['nombre']?>"><i class="bi bi-trash"></i></a>
+                        <a href="#" class="borrar-usuario" data-id="<?= $usuario['id_usuario']?>" data-nombre="<?= $usuario['nombre']?>">
+                          <i class="bi bi-trash"></i>
+                        </a>
                       </td>
                   </tr>
                 <?php endwhile ?>
