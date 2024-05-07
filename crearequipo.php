@@ -179,7 +179,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                   </div>
                   </div>
                 </div>
-                <div class="col-md-1"></div>
+              <div class="col-md-1"></div> 
             </div>
         </div>
 
