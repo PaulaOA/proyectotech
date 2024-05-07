@@ -1,4 +1,5 @@
 <?php
+//envio de correos
 $to="pruebas.alexp@gmail.com";
 $subject="Prueba sendmail";
 $message="Probando a enviar correo";
