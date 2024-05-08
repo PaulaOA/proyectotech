@@ -1,6 +1,18 @@
 <?php
+//Pruebas de recuperacion de contraseña
+require_once("conexion.php");
+$email=$_POST['email'];
+$sql="SELECT * FROM registro WHERE email='$email' and STATUS =1";
+$result=$conn->query($sql);
 
-use PHPMailer\PHPMailer\PHPMailer;
+if($result->num_rows > 0){
+
+}else{
+    header ("Location: ../index.php");
+}
+
+
+/*use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
@@ -42,7 +54,7 @@ require '../vendor/autoload.php';
         //header ("Location: ../index.php?message=error");
         //exit();
     }
-/*}else {
+}else {
     header ("Location: ../index.php?message=not_found");
     exit();
 }*/

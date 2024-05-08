@@ -177,7 +177,7 @@ $solicitudes = $conn->query($consultaEquipos);
 <div class="container">
   <h1 class="mt-4">
   <?php
-   echo "Bienvenid@,"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"]."!";
+   echo "¡Bienvenid@,"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"]."!";
   ?>
   </h1>
   <p></p>
