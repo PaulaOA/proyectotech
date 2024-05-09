@@ -1,3 +1,41 @@
+<?php
+// Verificar si se han recibido los parámetros necesarios
+if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
+
+    // Incluir la conexión a la base de datos
+    include('conexion.php');
+
+    // Limpiar y validar los datos recibidos del formulario
+    $id_usuario = mysqli_real_escape_string($conn, $_REQUEST['id_usuario']);
+    $tokenuser = mysqli_real_escape_string($conn, $_REQUEST['tokenuser']);
+
+    // Si se ha enviado el formulario de actualización de contraseña
+    if(isset($_POST['contraseña'])) {
+        // Limpiar y validar la nueva contraseña
+        $contraseña = mysqli_real_escape_string($conn, $_POST['contraseña']);
+
+        // Hash de la contraseña
+        $contraseña_hash = password_hash($contraseña, PASSWORD_DEFAULT);
+
+        // Actualizar la contraseña en la base de datos
+        $updatecontraseña = "UPDATE registro SET contraseña='$contraseña_hash' WHERE id_usuario='$id_usuario' AND tokenuser='$tokenuser'";
+        $sql = mysqli_query($conn, $updatecontraseña);
+
+        if($sql) {
+            echo "Contraseña actualizada exitosamente.";
+            // Redirigir a alguna página después de actualizar la contraseña
+            // header("Location: login.php");
+            // exit();
+        } else {
+            echo "Error al actualizar la contraseña: " . mysqli_error($conn);
+        }
+    }
+} else {
+    // Mostrar un mensaje de error si no se reciben los parámetros necesarios
+    echo "No se han recibido los parámetros necesarios para restablecer la contraseña.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -39,12 +77,12 @@
                     <div class="card bg-primary text-left text-white">
                         <h4>Restablece tu contraseña</h4>  
                     </div>
-                    <form action="archivos/recovery.php" method="POST">
+                    <form action="archivos/actualizarcontraseña.php" method="POST">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <br>
-
+                                    
                                    <div class="form-group">
                                     <label for="contraseña">Nueva contraseña</label>
                                     <input type="text" class="form-control" name="contraseña" id="contraseña" placeholder="Introduce tu nueva contraseña" required>

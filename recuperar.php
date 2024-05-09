@@ -39,7 +39,7 @@
                     <div class="card bg-primary text-left text-white">
                         <h4>Restablece tu contraseña</h4>  
                     </div>
-                    <form action="./archivos/sendmail.php" method="POST">
+                    <form action="./archivos/recuperarcontraseña.php" method="POST">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
