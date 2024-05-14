@@ -142,16 +142,16 @@ $currentPage = 'miperfil';
       </form>
     </div>
     <div class="col-md-6">
-      <form action="./archivos/sendmail.php" method="POST" enctype="multipart/form-data">
+      <form action="./archivos/subirautorizacion.php" method="POST" enctype="multipart/form-data">
         <div class="card mt-4 mb-4">
           <div class="card-header bg-primary text-white">Envío de autorización paterna</div>
           <div class="card-body">
             <!-- Contenido del formulario de envio de autorización-->
             <div class="mb-3">
               <label for="file" class="form-label">Archivo</label>
-              <input type="file" class="form-control" id="file" name="file" aria-describedby="file1">
+              <input type="file" class="form-control" id="file" name="file" accept=".pdf" aria-describedby="file1">
             </div>
-            <button type="submit" class="btn btn-outline-secondary btn-outline-success">Enviar</button>
+            <button type="submit" name='submit' class="btn btn-outline-secondary btn-outline-success">Enviar</button>
           </div>
         </div>
       </form>
