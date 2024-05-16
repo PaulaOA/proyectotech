@@ -1,3 +1,6 @@
+<?php
+include('./archivos/conexion.php');
+?>
 <!DOCTYPE html>
 <html lang="es">
 

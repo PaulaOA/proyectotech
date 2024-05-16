@@ -1,36 +1,20 @@
 <?php
-//Actualizacion de contraseña
-/*include('conexion.php');
-$id_usuario = $_REQUEST['id_usuario'];
-$tokenuser = $_REQUEST['tokenuser'];
-$contraseña = $_REQUEST['contraseña'];
-
-$updatecontraseña = ("UPDATE registro SET contraseña='$contraseña' WHERE id_usuario='".$id_usuario."' AND tokenuser='".$tokenuser."' ");
-$sql = mysqli_query($conn,$updatecontraseña); */
-
-?>
-
-<!--<meta http-equiv="refresh" content="0;url=index.php?email=1"/>-->
-
-<?php
 // Actualizacion de contraseña
 include('conexion.php');
 
 // Validar y limpiar los datos recibidos del formulario
-$id_usuario = mysqli_real_escape_string($conn, $_REQUEST['id_usuario']);
-$tokenuser = mysqli_real_escape_string($conn, $_REQUEST['tokenuser']);
-$contraseña = mysqli_real_escape_string($conn, $_REQUEST['contraseña']);
+$email = $_REQUEST ['email'];
+$contraseña = $_REQUEST['contraseña'];
 
 // Verificar si el token proporcionado es válido para el usuario
-$verificar_token = ("SELECT * FROM registro WHERE id_usuario='$id_usuario' AND tokenuser='$tokenuser'");
-$resultado = mysqli_query($conn, $verificar_token);
+$verificar_email = ("SELECT * FROM registro WHERE email='$email' ");
+$resultado = mysqli_query($conn, $verificar_email);
 
-if (mysqli_num_rows($resultado) == 1) {
-    // Hash de la contraseña
-    $contraseña_hash = password_hash($contraseña, PASSWORD_DEFAULT);
+if($resultado){
+    if (mysqli_num_rows($resultado) == 1) {
 
     // Actualizar la contraseña en la base de datos
-    $updatecontraseña = ("UPDATE registro SET contraseña='$contraseña_hash' WHERE id_usuario='$id_usuario'");
+    $updatecontraseña = ("UPDATE registro SET contraseña='$contraseña' WHERE email='$email' ");
     $sql = mysqli_query($conn, $updatecontraseña);
 
     if ($sql) {
@@ -39,7 +23,10 @@ if (mysqli_num_rows($resultado) == 1) {
         echo "Error al actualizar la contraseña: " . mysqli_error($conn);
     }
 } else {
-    echo "Token de restablecimiento de contraseña inválido.";
+    echo "No se encontró ninguna cuenta asociada a este correo electrónico.";
+}
+}else {
+    echo "Error en la consulta SQL: " . mysqli_error($conn);
 }
 
 ?>

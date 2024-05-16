@@ -24,7 +24,7 @@ if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
         if($sql) {
             echo "Contraseña actualizada exitosamente.";
             // Redirigir a alguna página después de actualizar la contraseña
-            // header("Location: login.php");
+            // header("Location: index.php");
             // exit();
         } else {
             echo "Error al actualizar la contraseña: " . mysqli_error($conn);
@@ -86,6 +86,7 @@ if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
                                    <div class="form-group">
                                     <label for="contraseña">Nueva contraseña</label>
                                     <input type="text" class="form-control" name="contraseña" id="contraseña" placeholder="Introduce tu nueva contraseña" required>
+                                    
                                    </div> 
                                 </div>
                             </div>
