@@ -188,10 +188,10 @@ $solicitudes = $conn->query($consultaEquipos);
 <?php 
  require_once("./archivos/conexion.php");
 
-  $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC LIMIT 1");
+  $sqlVideo   = ("SELECT nombrevideo, urlvideo, fecha FROM videos ORDER BY fecha DESC LIMIT 1");
   $queryVideo = mysqli_query($conn, $sqlVideo);
   $totalVideo = mysqli_num_rows($queryVideo);
-  $DataVideo  = mysqli_fetch_array($queryVideo);
+  $dataVideo  = mysqli_fetch_array($queryVideo);
 ?>
 
     <div class="container">
@@ -200,10 +200,10 @@ $solicitudes = $conn->query($consultaEquipos);
         <div class="col-6">
           <?php 
           if( $totalVideo >0){ ?>
-          <h2><?php echo $DataVideo['nombrevideo']; ?></h2>
+          <h2><?php echo $dataVideo['nombrevideo']; ?></h2>
 
           <div class="video-responsive">
-            <iframe src="<?php echo $DataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            <iframe src="<?php echo $dataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
           </div>
         <?php }else{ ?>
@@ -213,7 +213,7 @@ $solicitudes = $conn->query($consultaEquipos);
         </div>
       </div>
     </div> 
-
+<hr>
     <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

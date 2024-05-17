@@ -108,7 +108,7 @@ $currentPage = 'miperfil';
                 <td><?php echo $_SESSION["apellidos"]; ?></td>
                 <td><?php echo $_SESSION["fecha"]; ?></td>
                 <td><?php echo $_SESSION["email"]; ?></td>
-                <td><?php echo $_SESSION["contraseña"]; ?></td>
+                <td><?php echo $_SESSION["contraseña"]; ?><br><a class="small" href="contraseña.php" id="btnRecuperar">Actualizar contraseña</a></td>
                 <td><?php echo $_SESSION["cargo"]; ?></td>
             </tr>
         </tbody>
@@ -180,33 +180,38 @@ $currentPage = 'miperfil';
 <!--SUBIDA DE VIDEOS Y EDICION-->
 <?php 
    require_once("./archivos/conexion.php");
-    $sqlVideo   = ("SELECT * FROM videos ORDER BY id DESC");
+    $sqlVideo   = ("SELECT nombrevideo, urlvideo, fecha FROM videos ORDER BY fecha DESC");
     $queryVideo = mysqli_query($conn, $sqlVideo);
 
+    if (!$queryVideo) {
+      die("Error al obtener los videos: " . mysqli_error($conn));
+    }
   ?>
+<hr> 
 <h2 class="text-center mt-5 mb-3">Mis videos</h2>
   <div class="table-responsive">
     <table class="table table-hover table-striped">
       <thead>
         <tr>
           <th>Titulo del video</th>
-          <th class="text-center">Video</th>
+          <th>Video</th>
            <th>Acción</th>
         </tr>
       </thead>
       <tbody>
       <?php
-        while ($dataVideo = mysqli_fetch_array($queryVideo)) { ?>
-        <tr>
-          <td><?php  echo $dataVideo['nombrevideo']; ?></td>
-          <td>
-            <iframe width="253" height="200" src="<?php echo $dataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </td>
-          <td>
-            <a href="./archivos/borrarvideo.php?idVideo=<?php echo $dataVideo['id']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');">Borrar video</a>
-          </td>
-        </tr>
+      while ($dataVideo = mysqli_fetch_array($queryVideo)) { ?>
+      <tr>
+        <td><?php  echo htmlspecialchars($dataVideo['nombrevideo']); ?></td>
+        <td>
+        <iframe width="253" height="200" src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </td>
+        <td>
+        <a href="./archivos/borrarvideo.php?fecha=<?php echo htmlspecialchars($dataVideo['fecha']); ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');">Borrar video</a>
+        </td>
+      </tr>
       <?php } ?>
+        
       </tbody>
     </table>
   </div>
@@ -322,3 +327,4 @@ $currentPage = 'miperfil';
 </div>
 </body>
 </html>
+

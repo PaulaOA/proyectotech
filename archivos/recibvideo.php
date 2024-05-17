@@ -1,9 +1,43 @@
 <?php 
 require_once("conexion.php");
 
-$fecha              = date("d-m-Y g:i a");
-$nombreVideo   		= $_POST['nombrevideo'];
-$urlVideo   		= $_POST['urlvideo'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $fecha = date("Y-m-d H:i:s"); // Formato de fecha estándar para SQL
+    $nombreVideo = mysqli_real_escape_string($conn, $_POST['nombrevideo']);
+    $urlVideo = mysqli_real_escape_string($conn, $_POST['urlvideo']);
+
+    // Validar y transformar la URL del video
+    if (strpos($urlVideo, 'youtu.be') !== false) {
+        $cortar_url = str_replace('https://youtu.be/', '', $urlVideo);
+    } elseif (strpos($urlVideo, 'youtube.com/watch?v=') !== false) {
+        $cortar_url = str_replace('https://www.youtube.com/watch?v=', '', $urlVideo);
+    } elseif (strpos($urlVideo, 'm.youtube.com/watch?v=') !== false) {
+        $cortar_url = str_replace('https://m.youtube.com/watch?v=', '', $urlVideo);
+    } else {
+        echo "URL INVALIDA";
+        exit();
+    }
+
+    $url_final_video = 'https://www.youtube.com/embed/' . $cortar_url;
+
+    // Creación INSERT a BD
+    $queryInsert = "INSERT INTO videos (nombrevideo, urlvideo, fecha) VALUES ('$nombreVideo', '$url_final_video', '$fecha')";
+    $result = mysqli_query($conn, $queryInsert);
+
+    if ($result) {
+        echo "Video insertado correctamente.";
+        header("Location: ../miperfil.php");
+    } else {
+        echo "Error al insertar el video: " . mysqli_error($conn);
+    }
+}
+
+
+/*require_once('conexion.php');
+
+$fecha = date("d-m-Y g:i a");
+$nombreVideo = $_POST['nombrevideo'];
+$urlVideo = $_POST['urlvideo'];
 
 //https://www.youtube.com/watch?v=MxhasqDtq1s
 $cantidad_url_video 	= strlen($urlVideo);
@@ -30,20 +64,19 @@ if ($cantidad_url_video == '28') {
 echo "URL INVALIDA";
 }
 
-//Creando mi INSERT a BD
-$queryInsert = ("INSERT INTO 
-videos(
-	nombrevideo,
-	urlvideo,
-	fecha
-)
-VALUES (
-	'" .$nombreVideo. "',
-	'" .$url_final_video. "',
-	'" .$fecha. "'
-)");
+//Creacion INSERT a BD
+$queryInsert = ("INSERT INTO videos(nombrevideo, urlvideo, fecha)
+	VALUES (
+		'$nombreVideo',
+		'$url_final_video',
+		'$fecha'
+	)"
+	);
 $result = mysqli_query($conn, $queryInsert);
-
-header("Location:../miperfil.php");
+if ($result){
+	header("Location:../miperfil.php");
+}else {
+	echo "Error al insertar el video: ". mysqli_error($conn);
+}*/
 
 ?>

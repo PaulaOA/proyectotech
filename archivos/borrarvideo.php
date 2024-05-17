@@ -1,8 +1,8 @@
 <?php
 require_once('conexion.php');
-$idVideo    	 = $_REQUEST['idVideo']; 
+$fecha    	 = $_REQUEST['fecha']; 
 
-$sqlDeleteProd    = ("DELETE FROM videos WHERE  id='" .$idVideo. "'");
+$sqlDeleteProd    = ("DELETE FROM videos WHERE  fecha='$fecha'");
 $resultProd 	  = mysqli_query($conn, $sqlDeleteProd);
 
 

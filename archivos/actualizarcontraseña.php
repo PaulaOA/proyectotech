@@ -1,32 +1,26 @@
 <?php
-// Actualizacion de contraseña
+// Incluir el archivo de conexión a la base de datos
 include('conexion.php');
 
-// Validar y limpiar los datos recibidos del formulario
-$email = $_REQUEST ['email'];
-$contraseña = $_REQUEST['contraseña'];
+// Verificar si se han recibido los parámetros necesarios
+if(isset($_POST['email']) && isset($_POST['contraseña'])) {
 
-// Verificar si el token proporcionado es válido para el usuario
-$verificar_email = ("SELECT * FROM registro WHERE email='$email' ");
-$resultado = mysqli_query($conn, $verificar_email);
-
-if($resultado){
-    if (mysqli_num_rows($resultado) == 1) {
+    // Limpiar y validar los datos recibidos del formulario
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $contraseña = mysqli_real_escape_string($conn, $_POST['contraseña']);
 
     // Actualizar la contraseña en la base de datos
-    $updatecontraseña = ("UPDATE registro SET contraseña='$contraseña' WHERE email='$email' ");
-    $sql = mysqli_query($conn, $updatecontraseña);
+    $update_contraseña_query = "UPDATE registro SET contraseña='$contraseña' WHERE email='$email'";
+    $result = mysqli_query($conn, $update_contraseña_query);
 
-    if ($sql) {
-        echo "Contraseña actualizada exitosamente.";
+    // Verificar si la consulta se ejecutó correctamente
+    if($result) {
+       header("Location:../index.php");
     } else {
         echo "Error al actualizar la contraseña: " . mysqli_error($conn);
     }
 } else {
-    echo "No se encontró ninguna cuenta asociada a este correo electrónico.";
+    // Mostrar un mensaje de error si no se reciben los parámetros necesarios
+    echo "No se han recibido los parámetros necesarios para actualizar la contraseña.";
 }
-}else {
-    echo "Error en la consulta SQL: " . mysqli_error($conn);
-}
-
 ?>

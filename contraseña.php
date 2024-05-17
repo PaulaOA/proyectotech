@@ -1,41 +1,3 @@
-<?php
-// Verificar si se han recibido los parámetros necesarios
-if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
-
-    // Incluir la conexión a la base de datos
-    include('conexion.php');
-
-    // Limpiar y validar los datos recibidos del formulario
-    $id_usuario = mysqli_real_escape_string($conn, $_REQUEST['id_usuario']);
-    $tokenuser = mysqli_real_escape_string($conn, $_REQUEST['tokenuser']);
-
-    // Si se ha enviado el formulario de actualización de contraseña
-    if(isset($_POST['contraseña'])) {
-        // Limpiar y validar la nueva contraseña
-        $contraseña = mysqli_real_escape_string($conn, $_POST['contraseña']);
-
-        // Hash de la contraseña
-        $contraseña_hash = password_hash($contraseña, PASSWORD_DEFAULT);
-
-        // Actualizar la contraseña en la base de datos
-        $updatecontraseña = "UPDATE registro SET contraseña='$contraseña_hash' WHERE id_usuario='$id_usuario' AND tokenuser='$tokenuser'";
-        $sql = mysqli_query($conn, $updatecontraseña);
-
-        if($sql) {
-            echo "Contraseña actualizada exitosamente.";
-            // Redirigir a alguna página después de actualizar la contraseña
-            // header("Location: index.php");
-            // exit();
-        } else {
-            echo "Error al actualizar la contraseña: " . mysqli_error($conn);
-        }
-    }
-} else {
-    // Mostrar un mensaje de error si no se reciben los parámetros necesarios
-    echo "No se han recibido los parámetros necesarios para restablecer la contraseña.";
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -47,9 +9,35 @@ if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
-    <title>Recuperar contraseña | Technovation Girl</title>
+    <title>Actualizar contraseña | Technovation Girl</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-</head>
+    <style>
+      .contenedor {
+        width: 100%;
+        height: 100%;
+      }
+      
+      html {
+    position: relative;
+    min-height: 100%;
+    }
+
+    body {
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    }
+
+  footer {
+    position: absolute;
+    margin-top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
+    }
+      
+    </style>
+  </head>
 <body>
 <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
   <div class="container">
@@ -62,7 +50,7 @@ if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="inicio.php">Inicio</a>
+          <a class="nav-link active" aria-current="page" href="index.php">Salir</a>
         </li>
       </ul>
     </div>
@@ -72,18 +60,19 @@ if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
 <section class="content">
         <div class="container">
             <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-10">
-                    <div class="card bg-primary text-left text-white">
-                        <h4>Restablece tu contraseña</h4>  
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="card bg-primary text-center text-white">
+                        <h4>Actualiza tu contraseña</h4>  
                     </div>
-                    <form action="archivos/actualizarcontraseña.php" method="POST">
+                    <form action="./archivos/actualizarcontraseña.php" method="POST">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <br>
-                                    
+                                <div class="col-sm-12 mt-4 mb-4"> 
                                    <div class="form-group">
+                                    
+                                    <label for="email">Correo electrónico</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
                                     <label for="contraseña">Nueva contraseña</label>
                                     <input type="text" class="form-control" name="contraseña" id="contraseña" placeholder="Introduce tu nueva contraseña" required>
                                     
@@ -101,7 +90,6 @@ if(isset($_REQUEST['tokenuser']) && isset($_REQUEST['id_usuario'])) {
             </div>
         </div>
     </section>
-    <br>
 
 <footer class="footer bg-dark text-white py-4">
   <div class="container">

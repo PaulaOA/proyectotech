@@ -58,7 +58,7 @@
           <div class="row">
             <div class="col-md-9 col-lg-8 mx-auto">
            
-              <h3 class="login-heading mb-4">Iniciar sesión</h3>
+              <h3 class="login-heading mb-4 text-center">Iniciar sesión</h3>
 
              <!-- FORMULARIO inicio sesión -->
 
