@@ -2,6 +2,7 @@
 session_start();
 require_once("archivos/conexion.php");
 $currentPage = 'inicio';
+$solicitudesParticipantes = null;
 
 if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
@@ -10,7 +11,7 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   $id_usuario = $_SESSION['id_usuario'];
 }
 
-if (!isset($_SESSION['modal_mostrado'])) {
+if (!isset($_SESSION['modal_mostrado']) && $_SESSION["cargo"] == "Mentor") {
   $consultaEquipos = "SELECT equipos.*
         FROM equipos
         INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
@@ -18,8 +19,17 @@ if (!isset($_SESSION['modal_mostrado'])) {
         WHERE equipos.estado = 'pendiente' 
         AND mentores.id_usuario = " .$id_usuario;
 $solicitudes = $conn->query($consultaEquipos);
-}
 
+} else if (!isset($_SESSION['modal_mostrado']) && $_SESSION["cargo"] == "Participante") {
+$consultaParticipantes = "SELECT COUNT(se.id_solicitud) AS solicitudes_pendientes
+                          FROM equipos e
+                          JOIN solicitudes_equipo se ON e.id_equipo = se.id_equipo
+                          JOIN participantes p ON se.id_participante = p.id_participante
+                          WHERE e.id_creador = $id_usuario
+                            AND se.estado = 'pendiente'
+                            AND p.id_usuario != e.id_creador";
+$solicitudesParticipantes = $conn->query($consultaParticipantes);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -231,8 +241,8 @@ $solicitudes = $conn->query($consultaEquipos);
                 $("#contenedorInicio").load("inicio.php", function(){
                   history.pushState(null,null,"inicio.php");
                 });
-            });
-          });
+              });
+             });
 
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
@@ -259,9 +269,18 @@ $solicitudes = $conn->query($consultaEquipos);
                   history.pushState(null,null,"encontrarequipo.php");
                 });
             });
-          });
+           });
 
-            $(document).ready(function(){
+          $(document).ready(function(){
+            $("#btnMisEquipos, #btnVer").click(function(e){
+              e.preventDefault();
+                $("#contenedorInicio").load("misequipos.php", function(){
+                  history.pushState(null,null,"misequipos.php");
+                });
+            });
+           });
+
+          $(document).ready(function(){
             $("#btnMensajes, #btnVerAhora").click(function(e){
               e.preventDefault();
                 $("#contenedorInicio").load("mensajes.php", function(){
@@ -291,6 +310,7 @@ $solicitudes = $conn->query($consultaEquipos);
             });
         });
     </script>
+
     <script>
       $(document).ready(function() {
         <?php
@@ -298,16 +318,38 @@ $solicitudes = $conn->query($consultaEquipos);
           $_SESSION['modal_mostrado'] = true; 
             ?>
           $("#modalSolicitud").css("display", "block");
+
         <?php } ?>
       });
 
       $(document).ready(function() {
-          $("#btnCancelar").click(function() {
-             $("#modalSolicitud").css("display", "none");
+          $(".close-modal").click(function() {
+             $(".modal").css("display", "none");
           });
       });
     </script>
 
+        
+        <?php
+          if ($solicitudesParticipantes && $solicitudesParticipantes->num_rows > 0) {
+            $fila = $solicitudesParticipantes->fetch_assoc();
+            $solicitudesPendientes = $fila["solicitudes_pendientes"];
+            if ($solicitudesPendientes > 0) {
+               $_SESSION['modal_mostrado'] = true; 
+              echo '<script>
+                      $(document).ready(function() {
+                        $("#modalSolicitudParticipante").css("display", "block");
+                      });
+
+                      $(document).ready(function() {
+                        $(".close-modal").click(function() {
+                           $(".modal").css("display", "none");
+                        });
+                    });
+                  </script>';
+  }
+}
+?>
 
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
@@ -344,8 +386,19 @@ $solicitudes = $conn->query($consultaEquipos);
     <h1 class="h3 mb-3 fw-normal text-center">Solicitudes pendientes</h1>
     <p class="text-center">Tienes solicitudes de equipo pendientes de responder</p>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+        <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
         <button type="button" class="btn btn-primary" id="btnVerAhora">Ver Ahora</button>
+      </div>
+  </div>
+</div>
+
+ <div id="modalSolicitudParticipante" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center">Solicitudes pendientes</h1>
+    <p class="text-center">Tienes nuevas solicitudes para unirse a tu equipo</p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnVer">Ver Ahora</button>
       </div>
   </div>
 </div>

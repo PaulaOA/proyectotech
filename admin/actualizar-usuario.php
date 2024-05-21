@@ -23,6 +23,49 @@ if (empty($_POST['id_usuario']) ||
 
          if ($conn->query($sql) === TRUE) {
             echo "usuarioEditado";
+             if ($cargo === 'Participante') {
+
+            $check_sql = "SELECT * FROM mentores WHERE id_usuario='".$id_usuario."'";
+            $result = $conn->query($check_sql);
+
+            $check_sql_participante = "SELECT * FROM participantes WHERE id_usuario='".$id_usuario."'";
+            $result_participante = $conn->query($check_sql_participante);
+
+            if ($result->num_rows > 0) {
+
+                $delete_sql = "DELETE FROM mentores WHERE id_usuario='".$id_usuario."'";
+                if ($conn->query($delete_sql) === TRUE) {
+                    echo "mentorEliminado";
+                } else {
+                    echo "no se pudo eliminar el registro de mentor: " . $conn->error;
+                }
+            } else {
+                echo "sinRegistro";
+            }
+
+            if ($result_participante->num_rows > 0) {
+                echo "yaExiste";
+            } else {
+                $insertarParticipante = "INSERT INTO participantes (id_usuario) VALUES ('$id_usuario')";
+                            $conn->query($insertarParticipante);
+                        }
+        } 
+
+        if ($cargo === 'Mentor') {
+            $check_sql = "SELECT * FROM mentores WHERE id_usuario='".$id_usuario."'";
+            $result = $conn->query($check_sql);
+
+            if ($result->num_rows == 0) {
+                $insert_sql = "INSERT INTO mentores (id_usuario) VALUES ('".$id_usuario."')";
+                if ($conn->query($insert_sql) === TRUE) {
+                    echo "mentorAgregado";
+                } else {
+                    echo " pero no se pudo agregar el registro de mentor: " . $conn->error;
+                }
+            } else {
+                echo "yaExiste";
+            }
+          }
         } else {
             echo "Error al actualizar el usuario: " . $conn->error;
         }

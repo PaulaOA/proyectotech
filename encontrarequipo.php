@@ -1,9 +1,19 @@
 <?php
 session_start();
-if (empty($_SESSION["nombre"])) {
+include "archivos/conexion.php";
+
+if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
+} else {
+  $id_usuario = $_SESSION["id_usuario"];
 }
+
+$sql_id_participante = "SELECT id_participante FROM participantes WHERE id_usuario = $id_usuario";
+$resultado_id_participante = $conn->query($sql_id_participante);
+$id_participante = ($resultado_id_participante && $resultado_id_participante->num_rows > 0) ? $resultado_id_participante->fetch_assoc()['id_participante'] : null;
+
 $currentPage = 'encontrarequipo';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,9 +48,46 @@ $currentPage = 'encontrarequipo';
     bottom: 0;
     width: 100%;
     height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    background-color: #343a40;
+    color: white;
     }
+
+    .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.7);
+          align-items: center;
+          z-index: 1050;
+        }
+
+      .modal-content {
+          background-color: #fefefe;
+          margin: 20% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 40%;
+          max-width: 350px;
+          height: 220px;
+          z-index: 1100;
+        }
+
+     .btnModal {
+          display: block; 
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          width: 35%;
+          margin: 20px auto 0;
+          padding: 10px;
+        }
+
     </style>
   </head>
   <body>
@@ -57,6 +104,7 @@ $currentPage = 'encontrarequipo';
             <div class="mb-3">
                 <label class="mb-3" for="busquedaNombre">Búsqueda por nombre</label>
                 <input type="text" class="form-control" id="busquedaNombre" name="busquedaNombre">
+                <input type="hidden" id="idParticipante" name="idParticipante" value="<?= $id_participante; ?>">
             </div>
             <div class="mb-3">
                 <label class="mb-3" for="busquedaCiudad">Búsqueda por ciudad</label>
@@ -121,69 +169,102 @@ $(document).ready(function() {
     });
 });
 
+    $(document).ready(function() {
+        $(document).on('click', '#btnQuieroUnirme', function(e) {
+            e.preventDefault();
+            var idEquipo = $(this).data('id-equipo');
+            var idParticipante = $(this).data('id-participante');
+             var btn = $(this);
+    
+            // Desactivar el botón
+            btn.prop('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: 'archivos/quiero-unirme.php',
+                data: { id_equipo: idEquipo, id_participante: idParticipante },
+                success: function(response) {
+                   if (response == "solicitudEnviada"){
+                    $("#modalSolicitudEnviada").css("display", "block");
+                   } else if (response == "haySolicitudes") {
+                    $("#modalHaySolicitudes").css("display", "block");
+                   } else if (response == "errorSolicitud") {
+                    $("#modalErrorSolicitud").css("display", "block");
+                   } else if (response == "errorVariables") {
+                    $("#modalErrorVariables").css("display", "block");
+                   }
+
+                    btn.prop('disabled', false);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                     btn.prop('disabled', false);
+                }
+            });
+        });
+
+       $(".close, .btn-cerrar").click(function(){
+       $(".modal").css("display", "none");
+     });
+    });
+
 </script>
 
 <!-- MANEJAR BOTONES MENÚ -->
 
     <script>
+
+       $(document).ready(function() {
+        window.onpopstate = function(event) {
+        $("#contenedorEncontrarEquipo").load(location.pathname);
+        };
+      });
+
           $(document).ready(function(){
             $("#btnInicio").click(function(e){
               e.preventDefault();
                 $("#contenedorEncontrarEquipo").load("inicio.php", function(){
                   history.pushState(null,null,"inicio.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorEncontrarEquipo").html(response);
-              };
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
               e.preventDefault();
                 $("#contenedorEncontrarEquipo").load("miperfil.php", function(){
                   history.pushState(null,null,"miperfil.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
-              };
             });
           });
 
-        </script>
-
-        <script>
           $(document).ready(function(){
             $("#btnCrearEquipo").click(function(e){
               e.preventDefault();
                 $("#contenedorEncontrarEquipo").load("crearequipo.php", function(){
                   history.pushState(null,null,"crearequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
-              };
             });
           });
 
-        </script>
+          $(document).ready(function(){
+             $("#btnMisEquipos").click(function(e){
+              e.preventDefault();
+                $("#contenedorEncontrarEquipo").load("misequipos.php", function(){
+                  history.pushState(null,null,"misequipos.php");
+                });
+            });
+          });
 
-         <script>
           $(document).ready(function(){
             $("#btnEncontrarEquipo").click(function(e){
               e.preventDefault();
                 $("#contenedorEncontrarEquipo").load("encontrarequipo.php", function(){
                   history.pushState(null,null,"encontrarequipo.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorEncontrarEquipo").load("encontrarequipo.php");
-              };
             });
-          });
+          }); 
 
-            $(document).ready(function(){
+          $(document).ready(function(){
             $("#btnMensajes").click(function(e){
               e.preventDefault();
                 $("#contenedorEncontrarEquipo").load("mensajes.php", function(){
@@ -243,6 +324,38 @@ $(document).ready(function() {
         }
     });
 </script>
+
+  <div id="modalSolicitudEnviada" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Solicitud enviada</h1>
+            <p class="text-center">Espera a que el equipo acepte la solicitud</p>
+            <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+          </div>
+        </div>
+
+ <div id="modalErrorSolicitud" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
+    <p class="text-center">No se pudo enviar la solicitud. Por favor, inténtelo de nuevo</p>
+    <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+  </div>
+</div>
+
+ <div id="modalErrorVariables" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
+    <p class="text-center">Hubo un error al procesar la información</p>
+    <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+  </div>
+</div>
+
+ <div id="modalHaySolicitudes" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center">Solicitud existente</h1>
+    <p class="text-center">Ya has enviado una solicitud de unión a este equipo o eres el creador</p>
+    <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </div>

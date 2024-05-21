@@ -13,19 +13,26 @@ if (isset($_POST['busquedaNombre']) && !empty($_POST['busquedaNombre'])) {
 
     if ($equiposEncontrados && $equiposEncontrados->num_rows > 0) {
         echo "<h3>Resultados de la búsqueda '$nombreEquipo'</h3>";
-        while ($equipo = $equiposEncontrados->fetch_assoc()) {
-            echo "<div class='col-md-4'>
-                   <div class='card my-3'>
-                    <div class='card-body'>
-                     <h5 class='card-title text-center'>{$equipo['nombre_equipo']}</h5>
-                      <p>Creador del equipo: {$equipo['nombre_creador']}<p>
-                     </div>
-                     <div class='card-footer text-center'>
-                     <a href='#' class='btn btn-primary'>¡Quiero unirme!</a>
-                     </div>
-                    </div>
-                  </div>";
-        }
+
+        if (isset($_POST['idParticipante'])) {
+            $id_participante = $_POST['idParticipante'];
+
+            while ($equipo = $equiposEncontrados->fetch_assoc()) {
+                echo "<div class='col-md-4'>
+                       <div class='card my-3'>
+                        <div class='card-body'>
+                         <h5 class='card-title text-center mb-4'>{$equipo['nombre_equipo']}</h5>
+                          <p>Creador del equipo: {$equipo['nombre_creador']}</p>
+                         </div>
+                         <div class='card-footer text-center'>
+                         <a href='#' class='btn btn-primary' id='btnQuieroUnirme' data-id-equipo='{$equipo['id_equipo']}' data-id-participante='$id_participante'>¡Quiero unirme!</a>
+                         </div>
+                        </div>
+                      </div>";
+            }
+    } else {
+        echo "<p>Error al obtener tu identificador como participante.</p>";
+    }
     } else {
         echo "<p>No se encontraron equipos con los parámetros de búsqueda.</p>";
     }

@@ -234,7 +234,7 @@ $currentPage = 'miperfil';
                   history.pushState(null,null,"inicio.php");
                 });
             });
-          });
+           });
 
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
@@ -243,7 +243,7 @@ $currentPage = 'miperfil';
                   history.pushState(null,null,"miperfil.php");
                 });
             });
-          });
+           });
 
           $(document).ready(function(){
             $("#btnCrearEquipo").click(function(e){
@@ -252,7 +252,16 @@ $currentPage = 'miperfil';
                   history.pushState(null,null,"crearequipo.php");
                 });
             });
-          });
+           });
+
+          $(document).ready(function(){
+            $("#btnMisEquipos").click(function(e){
+              e.preventDefault();
+                $("#contenedorMiPerfil").load("misequipos.php", function(){
+                  history.pushState(null,null,"misequipos.php");
+                });
+            });
+           });
 
           $(document).ready(function(){
             $("#btnEncontrarEquipo").click(function(e){
@@ -261,9 +270,9 @@ $currentPage = 'miperfil';
                   history.pushState(null,null,"encontrarequipo.php");
                 });
             });
-          });
+           });
 
-           $(document).ready(function(){
+          $(document).ready(function(){
             $("#btnMensajes").click(function(e){
               e.preventDefault();
                 $("#contenedorMiPerfil").load("mensajes.php", function(){

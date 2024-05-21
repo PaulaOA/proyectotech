@@ -104,7 +104,14 @@
                 method: "POST",
                 data: $("#formEditarUsuario").serialize(),
                 success: function(response) {
-                    if (response == "usuarioEditado") {
+                   const validResponses = [
+                      "usuarioEditado",
+                      "usuarioEditadomentorEliminado",
+                      "usuarioEditadosinRegistro",
+                      "usuarioEditadoyaExiste",
+                      "usuarioEditadomentorAgregado"
+                  ];
+                    if (validResponses.includes(response)) {
                       $("#modalGuardarCambios").modal("hide");
                       $("#modalEditarUsuario").modal("hide");
                       $("#contenedorUsuarios").load("usuarios.php");
