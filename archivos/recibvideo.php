@@ -7,18 +7,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $urlVideo = mysqli_real_escape_string($conn, $_POST['urlvideo']);
 
     // Validar y transformar la URL del video
-    if (strpos($urlVideo, 'youtu.be') !== false) {
-        $cortar_url = str_replace('https://youtu.be/', '', $urlVideo);
-    } elseif (strpos($urlVideo, 'youtube.com/watch?v=') !== false) {
-        $cortar_url = str_replace('https://www.youtube.com/watch?v=', '', $urlVideo);
-    } elseif (strpos($urlVideo, 'm.youtube.com/watch?v=') !== false) {
-        $cortar_url = str_replace('https://m.youtube.com/watch?v=', '', $urlVideo);
+    if (preg_match('/youtu\.be\/([^\&\?\/]+)/', $urlVideo, $id)) {
+        $videoId = $id[1];
+    } elseif (preg_match('/youtube\.com\/watch\?v=([^\&\?\/]+)/', $urlVideo, $id)) {
+        $videoId = $id[1];
+    } elseif (preg_match('/youtube\.com\/embed\/([^\&\?\/]+)/', $urlVideo, $id)) {
+        $videoId = $id[1];
+    } elseif (preg_match('/youtube\.com\/v\/([^\&\?\/]+)/', $urlVideo, $id)) {
+        $videoId = $id[1];
     } else {
         echo "URL INVALIDA";
         exit();
     }
 
-    $url_final_video = 'https://www.youtube.com/embed/' . $cortar_url;
+
+    $url_final_video = 'https://www.youtube.com/embed/' . $videoId;
 
     // Creación INSERT a BD
     $queryInsert = "INSERT INTO videos (nombrevideo, urlvideo, fecha) VALUES ('$nombreVideo', '$url_final_video', '$fecha')";

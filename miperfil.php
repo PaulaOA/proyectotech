@@ -204,7 +204,7 @@ $currentPage = 'miperfil';
       <tr>
         <td><?php  echo htmlspecialchars($dataVideo['nombrevideo']); ?></td>
         <td>
-        <iframe width="253" height="200" src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="450" height="280" src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </td>
         <td>
         <a href="./archivos/borrarvideo.php?fecha=<?php echo htmlspecialchars($dataVideo['fecha']); ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');">Borrar video</a>
