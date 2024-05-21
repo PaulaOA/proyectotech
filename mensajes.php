@@ -268,6 +268,15 @@ $solicitudes = $conn->query($solicitudesPendientes);
             });
           });
 
+          $(document).ready(function(){
+            $("#btnMisEquipos").click(function(e){
+              e.preventDefault();
+                $("#contenedorMensajes").load("mis-equipos.php", function(){
+                  history.pushState(null,null,"mis-equipos.php");
+                });
+            });
+          });
+
         </script>
 
          <script>

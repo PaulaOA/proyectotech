@@ -115,7 +115,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                                    <div class="form-group mt-2 mb-2">
                                     <label for="nombreEquipo" style="margin-bottom: 10px;">Nombre de equipo</label>
                                     <input type="text" class="form-control" name="nombreEquipo" id="nombreEquipo" required>
-                                    <label for="mentor" class="texto-label" style="margin-bottom: 10px; margin-top: 10px;">Mentor Equipo</label>
+                                    <label for="id_mentor" class="texto-label" style="margin-bottom: 10px; margin-top: 10px;">Mentor Equipo</label>
                                      <select name="id_mentor" id="id_mentor" class="form-control" style="margin-bottom:10px">
                                       <option value="">Selecciona un mentor</option>
                                       <?php 
@@ -144,7 +144,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                 <div class="col-md-2"></div>
                 <div class="col-md-5">
                   <div class="card bg-secondary text-left text-white">
-                    <h4 style="margin-left: 10px;">Solicitudes de equipo</h4>
+                    <h4 style="margin-left: 10px;">Solicitudes para crear equipo</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -296,7 +296,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                 });
             });
           });
-
+          
           $(document).ready(function(){
             $("#btnMiPerfil").click(function(e){
               e.preventDefault();
@@ -324,7 +324,16 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
             });
           });
 
-            $(document).ready(function(){
+          $(document).ready(function(){
+            $("#btnMisEquipos").click(function(e){
+              e.preventDefault();
+                $("#contenedorCrearEquipo").load("misequipos.php", function(){
+                  history.pushState(null,null,"misequipos.php");
+                });
+            });
+          });
+
+          $(document).ready(function(){
             $("#btnMensajes").click(function(e){
               e.preventDefault();
                 $("#contenedorCrearEquipo").load("mensajes.php", function(){

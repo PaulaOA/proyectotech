@@ -16,11 +16,15 @@
         <li class="nav-item">
           <a class="nav-link <?php if ($currentPage === 'miperfil') echo 'active'; ?>" href="#" id="btnMiPerfil">Mi perfil</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'crearequipo') echo 'active'; ?>" href="#" id="btnCrearEquipo">Crea tu equipo</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'encontrarequipo') echo 'active'; ?>" href="#" id="btnEncontrarEquipo">Encuentra tu equipo</a>
+       <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle <?php if ($currentPage === 'encontrarequipo' || $currentPage === 'crearequipo' || $currentPage === 'misequipos') echo 'active'; ?>" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Equipos
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" id="btnCrearEquipo">Crear Equipo</a></li>
+            <li><a class="dropdown-item" href="#" id="btnEncontrarEquipo">Encuentra tu equipo</a></li>
+            <li><a class="dropdown-item" href="#" id="btnMisEquipos">Mis equipos</a></li>
+          </ul>
         </li>
         <?php
         require_once("archivos/conexion.php");
@@ -42,3 +46,18 @@
     </div>
   </div>
 </nav>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.dropdown-toggle').on('mousedown', function(e){
+        e.preventDefault(); // Prevenir la acción predeterminada para evitar que se cierre el menú en el primer clic
+        var $menu = $(this).next('.dropdown-menu');
+        if ($menu.is(':visible')) {
+            $menu.hide(); // Si el menú está visible, ocultarlo
+        } else {
+            $menu.show(); // Si el menú no está visible, mostrarlo
+        }
+    });
+});
+</script>
