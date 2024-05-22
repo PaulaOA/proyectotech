@@ -123,7 +123,7 @@
 
 <?php
 include "../archivos/conexion.php";
-$sql = "SELECT nombre FROM registro WHERE cargo = 'Mentor'";
+$sql = "SELECT registro.nombre AS nombre_mentor, mentores.id_mentor FROM registro INNER JOIN mentores WHERE mentores.id_usuario = registro.id_usuario";
 $resultado = $conn->query($sql);
 
  ?>
@@ -139,13 +139,13 @@ $resultado = $conn->query($sql);
         <form id="formNuevoEquipo" method="POST">
           <label for="nombre" class="texto-label">Nombre Equipo</label>
           <input type="text" name="nombre" id="nombre" class="form-control">
-          <label for="mentor" class="texto-label">Mentor Equipo</label>
-          <select name="mentor" id="mentor" class="form-control">
+          <label for="id_mentor" class="texto-label">Mentor Equipo</label>
+          <select name="id_mentor" id="id_mentor" class="form-control">
             <option value="">Selecciona un mentor</option>
             <?php 
             if ($resultado->num_rows > 0) {
               while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='".$fila["nombre"]."'>".$fila['nombre']. "</option>";
+                echo "<option value='".$fila["id_mentor"]."'>".$fila['nombre_mentor']. "</option>";
               }
             } else {
               echo "<option value=''>No existen mentores</option>";

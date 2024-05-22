@@ -109,7 +109,11 @@
                       "usuarioEditadomentorEliminado",
                       "usuarioEditadosinRegistro",
                       "usuarioEditadoyaExiste",
-                      "usuarioEditadomentorAgregado"
+                      "usuarioEditadomentorAgregado",
+                      "usuarioEditadomentorAgregadoparticipanteEliminado",
+                      "usuarioEditadomentorEliminadoparticipanteAgregado",
+                      "usuarioEditadoparticipanteAgregado", 
+                      "usuarioEditadoparticipanteEliminado"
                   ];
                     if (validResponses.includes(response)) {
                       $("#modalGuardarCambios").modal("hide");
