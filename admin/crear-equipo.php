@@ -1,15 +1,15 @@
 <?php
 
 if (empty($_POST['nombre']) ||  
-    empty($_POST['mentor'])) {
+    empty($_POST['id_mentor'])) {
     echo "rellenaCampos";
     } else {
         $nombre_equipo = $_POST['nombre'];
-        $mentor_equipo = $_POST['mentor'];
+        $id_mentor = $_POST['id_mentor'];
 
  include "../archivos/conexion.php";
 
-    $sql = "INSERT INTO equipos (nombre_equipo, id_usuario, creador_equipo, mentor_equipo) VALUES ('".$nombre_equipo."', 1, 'Admin', '".$mentor_equipo."')";
+    $sql = "INSERT INTO equipos (nombre_equipo, id_creador, id_mentor, estado) VALUES ('".$nombre_equipo."', 1, $id_mentor, 'aceptada')";
 
          if ($conn->query($sql) === TRUE) {
             echo "equipoCreado";
