@@ -40,6 +40,7 @@ if(isset($_POST['submit'])){
     // Envío del correo electrónico
     if(mail($destinatario, $asunto, $cuerpo, $cabeceras)) {
         echo "El correo se ha enviado correctamente.";
+        header("Location: ../miperfil.php");
     } else {
         echo "Error al enviar el correo.";
     }

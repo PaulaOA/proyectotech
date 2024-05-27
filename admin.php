@@ -69,7 +69,7 @@ $currentPage = 'admin';
       <?php include "admin/menu-admin.php" ?>
 
 
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -80,21 +80,21 @@ $currentPage = 'admin';
       <img src="images/imagen1.jpg" class="d-block w-100 darken-img" alt="slider 1">
       <div class="carousel-caption top-0 mt-4">
       <h1 class="display-1 fw-bolder text-capitalize">Proyectos</h1>
-      <a href="#" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+      <a href="https://technovation.tgmbp.com/eventos/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
       </div>  
     </div>
     <div class="carousel-item d-item">
       <img src="images/imagen2.jpg" class="d-block w-100 darken-img" alt="slider 2">
       <div class="carousel-caption top-0 mt-4">
       <h1 class="display-1 fw-bolder text-capitalize">Concursos</h1>
-      <a href="#" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+      <a href="https://technovation.tgmbp.com/ediciones-anteriores/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
       </div>  
     </div>
     <div class="carousel-item d-item">
       <img src="images/imagen3.jpg" class="d-block w-100 darken-img" alt="slider 3">
       <div class="carousel-caption top-0 mt-4">
       <h1 class="display-1 fw-bolder text-capitalize">Sobre nosotros</h1>
-      <a href="#" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+      <a href="https://technovation.tgmbp.com/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
       </div>
     </div>
   </div>
@@ -209,9 +209,9 @@ $currentPage = 'admin';
       <div class="text-center">
         <ul class="list-inline">
           <li class="list-inline-item"><a href="#"><i class="bi bi-facebook text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-twitter text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-instagram text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin text-white"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.twitter.com/TalentGrowthM"><i class="bi bi-twitter text-white"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.instagram.com/talentgrowthmbp/"><i class="bi bi-instagram text-white"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.linkedin.com/company/tgmbp/"><i class="bi bi-linkedin text-white"></i></a></li>
         </ul>
       </div>
       <div class="text-center">

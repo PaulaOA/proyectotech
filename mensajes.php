@@ -306,9 +306,9 @@ $solicitudes = $conn->query($solicitudesPendientes);
       <div class="text-center">
         <ul class="list-inline">
           <li class="list-inline-item"><a href="#"><i class="bi bi-facebook text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-twitter text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-instagram text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin text-white"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.twitter.com/TalentGrowthM"><i class="bi bi-twitter text-white"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.instagram.com/talentgrowthmbp/"><i class="bi bi-instagram text-white"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.linkedin.com/company/tgmbp/"><i class="bi bi-linkedin text-white"></i></a></li>
         </ul>
       </div>
       <div class="text-center">
