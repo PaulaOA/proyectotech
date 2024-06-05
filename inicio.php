@@ -1,35 +1,8 @@
 <?php
 session_start();
 require_once("archivos/conexion.php");
+include "consultas/sql-inicio.php";
 $currentPage = 'inicio';
-$solicitudesParticipantes = null;
-
-if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
-    header("location: index.php");   
-} else {
-  $nombre = $_SESSION['nombre'];
-  $id_usuario = $_SESSION['id_usuario'];
-}
-
-if (!isset($_SESSION['modal_mostrado']) && $_SESSION["cargo"] == "Mentor") {
-  $consultaEquipos = "SELECT equipos.*
-        FROM equipos
-        INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
-        INNER JOIN registro ON mentores.id_usuario = registro.id_usuario
-        WHERE equipos.estado = 'pendiente' 
-        AND mentores.id_usuario = " .$id_usuario;
-$solicitudes = $conn->query($consultaEquipos);
-
-} else if (!isset($_SESSION['modal_mostrado']) && $_SESSION["cargo"] == "Participante") {
-$consultaParticipantes = "SELECT COUNT(se.id_solicitud) AS solicitudes_pendientes
-                          FROM equipos e
-                          JOIN solicitudes_equipo se ON e.id_equipo = se.id_equipo
-                          JOIN participantes p ON se.id_participante = p.id_participante
-                          WHERE e.id_creador = $id_usuario
-                            AND se.estado = 'pendiente'
-                            AND p.id_usuario != e.id_creador";
-$solicitudesParticipantes = $conn->query($consultaParticipantes);
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -133,6 +106,21 @@ $solicitudesParticipantes = $conn->query($consultaParticipantes);
       margin: 20px auto 0;
       padding: 10px;
     }
+
+    .table-videos {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .table-videos th,
+    .table-videos td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .table-videos iframe {
+      max-width: 100%;
+    }
     
     </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
@@ -195,14 +183,6 @@ $solicitudesParticipantes = $conn->query($consultaParticipantes);
 <hr>
 
 <!--MOSTRAR GALERIA DE VIDEOS SUBIDOS-->
-<?php 
- require_once("./archivos/conexion.php");
-
-  $sqlVideo   = ("SELECT nombrevideo, urlvideo, fecha FROM videos ORDER BY fecha DESC LIMIT 1");
-  $queryVideo = mysqli_query($conn, $sqlVideo);
-  $totalVideo = mysqli_num_rows($queryVideo);
-  $dataVideo  = mysqli_fetch_array($queryVideo);
-?>
 
     <div class="container">
 
@@ -329,7 +309,6 @@ $solicitudesParticipantes = $conn->query($consultaParticipantes);
       });
     </script>
 
-        
         <?php
           if ($solicitudesParticipantes && $solicitudesParticipantes->num_rows > 0) {
             $fila = $solicitudesParticipantes->fetch_assoc();

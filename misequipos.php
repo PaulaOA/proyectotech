@@ -8,38 +8,7 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   $id_usuario = $_SESSION["id_usuario"];
 }
 
-$sql_equiposCreados = "SELECT * FROM equipos WHERE id_creador = $id_usuario AND estado = 'aceptada'";
-$consulta_equiposCreados = $conn->query($sql_equiposCreados);
-
-$sql_participantes = "SELECT
-                          e.id_equipo,
-                          e.nombre_equipo,
-                          se.id_participante,
-                          r.nombre AS nombre_participante
-                      FROM 
-                          solicitudes_equipo se
-                      JOIN 
-                          equipos e ON se.id_equipo = e.id_equipo
-                      JOIN 
-                          participantes p ON se.id_participante = p.id_participante
-                      JOIN 
-                          registro r ON p.id_usuario = r.id_usuario
-                      WHERE 
-                          se.estado = 'pendiente' 
-                          AND e.id_creador = $id_usuario
-                          AND p.id_usuario <> e.id_creador";
-                          
-$consulta_participantes = $conn->query($sql_participantes);
-
-$sql_equiposParticipante= "SELECT e.nombre_equipo, e.id_equipo
-                  FROM equipos e
-                  INNER JOIN solicitudes_equipo se ON e.id_equipo = se.id_equipo
-                  INNER JOIN participantes p ON se.id_participante = p.id_participante
-                  LEFT JOIN registro r ON p.id_usuario = r.id_usuario
-                  WHERE se.estado = 'aceptada'
-                  AND r.id_usuario <> e.id_creador
-                  AND r.id_usuario = $id_usuario";
-$resultado_equiposParticipante = $conn->query($sql_equiposParticipante);
+require "consultas/sql-misequipos.php";
 
 $currentPage = 'misequipos';
 
@@ -101,7 +70,7 @@ $currentPage = 'misequipos';
           border: 1px solid #888;
           width: 40%;
           max-width: 350px;
-          height: 220px;
+          height: 250px;
           z-index: 1100;
         }
 
@@ -116,7 +85,11 @@ $currentPage = 'misequipos';
           margin: 20px auto 0;
           padding: 10px;
         }
-
+        .modal-footer-this .btn {
+            padding: 10px 20px 10px 20px; /* Aumenta el tamaño de los botones */
+            width: 100px; /* Aumenta el ancho de los botones */
+            margin: 0 20px; /* Agrega espacio entre los botones */
+        }
     </style>
   </head>
   <body>
@@ -141,7 +114,7 @@ $currentPage = 'misequipos';
                       while ($equiposCreados = $consulta_equiposCreados->fetch_assoc()): ?>
                   <tr>
                       <td><?=$equiposCreados['nombre_equipo']?></td>
-                      <td style="text-align: right;"><a href="#" data-id="<?=$equiposCreados['id_equipo']?>">Ver detalles</a></td>
+                      <td style="text-align: right;"><a href="#" class="ver-detalles-equipo" data-id="<?=$equiposCreados['id_equipo']?>" data-nombre="<?=$equiposCreados['nombre_equipo']?>" data-mentor="<?=$equiposCreados['nombre_mentor']?>" data-creador="<?=$equiposCreados['nombre_creador']?>" data-participantes="<?=$equiposCreados['nombre_participantes']?>">Ver detalles</a></td>
                     </tr>
                     <?php endwhile;
                      } else {?>
@@ -156,12 +129,27 @@ $currentPage = 'misequipos';
                       while ($equiposParticipante = $resultado_equiposParticipante->fetch_assoc()): ?>
                   <tr>
                       <td><?=$equiposParticipante['nombre_equipo']?></td>
-                      <td style="text-align: right;"><a href="#" data-id="<?=$equiposParticipante['id_equipo']?>">Ver detalles</a></td>
+                      <td style="text-align: right;"><a href="#" class="ver-detalles-equipo-participante" data-id="<?=$equiposParticipante['id_equipo']?>" data-nombre="<?=$equiposParticipante['nombre_equipo']?>" data-mentor="<?=$equiposParticipante['nombre_mentor']?>" data-creador="<?=$equiposParticipante['nombre_creador']?>" data-participantes="<?=$equiposParticipante['nombre_participantes']?>">Ver detalles</a></td>
                     </tr>
                     <?php endwhile;
                      } else {?>
                     <tr>
                       <td colspan="2">Aún no tienes ningún equipo</td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                      <th colspan="2" style="background-color: #4f4f4f; color: white;">Solicitudes para unirte</th>
+                    </tr>
+                    <?php if ($resultado_unirse && $resultado_unirse->num_rows > 0) {
+                      while ($solicitudesParaUnirse = $resultado_unirse->fetch_assoc()): ?>
+                  <tr>
+                      <td><?= $solicitudesParaUnirse['nombre_equipo']?></td>
+                      <td style="text-align: right;"><a href="#" class="borrar-solicitud-unirse" data-solicitud="<?=$solicitudesParaUnirse['id_solicitud']?>" data-equipo="<?=$solicitudesParaUnirse['id_equipo']?>" data-nombre="<?=$solicitudesParaUnirse['nombre_equipo']?>" data-participante="<?=$solicitudesParaUnirse['id_participante']?>"><i class="bi bi-trash"></i></a></td>
+                    </tr>
+                      <?php endwhile;
+                     } else {?>
+                    <tr>
+                      <td colspan="2">No tienes solicitudes pendientes</td>
                     </tr>
                     <?php } ?>
               </tbody>
@@ -239,7 +227,7 @@ $currentPage = 'misequipos';
                    if (response == "correcto") {
                     $("#contenedorMisEquipos").load("misequipos.php");
                    } else {
-                    alert ("Error al procesar la solicitud")
+                    alert ("Error al procesar la solicitud");
                    }
                   $("#modalAceptarParticipante").css("display", "none");
                 },
@@ -283,6 +271,87 @@ $currentPage = 'misequipos';
         }
       });
 </script>
+
+<!-- MOSTRAR MODAL DETALLES EQUIPO-->
+<script>
+$(document).ready(function() {
+  var solicitudParaEliminar;
+  $(".ver-detalles-equipo").click(function(e) {
+    e.preventDefault();
+    
+    var nombreEquipo = $(this).data('nombre');
+    var nombreMentor = $(this).data('mentor');
+    var nombreCreador = $(this).data('creador');
+    var nombreParticipantes = $(this).data('participantes');
+    
+    $("#detallesNombreEquipo").text(nombreEquipo);
+    $("#detallesNombreCreador").text(nombreCreador);
+    $("#detallesNombreMentor").text(nombreMentor);
+    $("#detallesNombreParticipantes").text(nombreParticipantes);
+    
+    $("#modalDetallesEquipo").css("display", "block");
+  });
+
+   $(".ver-detalles-equipo-participante").click(function(e) {
+    e.preventDefault();
+    
+    var equipo = $(this).data('nombre');
+    var mentor = $(this).data('mentor');
+    var creador = $(this).data('creador');
+    var participantes = $(this).data('participantes');
+    
+    $("#detallesEquipo").text(equipo);
+    $("#detallesCreador").text(creador);
+    $("#detallesMentor").text(mentor);
+    $("#detallesParticipantes").text(participantes);
+    
+    $("#modalDetallesEquipoParticipantes").css("display", "block");
+  });
+
+   $(".borrar-solicitud-unirse").click(function(e) {
+    e.preventDefault();
+    
+    var solicitud = $(this).data('solicitud');
+    var nombreEquipoUnirse = $(this).data('nombre');
+    
+    $("#nombreEquipoUnirse").text(nombreEquipoUnirse);
+    
+    $("#modalBorrarUnirse").css("display", "block");
+
+    solicitudParaEliminar = solicitud;
+  });
+
+  $(".close-modal").click(function() {
+    $(".modal").css("display", "none");
+  });
+
+  $(window).click(function(event) {
+    if ($(event.target).hasClass("modal")) {
+      $(".modal").css("display", "none");
+    }
+  });
+
+ $("#btnEliminarSolicitudUnirse").click(function() {
+        $.ajax({
+            url: 'archivos/eliminar-solicitud-unirse.php',
+            type: 'POST',
+            data: { id_solicitud: solicitudParaEliminar },
+            success: function(response) {
+                if (response == "solicitudEliminada") {
+                    $("#modalBorrarUnirse").hide();
+                    $("#contenedorMisEquipos").load("misequipos.php");
+                } else {
+                    alert('Error al eliminar la solicitud.');
+                }
+            },
+            error: function() {
+                alert('Error en la solicitud.');
+            }
+        });
+    });
+});
+</script>
+
 
 <!-- MANEJAR BOTONES MENÚ -->
 
@@ -401,6 +470,42 @@ $currentPage = 'misequipos';
   </div>
 </div>
 
+<div id="modalDetallesEquipo" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center"></h1>
+     <p><strong>Nombre del equipo:</strong> <span id="detallesNombreEquipo"></span></p>
+    <p><strong>Mentor:</strong> <span id="detallesNombreMentor"></span></p>
+    <p><strong>Creador:</strong> <span id="detallesNombreCreador"></span></p>
+    <p><strong>Participantes:</strong> <span id="detallesNombreParticipantes"></span></p>
+    <div class="modal-footer-this">
+        <button type="button" class="btn btn-secondary close-modal">Cerrar</button>
+      </div>
+  </div>
+</div>
+
+<div id="modalDetallesEquipoParticipantes" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center"></h1>
+     <p><strong>Nombre del equipo:</strong> <span id="detallesEquipo"></span></p>
+    <p><strong>Mentor:</strong> <span id="detallesMentor"></span></p>
+    <p><strong>Creador:</strong> <span id="detallesCreador"></span></p>
+    <p><strong>Participantes:</strong> <span id="detallesParticipantes"></span></p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Cerrar</button>
+      </div>
+  </div>
+</div>
+
+<div id="modalBorrarUnirse" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center"></h1>
+     <p>¿Desea eliminar la solicitud para participar en el equipo <strong><span id="nombreEquipoUnirse"></span></strong>?</p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnEliminarSolicitudUnirse">Eliminar</button>
+      </div>
+  </div>
+</div>
 <!-- Script para resaltar la palabra del menú-->
 
 <script>
