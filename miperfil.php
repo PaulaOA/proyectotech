@@ -1,8 +1,22 @@
 <?php
 session_start();
-if (empty($_SESSION["nombre"])) {
+require "archivos/conexion.php";
+
+if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
+} else {
+  $id_usuario = $_SESSION["id_usuario"];
 }
+
+$sqlVideo = "SELECT nombrevideo, urlvideo, fecha FROM videos WHERE id_usuario = $id_usuario ORDER BY fecha DESC";
+    $queryVideo = mysqli_query($conn, $sqlVideo);
+
+    if (!$queryVideo) {
+      die("Error al obtener los videos: " . mysqli_error($conn));
+    }
+$sqlDocumentos = "SELECT * FROM documentos WHERE id_usuario = $id_usuario";
+$queryDocumentos = mysqli_query($conn, $sqlDocumentos);
+
 $currentPage = 'miperfil';
 ?>
 <!DOCTYPE html>
@@ -36,12 +50,10 @@ $currentPage = 'miperfil';
         height: 100%;
       }
 
-    
     .texto-margen-izquierdo {
       margin-left: 40px;
     }  
 
-      
       html {
     position: relative;
     min-height: 100%;
@@ -52,7 +64,7 @@ $currentPage = 'miperfil';
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
     }
 
     footer {
@@ -62,6 +74,22 @@ $currentPage = 'miperfil';
     height: 120px; /* Ajusta la altura de tu footer según lo necesites */
     background-color: #343a40; /* Color de fondo del footer */
     color: white; /* Color del texto del footer */
+    }
+
+    /* Estilo personalizado para la tabla de videos */
+    .table-videos {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .table-videos th,
+    .table-videos td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .table-videos iframe {
+      max-width: 100%;
     }
 
   </style>
@@ -118,12 +146,10 @@ $currentPage = 'miperfil';
 </div>
 </div>
 </div>
-
-
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <form action="./archivos/subir.php" method="POST" enctype="multipart/form-data">
+      <form id="formSubidaContenido" enctype="multipart/form-data">
         <div class="card mt-4 mb-4">
           <div class="card-header bg-primary text-white">Subida de contenido</div>
           <div class="card-body">
@@ -135,8 +161,11 @@ $currentPage = 'miperfil';
             <div class="mb-3">
               <label for="desc" class="form-label">Descripción</label>
               <input type="text" class="form-control" id="desc" name="desc">
+
+              <input type="hidden" class="form-control" id="id_usuario" name="id_usuario" value="<?=$id_usuario?>" >
+
             </div>
-            <button type="submit" class="btn btn-outline-secondary btn-outline-success">Subir</button>
+            <button class="btn btn-outline-secondary btn-outline-success" id="btnSubidaContenido">Subir</button>
           </div>
         </div>
       </form>
@@ -169,6 +198,9 @@ $currentPage = 'miperfil';
             <div class="mb-3">
               <label for="urlvideo" class="form-label">Url del video</label>
               <input type="text" class="form-control" id="urlvideo" name="urlvideo">
+
+              <input type="hidden" class="form-control" id="id_usuario" name="id_usuario" value="<?=$id_usuario?>" >
+
             </div>
             <button type="submit" class="btn btn-outline-secondary btn-outline-success">Guardar video</button>
           </div>
@@ -178,36 +210,32 @@ $currentPage = 'miperfil';
   </div>
 </div>
 <!--SUBIDA DE VIDEOS Y EDICION-->
-<?php 
-   require_once("./archivos/conexion.php");
-    $sqlVideo   = ("SELECT nombrevideo, urlvideo, fecha FROM videos ORDER BY fecha DESC");
-    $queryVideo = mysqli_query($conn, $sqlVideo);
 
-    if (!$queryVideo) {
-      die("Error al obtener los videos: " . mysqli_error($conn));
-    }
-  ?>
 <hr> 
-<h2 class="text-center mt-5 mb-3">Mis videos</h2>
-  <div class="table-responsive">
-    <table class="table table-hover table-striped">
-      <thead>
-        <tr>
-          <th>Titulo del video</th>
-          <th>Video</th>
-           <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php
-      while ($dataVideo = mysqli_fetch_array($queryVideo)) { ?>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="text-center mt-5 mb-3">Mis videos</h2>
+      <?php if (mysqli_num_rows($queryVideo) > 0): ?>
+      <div class="table-responsive table-videos">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Titulo</th>
+              <th>Video</th>
+               <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+          while ($dataVideo = mysqli_fetch_array($queryVideo)) { ?>
       <tr>
         <td><?php  echo htmlspecialchars($dataVideo['nombrevideo']); ?></td>
         <td>
-        <iframe width="450" height="280" src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="350" height="180" src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </td>
         <td>
-        <a href="./archivos/borrarvideo.php?fecha=<?php echo htmlspecialchars($dataVideo['fecha']); ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');">Borrar video</a>
+        <a href="./archivos/borrarvideo.php?fecha=<?php echo htmlspecialchars($dataVideo['fecha']); ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');"><i class="bi bi-trash"></i></a>
         </td>
       </tr>
       <?php } ?>
@@ -215,6 +243,48 @@ $currentPage = 'miperfil';
       </tbody>
     </table>
   </div>
+  <?php else: ?>
+      <p class="text-center mt-4">Aún no se ha subido ningún video.</p>
+    <?php endif; ?>
+</div>
+
+<div class="col-md-6">
+    <h2 class="text-center mt-5 mb-3">Contenido subido</h2>
+    <?php if (mysqli_num_rows($queryDocumentos) > 0): ?>
+      <div class="table-responsive table-videos">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Archivo</th>
+              <th>Descripción</th>
+               <th>Ver</th>
+               <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+          while ($dataDocumento = mysqli_fetch_array($queryDocumentos)) { ?>
+      <tr>
+        <td><?php  echo htmlspecialchars($dataDocumento['nombre']); ?></td>
+        <td><?php  echo htmlspecialchars($dataDocumento['descripcion']); ?></td>
+        <td>
+          <a href="<?php echo htmlspecialchars($dataDocumento['ruta']); ?>" target="_blank">Ver</a>
+        </td>
+        <td>
+        <a href="#" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+      <?php } ?>
+        
+      </tbody>
+    </table>
+  </div>
+  <?php else: ?>
+      <p class="text-center mt-4">Aún no se ha subido ningún archivo.</p>
+    <?php endif; ?>
+    </div>
+  </div>
+</div>
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
@@ -302,6 +372,34 @@ $currentPage = 'miperfil';
         });
     </script>
 
+    <!--SUBIDA CONTENIDO -->
+    <script>
+      $(document).ready(function() {
+       $("#btnSubidaContenido").click(function(event) {
+        event.preventDefault();
+        
+        // Crear un objeto FormData y añadir los datos del formulario
+        var formData = new FormData($('#formSubidaContenido')[0]);
+
+        $.ajax({
+            type: "POST",
+            url: "archivos/subir.php",
+            data: formData,
+            processData: false, // Evitar que jQuery procese los datos
+            contentType: false, // Evitar que jQuery establezca el tipo de contenido
+            success: function(response) {
+                if (response == "insercionCorrecta") {
+                    $("#contenedorMiPerfil").load("miperfil.php");
+                } else {
+                    alert('Error: ' + response);
+                }
+            }
+        });
+    });
+});
+</script>
+
+
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">
@@ -336,4 +434,3 @@ $currentPage = 'miperfil';
 </div>
 </body>
 </html>
-

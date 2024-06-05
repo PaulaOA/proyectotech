@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fecha = date("Y-m-d H:i:s"); // Formato de fecha estándar para SQL
     $nombreVideo = mysqli_real_escape_string($conn, $_POST['nombrevideo']);
     $urlVideo = mysqli_real_escape_string($conn, $_POST['urlvideo']);
+    $id_usuario = $_POST['id_usuario'];
 
     // Validar y transformar la URL del video
     if (preg_match('/youtu\.be\/([^\&\?\/]+)/', $urlVideo, $id)) {
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $url_final_video = 'https://www.youtube.com/embed/' . $videoId;
 
     // Creación INSERT a BD
-    $queryInsert = "INSERT INTO videos (nombrevideo, urlvideo, fecha) VALUES ('$nombreVideo', '$url_final_video', '$fecha')";
+    $queryInsert = "INSERT INTO videos (nombrevideo, urlvideo, fecha, id_usuario) VALUES ('$nombreVideo', '$url_final_video', '$fecha', $id_usuario)";
     $result = mysqli_query($conn, $queryInsert);
 
     if ($result) {
