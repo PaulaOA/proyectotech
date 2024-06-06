@@ -14,6 +14,7 @@ $currentPage = 'inicio';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href= "css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
     /* Estilo para las imágenes del carousel */
     .carousel-item img {
@@ -185,24 +186,60 @@ $currentPage = 'inicio';
 <!--MOSTRAR GALERIA DE VIDEOS SUBIDOS-->
 
     <div class="container">
-
-      <div class="row text-center">
-        <div class="col-6">
+       <div class="col-md-8">
+         <h2 class="text-center mt-5 mb-3">Vídeos compartidos</h2>
           <?php 
-          if( $totalVideo >0){ ?>
-          <h2><?php echo $dataVideo['nombrevideo']; ?></h2>
-
+            if (mysqli_num_rows($queryVideo) > 0):
+          while( $dataVideo = mysqli_fetch_array($queryVideo)){ ?>
+          <h2><?=$dataVideo['nombrevideo']; ?></h2>
           <div class="video-responsive">
-            <iframe src="<?php echo $dataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            <iframe src="<?= $dataVideo['urlvideo']; ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
           </div>
-        <?php }else{ ?>
-        <h2>No hay contenido</h2>
-        <?php } ?>
-
+          <p class="mt-1">Compartido por <?=$dataVideo['nombre_usuario']?> para <?=$dataVideo['nombre_equipo']?> </p>
+        <?php } else: ?>
+      <p class="text-center mt-4">No existen vídeos.</p>
+        <?php endif; ?>
         </div>
       </div>
-    </div> 
+<hr>
+
+<div class="container">
+<div class="col-md-8">
+    <h2 class="text-center mt-5 mb-3">Archivos compartidos</h2>
+      <?php if (mysqli_num_rows($queryDocumentos) > 0): ?>
+      <div class="table-responsive table-videos">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Archivo</th>
+              <th>Descripción</th>
+               <th>Ver</th>
+               <th>Equipo</th>
+               <th>Compartido por</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+          while ($dataDocumento = mysqli_fetch_array($queryDocumentos)) { ?>
+      <tr>
+        <td><?php  echo htmlspecialchars($dataDocumento['nombre']); ?></td>
+        <td><?php  echo htmlspecialchars($dataDocumento['descripcion']); ?></td>
+        <td>
+          <a href="<?php echo htmlspecialchars($dataDocumento['ruta']); ?>" target="_blank"><i class="fas fa-eye eye-icon"></i></a>
+        </td>
+        <td><?=$dataDocumento['nombre_equipo']; ?></td>
+        <td><?=$dataDocumento['nombre_usuario']; ?></td>
+      </tr>
+      <?php } ?>
+      </tbody>
+    </table>
+  </div>
+    <?php else: ?>
+      <p class="text-center mt-4">No existen archivos.</p>
+    <?php endif; ?>
+    </div>
+  </div>
 <hr>
     <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
