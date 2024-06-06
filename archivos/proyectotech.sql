@@ -41,10 +41,8 @@ CREATE TABLE documentos(
   nombre varchar(500),
   descripcion varchar(500),
   id_usuario int,
-  id_equipo int,
   ruta varchar(255),
-  FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario),
-  FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
+  FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
 );
 
 CREATE TABLE videos(
@@ -53,9 +51,7 @@ CREATE TABLE videos(
   urlvideo varchar(250) NOT NULL,
   fecha varchar(50) NOT NULL,
   id_usuario int,
-  id_equipo int,
-  FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario),
-  FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
+  FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
 );
 
 CREATE TABLE solicitudes_equipo (
@@ -65,6 +61,26 @@ CREATE TABLE solicitudes_equipo (
     estado ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
     FOREIGN KEY (id_participante) REFERENCES participantes(id_participante),
     FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
+);
+
+CREATE TABLE documentos_compartidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_documento INT,
+    id_equipo INT,
+    id_usuario int,
+    FOREIGN KEY (id_documento) REFERENCES documentos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE
+);
+
+CREATE TABLE videos_compartidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_video INT,
+    id_equipo INT,
+    id_usuario int,
+    FOREIGN KEY (id_video) REFERENCES videos (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE
 );
 
 ALTER TABLE participantes
@@ -119,32 +135,16 @@ ALTER TABLE documentos
 DROP FOREIGN KEY documentos_ibfk_1;
 
 ALTER TABLE documentos
-DROP FOREIGN KEY documentos_ibfk_2;
-
-ALTER TABLE documentos
 ADD CONSTRAINT FK_documentos_registro
 FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
-ON DELETE CASCADE;
-
-ALTER TABLE documentos
-ADD CONSTRAINT FK_documentos_equipos
-FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
 ON DELETE CASCADE;
 
 ALTER TABLE videos
 DROP FOREIGN KEY videos_ibfk_1;
 
 ALTER TABLE videos
-DROP FOREIGN KEY videos_ibfk_2;
-
-ALTER TABLE videos
 ADD CONSTRAINT FK_videos_registro
 FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
-ON DELETE CASCADE;
-
-ALTER TABLE videos
-ADD CONSTRAINT FK_videos_equipos
-FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
 ON DELETE CASCADE;
 
 INSERT INTO registro (nombre, apellidos, email, contraseña, admin) VALUES 

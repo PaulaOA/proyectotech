@@ -96,7 +96,6 @@ $currentPage = 'misequipos';
     <div class="contenedor" id="contenedorMisEquipos">
       <?php include "menu-superior.php" ?>
 
-
 <div class="container-fluid" style="max-width: 100%;">
   <div class="row justify-content-center">
     <div class="col-md-4 pl-4">
