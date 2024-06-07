@@ -22,6 +22,8 @@ session_start();
                 if ($datos->admin == 1) {
                     $_SESSION["admin"]=$datos->admin;
                     echo "admin";
+                 } else if ($_SESSION["cargo"] == "Juez") {
+                    echo "juez";
                  } else {
                     echo "inicio";
                    }

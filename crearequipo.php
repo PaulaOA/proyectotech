@@ -128,6 +128,23 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                                       }
                                       ?>
                                     </select>
+                                      <fieldset class="row-auto">
+                                        <legend class="col-form-label col-sm-2 pt-0">División</legend>
+                                        <div class="col-sm-10">
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="division" id="junior" value="Junior" checked>
+                                            <label class="form-check-label" for="junior">
+                                              Junior
+                                            </label>
+                                          </div>
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="division" id="senior" value="Senior">
+                                            <label class="form-check-label" for="senior">
+                                              Senior
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </fieldset> 
                                    </div> 
                                 </div>
                             </div>

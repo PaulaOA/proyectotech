@@ -39,6 +39,9 @@ if (empty($_POST['nombre']) ||
                         } else if ($cargo == "Participante") {
                             $insertarParticipante = "INSERT INTO participantes (id_usuario) VALUES ('$id_usuario')";
                             $conn->query($insertarParticipante);
+                        } else if ($cargo == "Juez") {
+                            $insertarJuez = "INSERT INTO jueces (id_usuario) VALUES ('$id_usuario')";
+                            $conn->query($insertarJuez);
                         }
 
                         echo "registroCorrecto";

@@ -106,35 +106,30 @@ $currentPage = 'encontrarequipo';
                 <input type="text" class="form-control" id="busquedaNombre" name="busquedaNombre">
                 <input type="hidden" id="idParticipante" name="idParticipante" value="<?= $id_participante; ?>">
             </div>
-            <div class="mb-3">
+            <!--<div class="mb-3">
                 <label class="mb-3" for="busquedaCiudad">Búsqueda por ciudad</label>
                 <input type="text" class="form-control" id="busquedaCiudad" name="busquedaCiudad">
-            </div>
-            <button class="btn btn-primary btn-success" id="btnBuscarEquipos">Buscar</button>
-              <hr>
+            </div>-->
+            <div class="mb-3">
+            <legend class="col-form-label">Búsqueda por División</legend>
              <fieldset class="row-auto">
-              <legend class="col-form-label col-sm-2 pt-0">División</legend>
               <div class="col-sm-10">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                  <label class="form-check-label" for="gridRadios1">
-                    Senior
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                  <label class="form-check-label" for="gridRadios2">
+                  <input class="form-check-input mb-1" type="radio" name="division" id="junior" value="junior">
+                  <label class="form-check-label mb-1" for="junior">
                     Junior
                   </label>
                 </div>
-                <div class="form-check disabled">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>
-                  <label class="form-check-label" for="gridRadios3">
-                    Sin asignar
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="division" id="senior" value="senior">
+                  <label class="form-check-label" for="gridRadios2">
+                    Senior
                   </label>
                 </div>
               </div>
-              </fieldset> 
+              </fieldset>
+            </div>
+            <button class="btn btn-primary btn-success" id="btnBuscarEquipos">Buscar</button>
             </form>
           </div>
         </div>
@@ -143,7 +138,6 @@ $currentPage = 'encontrarequipo';
     <div class="row justify-content-center mt-3">
     <div class="col-md-10">
     <div class="row"  id="resultadoBusqueda">
-
                   
             </div>
         </div>

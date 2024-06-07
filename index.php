@@ -36,6 +36,30 @@
     background-color: #343a40; /* Color de fondo del footer */
     color: white; /* Color del texto del footer */
     }
+    .table-videos {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .table-videos th,
+    .table-videos td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .table-videos iframe {
+      width: 400px;
+      height: 230px;
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+    }
       
     </style>
   </head>
@@ -150,6 +174,13 @@
                           } else if (response == "admin") {
                             $("#contenedorIndex").load("admin.php", function(){
                               history.pushState(null,null,"admin.php");
+                            });
+                            window.onpopstate = function(event){
+                              $("#contenedorIndex").load("index.php");
+                               };
+                          } else if (response == "juez") {
+                            $("#contenedorIndex").load("juez.php", function(){
+                              history.pushState(null,null,"juez.php");
                             });
                             window.onpopstate = function(event){
                               $("#contenedorIndex").load("index.php");

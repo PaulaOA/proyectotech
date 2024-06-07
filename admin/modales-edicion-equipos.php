@@ -12,10 +12,29 @@
       <input type="number" name="id_equipo" id="id_equipo" class="form-control" value="<?= $equipo['id_equipo']?>" readonly>
       <label for="nombre" class="texto-label">Nombre Equipo</label>
       <input type="text" name="nombre" id="nombre" class="form-control" value="<?= $equipo['nombre_equipo']?>">
-      <label for="id_mentor" class="texto-label">ID Mentor</label>
-      <input type="text" name="id_mentor" id="id_mentor" class="form-control" value="<?= $equipo['id_mentor']?>">
-      <label for="nombre_mentor" class="texto-label">Nombre mentor</label>
-      <input type="text" name="nombre_mentor" id="nombre_mentor" class="form-control" value="<?= $equipo['nombre_mentor']?>">
+      <fieldset class="row-auto">
+          <legend class="col-form-label col-sm-2 pt-0 texto-label">División</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="division" id="junior" value="Junior" <?php if ($equipo['division'] == 'Junior') echo "checked"?>>
+              <label class="form-check-label" for="junior">
+                Junior
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="division" id="senior" value="Senior" <?php if ($equipo['division'] == 'Senior') echo "checked"?>>
+              <label class="form-check-label" for="senior">
+                Senior
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <label for="estado" class="texto-label">Estado</label>
+        <select name="estado" id="estado" class="form-select texto-label">
+        <option <?php if ($equipo['estado'] == 'pendiente') echo "selected" ?>>Pendiente</option>
+        <option <?php if ($equipo['estado'] == 'aceptada') echo "selected" ?>>Aceptada</option>
+        <option <?php if ($equipo['estado'] == 'rechazada') echo "selected" ?>>Rechazada</option>
+      </select>
     </form>
       </div>
       <div class="modal-footer">
@@ -152,6 +171,23 @@ $resultado = $conn->query($sql);
             }
             ?>
           </select>
+          <fieldset class="row-auto">
+          <legend class="col-form-label col-sm-2 pt-0 texto-label">División</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="division" id="junior" value="Junior" checked>
+              <label class="form-check-label" for="junior">
+                Junior
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="division" id="senior" value="Senior">
+              <label class="form-check-label" for="senior">
+                Senior
+              </label>
+            </div>
+          </div>
+        </fieldset>
         </form>
       </div>
       <div class="modal-footer">

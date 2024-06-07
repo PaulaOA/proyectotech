@@ -9,23 +9,15 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'admin') echo 'active'; ?>" href="#" id="btnAdmin">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'usuarios') echo 'active'; ?>" href="#" id="btnUsuarios">Usuarios</a>
+          <a class="nav-link <?php if ($currentPage === 'juez') echo 'active'; ?>" href="#" id="btnJuez">Inicio</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php if ($currentPage === 'equipos') echo 'active'; ?>" href="#" id="btnEquipos">Equipos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'proyectos') echo 'active'; ?>" href="#" id="btnProyectos">Proyectos</a>
+          <a class="nav-link <?php if ($currentPage === 'evaluar') echo 'active'; ?>" href="#" id="btnEvaluar">Evaluar</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'evaluaciones') echo 'active'; ?>" href="#" id="btnEvaluaciones">Evaluaciones</a>
-        </li>
-        <li>
         <a class="nav-item nav-link text-justify ml-3 hover-primary" href="#" id="btnSalir">Salir</a>
-      </li>
       </ul>
     </div>
   </div>

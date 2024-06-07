@@ -6,6 +6,7 @@ if (empty($_POST['nombreEquipo']) || empty($_POST['id_mentor'])) {
 } else {
     $nombre_equipo = $_POST['nombreEquipo'];
     $id_mentor = $_POST['id_mentor'];
+    $division = $_POST['division'];
 
     if(isset($_SESSION['id_usuario'])) {
         $id_usuario = $_SESSION['id_usuario'];
@@ -21,7 +22,7 @@ if (empty($_POST['nombreEquipo']) || empty($_POST['id_mentor'])) {
         if ($resultado_participante && $resultado_participante->num_rows > 0) {
             $id_participante = $resultado_participante->fetch_assoc()['id_participante'];
 
-            $sql = "INSERT INTO equipos (nombre_equipo, id_creador, id_mentor) VALUES ('$nombre_equipo', '$id_usuario', '$id_mentor')";
+            $sql = "INSERT INTO equipos (nombre_equipo, id_creador, id_mentor, division) VALUES ('$nombre_equipo', '$id_usuario', '$id_mentor', '$division')";
 
             if ($conn->query($sql) === TRUE) {
                 $id_equipo = $conn->insert_id;

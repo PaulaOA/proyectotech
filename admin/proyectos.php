@@ -154,6 +154,15 @@ $currentPage = 'proyectos';
       });
     });
 
+     $(document).ready(function(){
+      $("#btnEvaluaciones").click(function(e){
+        e.preventDefault();
+          $("#contenedorProyectos").load("evaluaciones.php", function(){
+            history.pushState(null,null,"evaluaciones.php");
+          });
+      });
+    });
+
   $(document).ready(function(){
   $("#btnSalir").click(function(e){
       e.preventDefault();

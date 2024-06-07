@@ -91,12 +91,13 @@ $equipos = $conn->query($sql);
               <table class="table table-striped mb-2">
               <thead>
                   <tr>
-                      <th class="text-center">ID equipo</th>
-                      <th class="text-center">Nombre equipo</th>
+                      <th class="text-center">ID</th>
+                      <th class="text-center">Nombre</th>
                       <th class="text-center">ID creador</th>
-                      <th class="text-center">Nombre creador</th>
+                      <th class="text-center">Creador</th>
                       <th class="text-center">ID mentor</th>
-                      <th class="text-center">Nombre mentor</th>
+                      <th class="text-center">Mentor</th>
+                      <th class="text-center">División</th>
                       <th class="text-center">Estado solicitud</th>
                       <th class="text-center">Editar</th>
                       <th class="text-center">Eliminar</th>
@@ -120,6 +121,7 @@ $equipos = $conn->query($sql);
                       <td class="text-center"><?= $nombre_creador; ?></td>
                       <td class="text-center"><?= $equipo['id_mentor']; ?></td>
                       <td class="text-center"><?= $nombre_mentor; ?></td>
+                      <td class="text-center"><?= $equipo['division']; ?></td>
                       <td class="text-center"><?= $equipo['estado']; ?></td>
                       <td class="text-center">
                         <a href="#" class="editar-equipo" data-id="<?= $equipo['id_equipo']?>">
@@ -247,6 +249,15 @@ $equipos = $conn->query($sql);
         e.preventDefault();
           $("#contenedorEquipos").load("proyectos.php", function(){
             history.pushState(null,null,"proyectos.php");
+          });
+      });
+    });
+
+    $(document).ready(function(){
+      $("#btnEvaluaciones").click(function(e){
+        e.preventDefault();
+          $("#contenedorEquipos").load("evaluaciones.php", function(){
+            history.pushState(null,null,"evaluaciones.php");
           });
       });
     });
