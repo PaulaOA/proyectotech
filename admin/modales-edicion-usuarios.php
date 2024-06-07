@@ -23,6 +23,7 @@
           <select name="cargo" id="cargo" class="form-select">
             <option <?php if ($usuario['cargo'] == 'Mentor') echo "selected" ?>>Mentor</option>
             <option <?php if ($usuario['cargo'] == 'Participante') echo "selected" ?>>Participante</option>
+            <option <?php if ($usuario['cargo'] == 'Juez') echo "selected" ?>>Juez</option>
           </select>
         </form>
       </div>
@@ -104,18 +105,7 @@
                 method: "POST",
                 data: $("#formEditarUsuario").serialize(),
                 success: function(response) {
-                   const validResponses = [
-                      "usuarioEditado",
-                      "usuarioEditadomentorEliminado",
-                      "usuarioEditadosinRegistro",
-                      "usuarioEditadoyaExiste",
-                      "usuarioEditadomentorAgregado",
-                      "usuarioEditadomentorAgregadoparticipanteEliminado",
-                      "usuarioEditadomentorEliminadoparticipanteAgregado",
-                      "usuarioEditadoparticipanteAgregado", 
-                      "usuarioEditadoparticipanteEliminado"
-                  ];
-                    if (validResponses.includes(response)) {
+                    if (response == "usuarioEditado") {
                       $("#modalGuardarCambios").modal("hide");
                       $("#modalEditarUsuario").modal("hide");
                       $("#contenedorUsuarios").load("usuarios.php");
@@ -153,6 +143,7 @@
             <option selected>Elige una opción</option>
             <option>Mentor</option>
             <option>Participante</option>
+            <option>Juez</option>
           </select>
         </form>
       </div>

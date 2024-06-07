@@ -1,9 +1,12 @@
 <?php
 session_start();
-if (empty($_SESSION["admin"])) {
+if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
+} else {
+  $nombre = $_SESSION['nombre'];
+  $id_usuario = $_SESSION['id_usuario'];
 }
-$currentPage = 'admin';
+$currentPage = 'juez';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -35,15 +38,20 @@ $currentPage = 'admin';
         height: 100%;
       }
 
-    html {
+      html {
     position: relative;
     min-height: 100%;
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 80px; /* Ajusta este valor según la altura de tu footer */
     }
-      footer {
+
+    .navbar-nav .nav-link {
+    font-size: 18px; 
+    }
+
+    footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -51,6 +59,7 @@ $currentPage = 'admin';
     background-color: #343a40; /* Color de fondo del footer */
     color: white; /* Color del texto del footer */
     }
+
     </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Inicio | Technovation Girl</title>
@@ -58,9 +67,9 @@ $currentPage = 'admin';
   </head>
   <body>
 
-    <div class="contenedor" id="contenedorAdmin">
+    <div class="contenedor" id="contenedorJuez">
 
-      <?php include "admin/menu-admin.php" ?>
+      <?php include "juez/menu-juez.php" ?>
 
 
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -118,72 +127,27 @@ $currentPage = 'admin';
 
     <script>
           $(document).ready(function(){
-            $("#btnAdmin").click(function(e){
+            $("#btnJuez").click(function(e){
               e.preventDefault();
-                $("#contenedorAdmin").load("admin.php", function(){
-                  history.pushState(null,null,"admin.php");
+                $("#contenedorJuez").load("juez.php", function(){
+                  history.pushState(null,null,"juez.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorAdmin").load("admin.php");
-              };
             });
-          });
 
-        </script>
-
-         <script>
-          $(document).ready(function(){
-            $("#btnUsuarios").click(function(e){
+            $("#btnEvaluar").click(function(e){
               e.preventDefault();
-                $("#contenedorAdmin").load("admin/usuarios.php", function(){
-                  history.pushState(null,null,"admin/usuarios.php");
+                $("#contenedorJuez").load("juez/evaluar.php", function(){
+                  history.pushState(null,null,"juez/evaluar.php");
                 });
-                window.onpopstate = function(event){
-                $("#contenedorAdmin").load("admin.php");
-              };
             });
-          });
 
-        </script>
-
-         <script>
-          $(document).ready(function(){
             $("#btnEquipos").click(function(e){
               e.preventDefault();
-                $("#contenedorAdmin").load("admin/equipos.php", function(){
-                  history.pushState(null,null,"admin/equipos.php");
+                $("#contenedorJuez").load("juez/equipos.php", function(){
+                  history.pushState(null,null,"juez/equipos.php");
                 });
                 window.onpopstate = function(event){
-                $("#contenedorAdmin").load("admin.php");
-              };
-            });
-          });
-
-        </script>
-
-         <script>
-          $(document).ready(function(){
-            $("#btnProyectos").click(function(e){
-              e.preventDefault();
-                $("#contenedorAdmin").load("admin/proyectos.php", function(){
-                  history.pushState(null,null,"admin/proyectos.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorAdmin").load("admin.php");
-              };
-            });
-          });
-
-        </script>
-        <script>
-          $(document).ready(function(){
-            $("#btnEvaluaciones").click(function(e){
-              e.preventDefault();
-                $("#contenedorAdmin").load("admin/evaluaciones.php", function(){
-                  history.pushState(null,null,"admin/evaluaciones.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorAdmin").load("admin.php");
+                $("#contenedorJuez").load("juez.php");
               };
             });
           });
@@ -198,7 +162,7 @@ $currentPage = 'admin';
                 type: "POST",
                 url: "archivos/controlador_cerrarsesion.php",
                 success: function(data){
-                    $("#contenedorAdmin").load("index.php", function(){
+                    $("#contenedorJuez").load("index.php", function(){
                       history.pushState(null,null,"index.php");
                     });
                     window.onpopstate = function(event){

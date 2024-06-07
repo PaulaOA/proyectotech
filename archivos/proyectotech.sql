@@ -26,12 +26,19 @@ CREATE TABLE mentores(
   FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
 );
 
+CREATE TABLE jueces(
+  id_juez INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT, 
+  FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
+);
+
 CREATE TABLE equipos(
   id_equipo int AUTO_INCREMENT PRIMARY KEY,
   nombre_equipo varchar(60),
   id_creador int,
   id_mentor INT,
   estado ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
+  division varchar(60),
   FOREIGN KEY (id_creador) REFERENCES registro(id_usuario),
   FOREIGN KEY (id_mentor) REFERENCES mentores(id_mentor)
   );
@@ -83,6 +90,15 @@ CREATE TABLE videos_compartidos (
     FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE
 );
 
+CREATE TABLE jueces_equipos (
+    id_juez INT,
+    id_equipo INT,
+    estado_evaluacion ENUM('sin evaluaciones', 'guardada', 'definitiva') DEFAULT 'sin evaluaciones',
+    PRIMARY KEY (id_juez, id_equipo),
+    FOREIGN KEY (id_juez) REFERENCES jueces(id_juez) ON DELETE CASCADE,
+    FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE
+);
+
 ALTER TABLE participantes
 DROP FOREIGN KEY participantes_ibfk_1;
 
@@ -96,6 +112,14 @@ DROP FOREIGN KEY mentores_ibfk_1;
 
 ALTER TABLE mentores
 ADD CONSTRAINT FK_mentores_registro
+FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
+ON DELETE CASCADE;
+
+ALTER TABLE jueces
+DROP FOREIGN KEY jueces_ibfk_1;
+
+ALTER TABLE jueces
+ADD CONSTRAINT FK_jueces_registro
 FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
 ON DELETE CASCADE;
 

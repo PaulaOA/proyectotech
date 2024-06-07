@@ -69,6 +69,7 @@ if(isset($_GET['id_usuario'])){
       <select name="cargo" id="cargo" class="form-select">
         <option <?php if ($usuario['cargo'] == 'Mentor') echo "selected" ?>>Mentor</option>
         <option <?php if ($usuario['cargo'] == 'Participante') echo "selected" ?>>Participante</option>
+        <option <?php if ($usuario['cargo'] == 'Juez') echo "selected" ?>>Juez</option>
       </select>
     </form>
 </body>

@@ -42,10 +42,6 @@ $currentPage = 'miperfil';
     position: relative;
     min-height: 100%;
     }
-   html {
-    position: relative;
-    min-height: 100%;
-    }
 
     body {
     margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
@@ -72,7 +68,8 @@ $currentPage = 'miperfil';
     }
 
     .table-videos iframe {
-      max-width: 100%;
+      width: 400px;
+      height: 230px;
     }
 
     .modal {
@@ -140,7 +137,7 @@ $currentPage = 'miperfil';
 <div class="col-md-8">
     <div class="card mt-4 mb-4">
     <div class="card-header bg-primary text-white">Datos usuario</div>
-      <div class="card-body col-md-8">
+      <div class="card-body">
         <table class="table table-striped mb-2">
         <thead>
             <tr>
@@ -254,7 +251,7 @@ $currentPage = 'miperfil';
       <tr>
         <td><?php  echo htmlspecialchars($dataVideo['nombrevideo']); ?></td>
         <td>
-        <iframe width="400" height="230" src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="<?php echo htmlspecialchars($dataVideo['urlvideo']); ?>"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </td>
         <td>
           <select name="id_equipo_video" id="equipoSeleccionadoVideo" class="form-control" style="margin-bottom:10px">

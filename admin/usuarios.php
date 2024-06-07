@@ -50,16 +50,15 @@ $usuarios = $conn->query($sql);
     }
 
     body {
-    margin-bottom: 80px; 
+    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
     }
-
-    footer {
+      footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px;
-    background-color: #343a40; 
-    color: white; 
+    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    background-color: #343a40; /* Color de fondo del footer */
+    color: white; /* Color del texto del footer */
     }
 
      .navbar-nav .nav-link {
@@ -242,6 +241,15 @@ $usuarios = $conn->query($sql);
           e.preventDefault();
             $("#contenedorUsuarios").load("proyectos.php", function(){
               history.pushState(null,null,"proyectos.php");
+            });
+        });
+      });
+
+      $(document).ready(function(){
+        $("#btnEvaluaciones").click(function(e){
+          e.preventDefault();
+            $("#contenedorUsuarios").load("evaluaciones.php", function(){
+              history.pushState(null,null,"evaluaciones.php");
             });
         });
       });

@@ -19,7 +19,7 @@
       }
 
       .modal {
-          display: none; /* Por defecto, ocultar el modal */
+          display: none;
           position: fixed;
           z-index: 1000;
           left: 0;
@@ -148,6 +148,7 @@
                                         <option selected>Elige una opción</option>
                                         <option>Mentor</option>
                                         <option>Participante</option>
+                                        <option>Juez</option>
                                     </select>
                                     </div>
                                 </div>
