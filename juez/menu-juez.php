@@ -12,10 +12,7 @@
           <a class="nav-link <?php if ($currentPage === 'juez') echo 'active'; ?>" href="#" id="btnJuez">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'equipos') echo 'active'; ?>" href="#" id="btnEquipos">Equipos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if ($currentPage === 'evaluar') echo 'active'; ?>" href="#" id="btnEvaluar">Evaluar</a>
+          <a class="nav-link <?php if ($currentPage === 'evaluaciones') echo 'active'; ?>" href="#" id="btnEvaluaciones">Evaluaciones</a>
         </li>
         <a class="nav-item nav-link text-justify ml-3 hover-primary" href="#" id="btnSalir">Salir</a>
       </ul>

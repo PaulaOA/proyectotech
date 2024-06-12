@@ -246,7 +246,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                       data: { id_equipo: id_equipo },
                       success: function(response) {
                           if (response == "solicitudEliminada") {
-                            $("#modalEliminarSolicitud").modal("hide");
+                            $("#modalEliminarSolicitud").hide();
                             $("#contenedorCrearEquipo").load("crearequipo.php");
                           } else {
                             alert("No se pudo eliminar la solicitud");

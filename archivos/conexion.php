@@ -10,4 +10,11 @@
     if ($conn->connect_error){
         die("Conexión fallida" . $conn->connect_error);
     } 
+
+    $nameDatabase = "formulariojunior";
+    $connFormulario = new mysqli($servername, $username, $password, $nameDatabase);
+    $connFormulario->set_charset("utf8");
+    if ($connFormulario->connect_error){
+        die("Conexión fallida" . $connFormulario->connect_error);
+    }
 ?>

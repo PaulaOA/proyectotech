@@ -48,6 +48,7 @@ $consulta_participantes = $conn->query($sql_participantes);
 $sql_equiposParticipante= "SELECT 
                               e.nombre_equipo, 
                               e.id_equipo,
+                              e.division,
                               r_creador.nombre AS nombre_creador,
                               r_mentor.nombre AS nombre_mentor,
                               GROUP_CONCAT(DISTINCT r_participante.nombre SEPARATOR ', ') AS nombre_participantes
