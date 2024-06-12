@@ -70,7 +70,7 @@ $currentPage = 'misequipos';
           border: 1px solid #888;
           width: 40%;
           max-width: 350px;
-          height: 250px;
+          height: 300px;
           z-index: 1100;
         }
 
@@ -113,7 +113,7 @@ $currentPage = 'misequipos';
                       while ($equiposCreados = $consulta_equiposCreados->fetch_assoc()): ?>
                   <tr>
                       <td><?=$equiposCreados['nombre_equipo']?></td>
-                      <td style="text-align: right;"><a href="#" class="ver-detalles-equipo" data-id="<?=$equiposCreados['id_equipo']?>" data-nombre="<?=$equiposCreados['nombre_equipo']?>" data-mentor="<?=$equiposCreados['nombre_mentor']?>" data-creador="<?=$equiposCreados['nombre_creador']?>" data-participantes="<?=$equiposCreados['nombre_participantes']?>">Ver detalles</a></td>
+                      <td style="text-align: right;"><a href="#" class="ver-detalles-equipo" data-id="<?=$equiposCreados['id_equipo']?>" data-nombre="<?=$equiposCreados['nombre_equipo']?>" data-mentor="<?=$equiposCreados['nombre_mentor']?>" data-creador="<?=$equiposCreados['nombre_creador']?>" data-participantes="<?=$equiposCreados['nombre_participantes']?>" data-division="<?=$equiposCreados['division']?>">Ver detalles</a></td>
                     </tr>
                     <?php endwhile;
                      } else {?>
@@ -128,7 +128,7 @@ $currentPage = 'misequipos';
                       while ($equiposParticipante = $resultado_equiposParticipante->fetch_assoc()): ?>
                   <tr>
                       <td><?=$equiposParticipante['nombre_equipo']?></td>
-                      <td style="text-align: right;"><a href="#" class="ver-detalles-equipo-participante" data-id="<?=$equiposParticipante['id_equipo']?>" data-nombre="<?=$equiposParticipante['nombre_equipo']?>" data-mentor="<?=$equiposParticipante['nombre_mentor']?>" data-creador="<?=$equiposParticipante['nombre_creador']?>" data-participantes="<?=$equiposParticipante['nombre_participantes']?>">Ver detalles</a></td>
+                      <td style="text-align: right;"><a href="#" class="ver-detalles-equipo-participante" data-id="<?=$equiposParticipante['id_equipo']?>" data-nombre="<?=$equiposParticipante['nombre_equipo']?>" data-mentor="<?=$equiposParticipante['nombre_mentor']?>" data-creador="<?=$equiposParticipante['nombre_creador']?>" data-participantes="<?=$equiposParticipante['nombre_participantes']?>" data-division="<?=$equiposParticipante['division']?>">Ver detalles</a></td>
                     </tr>
                     <?php endwhile;
                      } else {?>
@@ -282,11 +282,14 @@ $(document).ready(function() {
     var nombreMentor = $(this).data('mentor');
     var nombreCreador = $(this).data('creador');
     var nombreParticipantes = $(this).data('participantes');
+    var nombreDivision = $(this).data('division');
     
     $("#detallesNombreEquipo").text(nombreEquipo);
     $("#detallesNombreCreador").text(nombreCreador);
     $("#detallesNombreMentor").text(nombreMentor);
     $("#detallesNombreParticipantes").text(nombreParticipantes);
+    $("#detallesNombreDivision").text(nombreDivision);
+
     
     $("#modalDetallesEquipo").css("display", "block");
   });
@@ -298,11 +301,13 @@ $(document).ready(function() {
     var mentor = $(this).data('mentor');
     var creador = $(this).data('creador');
     var participantes = $(this).data('participantes');
+    var division = $(this).data('division');
     
     $("#detallesEquipo").text(equipo);
     $("#detallesCreador").text(creador);
     $("#detallesMentor").text(mentor);
     $("#detallesParticipantes").text(participantes);
+    $("#detallesDivision").text(division);
     
     $("#modalDetallesEquipoParticipantes").css("display", "block");
   });
@@ -473,6 +478,7 @@ $(document).ready(function() {
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center"></h1>
      <p><strong>Nombre del equipo:</strong> <span id="detallesNombreEquipo"></span></p>
+     <p><strong>División:</strong> <span id="detallesNombreDivision"></span></p>
     <p><strong>Mentor:</strong> <span id="detallesNombreMentor"></span></p>
     <p><strong>Creador:</strong> <span id="detallesNombreCreador"></span></p>
     <p><strong>Participantes:</strong> <span id="detallesNombreParticipantes"></span></p>
@@ -486,6 +492,7 @@ $(document).ready(function() {
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center"></h1>
      <p><strong>Nombre del equipo:</strong> <span id="detallesEquipo"></span></p>
+     <p><strong>División:</strong> <span id="detallesDivision"></span></p>
     <p><strong>Mentor:</strong> <span id="detallesMentor"></span></p>
     <p><strong>Creador:</strong> <span id="detallesCreador"></span></p>
     <p><strong>Participantes:</strong> <span id="detallesParticipantes"></span></p>

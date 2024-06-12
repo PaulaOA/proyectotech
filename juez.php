@@ -134,17 +134,10 @@ $currentPage = 'juez';
                 });
             });
 
-            $("#btnEvaluar").click(function(e){
+            $("#btnEvaluaciones").click(function(e){
               e.preventDefault();
-                $("#contenedorJuez").load("juez/evaluar.php", function(){
-                  history.pushState(null,null,"juez/evaluar.php");
-                });
-            });
-
-            $("#btnEquipos").click(function(e){
-              e.preventDefault();
-                $("#contenedorJuez").load("juez/equipos.php", function(){
-                  history.pushState(null,null,"juez/equipos.php");
+                $("#contenedorJuez").load("juez/evaluaciones.php", function(){
+                  history.pushState(null,null,"juez/evaluaciones.php");
                 });
                 window.onpopstate = function(event){
                 $("#contenedorJuez").load("juez.php");
@@ -166,7 +159,7 @@ $currentPage = 'juez';
                       history.pushState(null,null,"index.php");
                     });
                     window.onpopstate = function(event){
-                    $("#contenedorAdmin").load("index.php");
+                    $("#contenedorJuez").load("index.php");
                   };
                     }
                 });

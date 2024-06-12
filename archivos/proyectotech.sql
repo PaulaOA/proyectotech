@@ -99,6 +99,88 @@ CREATE TABLE jueces_equipos (
     FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE
 );
 
+CREATE TABLE categorias_junior (
+   id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+   nombre VARCHAR(255)
+);
+
+CREATE TABLE items_junior (
+   id_item INT PRIMARY KEY AUTO_INCREMENT,
+   descripcion TEXT,
+   id_categoria INT,
+   FOREIGN KEY (id_categoria) REFERENCES categorias_junior (id_categoria)
+);
+
+CREATE TABLE categorias_senior (
+   id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+   nombre VARCHAR(255)
+);
+
+CREATE TABLE items_senior (
+   id_item INT PRIMARY KEY AUTO_INCREMENT,
+   descripcion TEXT,
+   id_categoria INT,
+   FOREIGN KEY (id_categoria) REFERENCES categorias_senior(id_categoria)
+);
+
+CREATE TABLE puntuaciones_temporales_junior(
+   id_puntuacion_equipo INT PRIMARY KEY AUTO_INCREMENT,
+   id_item INT,
+   puntuacion INT,
+   id_equipo INT,
+   id_juez INT,
+   FOREIGN KEY (id_item) REFERENCES items_junior(id_item) ON DELETE CASCADE,
+   FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE,
+   FOREIGN KEY (id_juez) REFERENCES jueces(id_juez) ON DELETE CASCADE
+);
+
+CREATE TABLE puntuaciones_definitivas_junior(
+   id_puntuacion_equipo INT PRIMARY KEY AUTO_INCREMENT,
+   id_item INT,
+   puntuacion INT,
+   id_equipo INT,
+   id_juez INT,
+   FOREIGN KEY (id_item) REFERENCES items_junior(id_item) ON DELETE CASCADE,
+   FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE,
+   FOREIGN KEY (id_juez) REFERENCES jueces(id_juez) ON DELETE CASCADE
+);
+
+CREATE TABLE puntuaciones_temporales_senior(
+   id_puntuacion_equipo INT PRIMARY KEY AUTO_INCREMENT,
+   id_item INT,
+   puntuacion INT,
+   id_equipo INT,
+   id_juez INT,
+   FOREIGN KEY (id_item) REFERENCES items_senior(id_item) ON DELETE CASCADE,
+   FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE,
+   FOREIGN KEY (id_juez) REFERENCES jueces(id_juez) ON DELETE CASCADE
+);
+
+CREATE TABLE puntuaciones_definitivas_senior(
+   id_puntuacion_equipo INT PRIMARY KEY AUTO_INCREMENT,
+   id_item INT,
+   puntuacion INT,
+   id_equipo INT,
+   id_juez INT,
+   FOREIGN KEY (id_item) REFERENCES items_senior(id_item) ON DELETE CASCADE,
+   FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE,
+   FOREIGN KEY (id_juez) REFERENCES jueces(id_juez) ON DELETE CASCADE
+);
+
+CREATE TABLE puntuaciones_totales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_equipo INT,
+    id_juez INT,
+    total_general INT,
+    total_categoria1 INT,
+    total_categoria2 INT,
+    total_categoria3 INT,
+    total_categoria4 INT,
+    total_categoria5 INT,
+    FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE,
+    FOREIGN KEY (id_juez) REFERENCES jueces(id_juez) ON DELETE CASCADE
+);
+
 ALTER TABLE participantes
 DROP FOREIGN KEY participantes_ibfk_1;
 
@@ -173,3 +255,96 @@ ON DELETE CASCADE;
 
 INSERT INTO registro (nombre, apellidos, email, contraseña, admin) VALUES 
 ("Admin", "Admin", "admin@proyectotech.com", "123456", 1);
+
+INSERT INTO categorias_junior (nombre) VALUES 
+('Descripción del problema/proyecto en 100 palabras'),
+('Vídeo de lanzamiento'),
+('Vídeo técnico'),
+('Plan de adopción de usuarios (carga de documentos de la plantilla)'),
+('Ruta de aprendizaje de Technovation (200 palabras y 2-6 imágenes)')
+;
+
+INSERT INTO items_junior (descripcion, id_categoria) VALUES
+('Descripción del proyecto', 1),
+('Expone claramente el problema y muestra por qué es importante para el equipo y la
+comunidad.', 2),
+('Explica qué ha investigado el equipo sobre el problema y cómo se relaciona con los Objetivos
+de Desarrollo Sostenible de las Naciones Unidas.', 2),
+('Convence al espectador de que la aplicación o la solución de IA resuelve el problema de los
+usuarios.', 2),
+('Explica por qué la tecnología seleccionada (prototipo de IA o aplicación móvil) es la mejor
+herramienta para resolver el problema', 2),
+('Muestra cómo es una solución mejor comparada con lo que ya existe.', 2),
+('Explica cómo se asegurará el equipo de que la solución tendrá un impacto positivo en los
+usuarios directos o indirectos y en el planeta.
+', 2),
+('Explica los comentarios de los usuarios sobre el problema y la solución y muestra cómo se
+han realizado los cambios en función de dichos comentarios.', 2),
+('Explica los objetivos y planes futuros del proyecto', 2),
+('Muestra qué aplicación han construido y qué partes funcionan correctamente hasta ahora',3),
+('Explica qué codificación hicieron para 1-2 partes importantes de su aplicación (excluyendo la
+pantalla de inicio de sesión)
+',3),
+('Muestra lo que aún no funciona y/o comparte futuras funciones de la aplicación',3),
+('Muestra el modelo de IA que han creado y entrenado, explicando los datos que han
+recopilado y con los que han entrenado el modelo.',3),
+('Muestra qué invento han construido o prototipado, explicando cómo lo han construido y
+mostrando las partes que funcionan
+',3),
+('Muestra lo que aún no funciona y/o comparte las futuras características del prototipo',3),
+('Muestra cuántos usuarios han probado ya la aplicación o el invento, y los comentarios
+recibidos.', 4),
+('Explica cómo conseguirá el equipo que nuevos usuarios utilicen su aplicación o invento en su
+primer año.
+', 4),
+('Comparte lo que el equipo ha aprendido usando texto e imágenes (por ejemplo, capturas de
+pantalla, prototipos). Comparte las fuentes técnicas utilizadas/recicladas; si no hay ninguna,
+comparte vuestro recurso técnico favorito.', 5),
+('Describe cómo superó el equipo los retos técnicos o no técnicos', 5)
+;
+
+INSERT INTO categorias_senior (nombre) VALUES 
+('Descripción del problema/proyecto en 100 palabras'),
+('Vídeo de lanzamiento'),
+('Vídeo técnico'),
+('Plan de negocio (carga de documentos)'),
+('Ruta de aprendizaje de Technovation (200 palabras y 2-6 imágenes)')
+;
+
+INSERT INTO items_senior (descripcion, id_categoria) VALUES
+('Descripción convincente del proyecto en 100 palabras que exponga claramente el
+problema y la solución', 1),
+('Expone claramente el problema y muestra por qué es importante para el equipo y la
+comunidad.', 2),
+('Explica qué ha investigado el equipo sobre el problema y cómo se relaciona con los Objetivos
+de Desarrollo Sostenible de las Naciones Unidas.', 2),
+('Convence al espectador de que la aplicación o la solución de IA resuelve el problema de los
+usuarios.', 2),
+('Explica por qué la tecnología seleccionada (prototipo de IA o aplicación móvil) es la mejor
+herramienta para resolver el problema.', 2),
+('Muestra cómo es una mejor solución comparada con lo que ya existe.', 2),
+('Muestra qué aplicación han construido y qué partes funcionan con éxito hasta ahora.',3),
+('Explica cómo se probó la aplicación con los usuarios, qué comentarios se recibieron y cómo
+afectaron a las características de la aplicación.',3),
+('Explica qué codificación hicieron para 1-2 partes importantes de su aplicación (no la pantalla
+de inicio de sesión)',3),
+('Muestra lo que aún no funciona y/o comparte futuras funciones de la aplicación.',3),
+('Muestra el modelo de IA que han creado y entrenado, explicando los datos que han
+recopilado y con los que han entrenado el modelo.',3),
+('Explica cómo se probó el prototipo con los usuarios, qué comentarios se recibieron y cómo
+afectaron a las características del prototipo.', 3),
+('Muestra qué invento han construido o prototipado, explicando cómo lo han construido y
+mostrando las partes que funcionan.',3),
+('Muestra lo que aún no funciona y/o comparte las futuras características del prototipo.',3),
+('Explica claramente la empresa y la descripción del producto en un documento bien
+redactado que se apoya en gráficos pertinentes.', 4),
+('Muestra qué estudios de mercado ha realizado el equipo para identificar a los usuarios
+objetivo y a los principales competidores.', 4),
+('Explica el plan de marketing para que el equipo consiga que nuevos usuarios utilicen su
+aplicación o invento en su primer año.', 4),
+('Muestra los planes financieros para poner en marcha la empresa y por qué son realistas.', 4),
+('Comparte lo que el equipo ha aprendido mediante una combinación de palabras e imágenes
+(por ejemplo, capturas de pantalla, prototipos). Comparte las fuentes técnicas
+utilizadas/combinadas; si no hay ninguna, comparte el recurso técnico favorito.', 5),
+('Describe cómo superó el equipo los retos técnicos o no técnicos.', 5)
+;
