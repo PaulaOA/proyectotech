@@ -7,7 +7,7 @@ $equipo = null;
 $id_juez = null;
 
 if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
-    header("location: index.php");   
+    header("location: ../index.php");   
 } else {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
@@ -39,7 +39,6 @@ if (isset($_GET['id_equipo'])) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href= "../css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Perfil juez | Evaluaciones</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
@@ -384,121 +383,90 @@ if (isset($_GET['id_equipo'])) {
 <script src="funciones.js"></script>
 
 <script>
+    $(document).ready(function() {
         const itemPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
+        const puntuacionTotalInputsGenerales = document.querySelectorAll('.puntuacion-automatica.general');
 
-        itemPuntuacionInputs.forEach(input => {
-        input.addEventListener('input', () => {
-            const allPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
-            
+        // Función para calcular totales generales y por categoría
+        function calcularTotales() {
             let totalPuntuacion = 0;
+            const categorias = new Set();
 
-            allPuntuacionInputs.forEach(itemInput => {
+            itemPuntuacionInputs.forEach(itemInput => {
                 const valor = parseFloat(itemInput.value) || 0;
                 totalPuntuacion += valor;
+                categorias.add(itemInput.getAttribute('data-categoria'));
             });
 
-            const puntuacionTotalInputs = document.querySelectorAll('.puntuacion-automatica.general');
-            puntuacionTotalInputs.forEach(puntuacionTotalInput => {
+            // Actualizar total general
+            puntuacionTotalInputsGenerales.forEach(puntuacionTotalInput => {
                 puntuacionTotalInput.value = totalPuntuacion || '';
             });
 
-            const categorias = new Set();
-            itemPuntuacionInputs.forEach(input => categorias.add(input.getAttribute('data-categoria')));
-
+            // Calcular totales por categoría
             categorias.forEach(categoria => {
+                let totalPuntuacionCategoria = 0;
                 const categoriaInputs = document.querySelectorAll(`.item-puntuacion[data-categoria="${categoria}"]`);
-                let totalPuntuacionCategoria = null;
 
                 categoriaInputs.forEach(itemInput => {
                     const valor = parseFloat(itemInput.value) || 0;
-                    totalPuntuacionCategoria = (totalPuntuacionCategoria === null) ? valor : totalPuntuacionCategoria + valor;
+                    totalPuntuacionCategoria += valor;
                 });
 
                 const puntuacionTotalInputsCategoria = document.querySelectorAll(`.puntuacion-automatica[data-categoria="${categoria}"]`);
                 puntuacionTotalInputsCategoria.forEach(puntuacionTotalInput => {
-                    puntuacionTotalInput.value = (totalPuntuacionCategoria !== null && totalPuntuacionCategoria !== 0) ? totalPuntuacionCategoria : '';
+                    puntuacionTotalInput.value = totalPuntuacionCategoria || '';
                 });
             });
+        }
+
+        // Cargar puntuaciones guardadas si se pasó el parámetro 'puntuaciones' en la URL
+        <?php if (isset($_GET['puntuaciones'])) { ?>
+            $.ajax({
+                type: "GET",
+                url: "scripts/obtener-puntuaciones-guardadas.php",
+                data: { id_equipo: <?=$id_equipo?>, division: "Junior", id_juez: <?=$id_juez?>},
+                success: function(response) {
+                    cargarPuntuaciones(response);
+                }
+            });
+        <?php } ?>
+
+        // Función para cargar las puntuaciones guardadas
+        function cargarPuntuaciones(response) {
+            const puntuaciones = response.split(';'); 
+            
+            puntuaciones.forEach(function(puntuacion) {
+                const partes = puntuacion.split(':');
+                const clave = partes[0];
+                const valor = partes[1];
+                
+                $('input').filter(function() {
+                    return this.id === clave;
+                }).val(valor === '0' ? '' : valor);
+            });
+
+            // Después de cargar las puntuaciones, calcular los totales
+            calcularTotales();
+        }
+
+        // Escuchar cambios en los inputs de puntuación
+        itemPuntuacionInputs.forEach(input => {
+            input.addEventListener('input', calcularTotales);
         });
     });
-    
 </script>
 
-<script>
-$(document).ready(function() {
-    <?php
-    if (isset($_GET['puntuaciones'])) {
-    ?>
-    $.ajax({
-        type: "GET",
-        url: "scripts/obtener-puntuaciones-guardadas.php",
-        data: { id_equipo: <?=$id_equipo?>, division: "Junior", id_juez: <?=$id_juez?>},
-        success: function(response) {
-            cargarPuntuaciones(response);
-        }
-    });
-    <?php
-    }
-    ?>
-
-    function cargarPuntuaciones(response) {
-        var puntuaciones = response.split(';'); 
-                
-                 puntuaciones.forEach(function(puntuacion) {
-                    var partes = puntuacion.split(':');
-                    var clave = partes[0];
-                    var valor = partes[1];
-                    $('input').filter(function() {
-                        return this.id === clave;
-                    }).val(function() {
-                        return valor === '0' ? '' : valor;
-                    });
-                });
-               calcularTotales();
-            }
-        function calcularTotales() {
-            const itemPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
-            const allPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
-
-            let totalPuntuacion = 0;
-
-            allPuntuacionInputs.forEach(itemInput => {
-                const valor = parseFloat(itemInput.value) || 0;
-                totalPuntuacion += valor;
-            });
-
-            const puntuacionTotalInputs = document.querySelectorAll('.puntuacion-automatica.general');
-            puntuacionTotalInputs.forEach(puntuacionTotalInput => {
-                puntuacionTotalInput.value = totalPuntuacion || '';
-            });
-
-            const categorias = new Set();
-            itemPuntuacionInputs.forEach(input => categorias.add(input.getAttribute('data-categoria')));
-
-            categorias.forEach(categoria => {
-                const categoriaInputs = document.querySelectorAll(`.item-puntuacion[data-categoria="${categoria}"]`);
-                let totalPuntuacionCategoria = null;
-
-                categoriaInputs.forEach(itemInput => {
-                    const valor = parseFloat(itemInput.value) || 0;
-                    totalPuntuacionCategoria = (totalPuntuacionCategoria === null) ? valor : totalPuntuacionCategoria + valor;
-                });
-
-                const puntuacionTotalInputsCategoria = document.querySelectorAll(`.puntuacion-automatica[data-categoria="${categoria}"]`);
-                puntuacionTotalInputsCategoria.forEach(puntuacionTotalInput => {
-                    puntuacionTotalInput.value = (totalPuntuacionCategoria !== null && totalPuntuacionCategoria !== 0) ? totalPuntuacionCategoria : '';
-                });
-            });
-        }
-    });
-</script>
 
 <script>
 $(document).ready(function(){
-    window.onpopstate = function(event){
-          $("#contenedorFormularioJunior").load("evaluaciones.php");
-         };
-    });
+
+    window.onpopstate = function(event) {
+        $("#contenedorFormularioJunior").load("evaluaciones.php");
+                history.pushState(null, '', "evaluaciones.php");
+        };
+});
+
 </script>
 
 <?php include "botones.php"; ?>

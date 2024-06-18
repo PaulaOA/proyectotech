@@ -3,21 +3,31 @@ session_start();
 include "../archivos/conexion.php";
 include "scripts/informacion-categorias-senior.php";
 
+$equipo = null;
+$id_juez = null;
+
 if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
-    header("location: index.php");   
+    header("location: ../index.php");   
 } else {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
+
+  $sql_juez = "SELECT id_juez FROM jueces WHERE id_usuario = $id_usuario";
+  $resultado_juez = $conn->query($sql_juez);
+  if($resultado_juez->num_rows > 0) {
+    $juez = $resultado_juez->fetch_assoc();
+    $id_juez = $juez['id_juez'];
+  }
 }
 
 if (isset($_GET['id_equipo'])) {
     $id_equipo = $_GET['id_equipo'];
-}
 
-$sql_nombre = "SELECT nombre_equipo FROM equipos WHERE id_equipo = $id_equipo";
-$resultado_nombre = $conn->query($sql_nombre);
-if($resultado_nombre->num_rows > 0) {
-    $equipo = $resultado_nombre->fetch_assoc();
+    $sql_nombre = "SELECT nombre_equipo FROM equipos WHERE id_equipo = $id_equipo";
+    $resultado_nombre = $conn->query($sql_nombre);
+    if($resultado_nombre->num_rows > 0) {
+        $equipo = $resultado_nombre->fetch_assoc();
+    }
 }
 
 ?>
@@ -30,7 +40,6 @@ if($resultado_nombre->num_rows > 0) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href= "../css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Perfil juez | Evaluaciones</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
@@ -119,6 +128,41 @@ if($resultado_nombre->num_rows > 0) {
         background: none; /* Quitar el fondo del input */
         text-align: center; /* Centrar el texto dentro del input */
         width: 100%; /* Ajustar el ancho del input al 100% de la celda */
+    }
+
+    .modal {
+      display: none; /* Por defecto, ocultar el modal */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      align-items: center;
+    }
+
+  .modal-content {
+      background-color: #fefefe;
+      margin: 20% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 40%;
+      max-width: 350px;
+      height: 220px;
+      z-index: 1100;
+    }
+
+ .btnModal {
+      display: block; 
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 35%;
+      margin: 20px auto 0;
+      padding: 10px;
     }
   </style>
   
@@ -303,11 +347,14 @@ if($resultado_nombre->num_rows > 0) {
                     <td class="descripcion" colspan="2" style="text-align: right;"><b>Puntuación total</b></td>
                     <td class="puntuacion"><input type="text" class="centrado puntuacion-automatica general" id="totalGeneral"  readonly></td>
                 </tr>
+                <input type="hidden" id="id_equipo" value="<?=$id_equipo?>">
+                 <input type="hidden" id="division" value="Senior">
             </tbody>
         </table>
+
           <div class="text-center mt-5">
-            <button class="btn btn-secondary py-3 px-3" id="btnGuardar" data-equipo="<?=$id_equipo?>">Guardar</button>
-            <button class="btn btn-primary py-3 px-3" id="btnEnviar" data-equipo="<?=$id_equipo?>" style="margin-left: 50px;">Enviar</button>
+            <button class="btn btn-secondary py-3 px-3" id="btnGuardar" data-equipo="<?=$id_equipo?>" data-division="Senior">Guardar</button>
+            <button class="btn btn-primary py-3 px-3" style="margin-left: 50px;" id="btnEnviar" data-equipo="<?=$id_equipo?>" data-division="Senior" >Enviar</button>
           </div>
     </div>
   </form>
@@ -333,13 +380,98 @@ if($resultado_nombre->num_rows > 0) {
   </div>
 </footer>
 
+<script src="funciones.js"></script>
+
 <script>
-$(document).ready(function(){
-    window.onpopstate = function(event){
-          $("#contenedorFormularioJunior").load("evaluaciones.php");
-     };
+    $(document).ready(function() {
+        const itemPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
+        const puntuacionTotalInputsGenerales = document.querySelectorAll('.puntuacion-automatica.general');
+
+        // Función para calcular totales generales y por categoría
+        function calcularTotales() {
+            let totalPuntuacion = 0;
+            const categorias = new Set();
+
+            itemPuntuacionInputs.forEach(itemInput => {
+                const valor = parseFloat(itemInput.value) || 0;
+                totalPuntuacion += valor;
+                categorias.add(itemInput.getAttribute('data-categoria'));
+            });
+
+            // Actualizar total general
+            puntuacionTotalInputsGenerales.forEach(puntuacionTotalInput => {
+                puntuacionTotalInput.value = totalPuntuacion || '';
+            });
+
+            // Calcular totales por categoría
+            categorias.forEach(categoria => {
+                let totalPuntuacionCategoria = 0;
+                const categoriaInputs = document.querySelectorAll(`.item-puntuacion[data-categoria="${categoria}"]`);
+
+                categoriaInputs.forEach(itemInput => {
+                    const valor = parseFloat(itemInput.value) || 0;
+                    totalPuntuacionCategoria += valor;
+                });
+
+                const puntuacionTotalInputsCategoria = document.querySelectorAll(`.puntuacion-automatica[data-categoria="${categoria}"]`);
+                puntuacionTotalInputsCategoria.forEach(puntuacionTotalInput => {
+                    puntuacionTotalInput.value = totalPuntuacionCategoria || '';
+                });
+            });
+        }
+
+        // Cargar puntuaciones guardadas si se pasó el parámetro 'puntuaciones' en la URL
+        <?php if (isset($_GET['puntuaciones'])) { ?>
+            $.ajax({
+                type: "GET",
+                url: "scripts/obtener-puntuaciones-guardadas.php",
+                data: { id_equipo: <?=$id_equipo?>, division: "Senior", id_juez: <?=$id_juez?>},
+                success: function(response) {
+                    cargarPuntuaciones(response);
+                }
+            });
+        <?php } ?>
+
+        // Función para cargar las puntuaciones guardadas
+        function cargarPuntuaciones(response) {
+            const puntuaciones = response.split(';'); 
+            
+            puntuaciones.forEach(function(puntuacion) {
+                const partes = puntuacion.split(':');
+                const clave = partes[0];
+                const valor = partes[1];
+                
+                $('input').filter(function() {
+                    return this.id === clave;
+                }).val(valor === '0' ? '' : valor);
+            });
+
+            // Después de cargar las puntuaciones, calcular los totales
+            calcularTotales();
+        }
+
+        // Escuchar cambios en los inputs de puntuación
+        itemPuntuacionInputs.forEach(input => {
+            input.addEventListener('input', calcularTotales);
+        });
     });
 </script>
+
+
+<script>
+$(document).ready(function(){
+
+    window.onpopstate = function(event) {
+        $("#contenedorFormularioSenior").load("evaluaciones.php");
+                history.pushState(null, '', "evaluaciones.php");
+        };
+});
+
+</script>
+
+<?php include "botones.php"; ?>
+
+<?php include "modales.php";?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </div>
