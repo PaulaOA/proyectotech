@@ -3,7 +3,7 @@ session_start();
 include "../archivos/conexion.php";
 
 if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
-    header("location: index.php");   
+    header("location: ../index.php");   
 } else {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
@@ -27,7 +27,6 @@ $currentPage = 'evaluaciones';
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href= "../css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Perfil juez | Evaluaciones</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
@@ -112,6 +111,8 @@ $currentPage = 'evaluaciones';
                         <td class="text-center"><a href="#" class="evaluar" data-equipo="<?=$equipo['id_equipo']?>" data-division="<?=$equipo['division']?>">Evaluar</a></td>
                       <?php } else if ($equipo['estado_evaluacion'] == "guardada") {  ?>
                         <td class="text-center"><a href="#" class="consultar" data-equipo="<?=$equipo['id_equipo']?>" data-division="<?=$equipo['division']?>">Consultar</a></td>
+                      <?php } else if ($equipo['estado_evaluacion'] == "definitiva") {  ?>
+                        <td class="text-center"><a href="#" class="ver" data-equipo="<?=$equipo['id_equipo']?>" data-division="<?=$equipo['division']?>">Ver</a></td>
                       <?php } ?>
                   </tr>
                <?php endwhile; 
@@ -147,15 +148,8 @@ $(document).ready(function(){
           $("#contenedorEvaluaciones").load(url, function(){
               history.pushState(null,null, url);
             });
-          window.onpopstate = function(event){
-          $("#contenedorEvaluaciones").load("evaluaciones.php");
-            };
     });
-});
-</script>
 
-<script>
-$(document).ready(function() {
     $('.consultar').click(function() {
 
         var division = $(this).data('division');
@@ -171,7 +165,26 @@ $(document).ready(function() {
        $("#contenedorEvaluaciones").load(url, function(){
               history.pushState(null,null, url);
             });
-      });
+      }); 
+
+    $('.ver').click(function() {
+
+        var division = $(this).data('division');
+        var id_equipo = $(this).data('equipo');
+        var id_juez= <?=$id_juez?>;
+        var url;
+
+        if (division == "Junior") {
+          url = "revisar-junior.php?id_equipo=" + id_equipo + "&id_juez=" + id_juez;
+
+        } else if (division == "Senior") {
+          url = "revisar-senior.php?id_equipo=" + id_equipo + "&id_juez=" + id_juez;
+        }
+
+       $("#contenedorEvaluaciones").load(url, function(){
+              history.pushState(null,null, url);
+            });
+      }); 
  });
 </script>
 

@@ -40,32 +40,8 @@ $(document).ready(function() {
         e.preventDefault();
       var id_equipo = $(this).data('equipo');
       var division = $(this).data('division');
+      var id_juez = <?=$id_juez;?>;
       var itemsEspecialesCompletos;
-
-
-     function validarItemsEspecialesJunior() {
-            var llenosPrimerosTres = $('input[data-especial="true"]').slice(0, 3).filter(function() {
-                return $(this).val() !== '';
-            }).length;
-
-            var llenosUltimosTres = $('input[data-especial="true"]').slice(3).filter(function() {
-                return $(this).val() !== '';
-            }).length;
-
-            return (llenosPrimerosTres === 3 && llenosUltimosTres === 0) || (llenosPrimerosTres === 0 && llenosUltimosTres === 3);
-        }
-
-     function validarItemsEspecialesSenior() {
-            var llenosPrimerosCuatro = $('input[data-especial="true"]').slice(0, 4).filter(function() {
-                return $(this).val() !== '';
-            }).length;
-
-            var llenosUltimosCuatro = $('input[data-especial="true"]').slice(4).filter(function() {
-                return $(this).val() !== '';
-            }).length;
-
-            return (llenosPrimerosCuatro === 4 && llenosUltimosCuatro === 0) || (llenosPrimerosCuatro === 0 && llenosUltimosCuatro === 4);
-        }
 
         var puntuacionesValidas = true;
 
@@ -128,6 +104,30 @@ $(document).ready(function() {
         if (puntuacionesValidas) {
             $("#modalConfirmarEnviar").css("display", "block");
         }
+
+         function validarItemsEspecialesJunior() {
+            var llenosPrimerosTres = $('input[data-especial="true"]').slice(0, 3).filter(function() {
+                return $(this).val() !== '';
+            }).length;
+
+            var llenosUltimosTres = $('input[data-especial="true"]').slice(3).filter(function() {
+                return $(this).val() !== '';
+            }).length;
+
+            return (llenosPrimerosTres === 3 && llenosUltimosTres === 0) || (llenosPrimerosTres === 0 && llenosUltimosTres === 3);
+        }
+
+     function validarItemsEspecialesSenior() {
+            var llenosPrimerosCuatro = $('input[data-especial="true"]').slice(0, 4).filter(function() {
+                return $(this).val() !== '';
+            }).length;
+
+            var llenosUltimosCuatro = $('input[data-especial="true"]').slice(4).filter(function() {
+                return $(this).val() !== '';
+            }).length;
+
+            return (llenosPrimerosCuatro === 4 && llenosUltimosCuatro === 0) || (llenosPrimerosCuatro === 0 && llenosUltimosCuatro === 4);
+        }
     });
 
 
@@ -136,10 +136,7 @@ $(document).ready(function() {
 
     var id_equipo = $('#id_equipo').val();
     var division = $('#division').val();
-    var alertMostrado = false;
-    var existenRegistros = false;
-    var puntuacionGuardada = false;
-    var noRegistrado = false;
+    var id_juez = <?=$id_juez;?>;
     var puntuaciones = {};
 
 
@@ -165,6 +162,7 @@ $(document).ready(function() {
                 puntuaciones: puntuaciones,
                 id_equipo : id_equipo,
                 division : division,
+                id_juez: id_juez,
                 totalGeneral: totalGeneral,
                 totalCategoria1: totalCategoria1,
                 totalCategoria2: totalCategoria2,
@@ -175,15 +173,12 @@ $(document).ready(function() {
             success: function(response) {
                 console.log(response);
 
-                if (!existenRegistros && response === "existenRegistros") {
+                if (response === "existenRegistros") {
                     $("#modalExistenRegistros").css("display", "block");
-                    existenRegistros = true;
-                } else if (!puntuacionGuardada && response === "puntuacionGuardada") {
+                } else if (response === "puntuacionGuardada") {
                     $("#modalEnviadas").css("display", "block");
-                    puntuacionGuardada = true;
-                } else if (!noRegistrado && response === "noRegistrado") {
+                } else if (response === "noRegistrado") {
                     $("#modalNoRegistrado").css("display", "block");
-                    noRegistrado = true;
                 } else if ("puntuacionesDefinitivas") {
                     $("#modalPuntuacionDefinitiva").css("display", "block");
                 }
