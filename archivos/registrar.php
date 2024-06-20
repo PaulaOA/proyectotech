@@ -26,12 +26,19 @@ function enviarEmailVerificacion($email, $token) {
     $mail = new PHPMailer(true);
 
     try {
-        // Configuración del servidor SMTP
+
+        $smtp_user = getenv('SMTP_USER');
+        $smtp_password = getenv('SMTP_PASSWORD');
+
+        if (!$smtp_user || !$smtp_password) {
+        throw new Exception('Variables de entorno no definidas.');
+         }
+         
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'proyectotech.pruebas@gmail.com';
-        $mail->Password = 'uvrpbqdsbcvenazu';
+        $mail->Username = $smtp_user;
+        $mail->Password = $smtp_password;
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
