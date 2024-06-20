@@ -6,7 +6,7 @@ session_start();
         $email = $_POST["email"];
         $contraseña = $_POST["contraseña"];
 
-        $sql = "SELECT * FROM registro WHERE email='".$email."' AND contraseña='".$contraseña."'";
+        $sql = "SELECT * FROM registro WHERE email='".$email."' AND contraseña='".$contraseña."' AND verificado=1";
         $resultado= $conn->query($sql);
 
          if ($resultado->num_rows > 0) {
