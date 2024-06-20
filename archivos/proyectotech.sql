@@ -11,7 +11,9 @@ CREATE TABLE registro(
   email varchar(60) NOT NULL,
   contraseña varchar(60) NOT NULL,
   cargo varchar(60),
-  admin boolean NOT NULL
+  admin boolean NOT NULL, 
+  token varchar(32) NOT NULL,
+  verificado boolean DEFAULT false
 );
 
 CREATE TABLE participantes(
@@ -253,8 +255,8 @@ ADD CONSTRAINT FK_videos_registro
 FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
 ON DELETE CASCADE;
 
-INSERT INTO registro (nombre, apellidos, email, contraseña, admin) VALUES 
-("Admin", "Admin", "admin@proyectotech.com", "123456", 1);
+INSERT INTO registro (nombre, apellidos, email, contraseña, admin, verificado) VALUES 
+("Admin", "Admin", "admin@proyectotech.com", "123456", 1, 1);
 
 INSERT INTO categorias_junior (nombre) VALUES 
 ('Descripción del problema/proyecto en 100 palabras'),

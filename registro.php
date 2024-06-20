@@ -157,7 +157,9 @@
                         <br>
                         <div id="alertError" class="alert alert-danger" style="display: none;">No se pudo crear la cuenta</div>
                         <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-primary btn-lg" id="btnRegistrar">Registrar</button>
+                            <button class="btn btn-primary btn-lg" id="btnRegistrar">
+                              <span id="registroBtnText">Registrar</span>
+                              <span id="registroBtnLoader" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span></button>
                         </div>
                     </form>
                 </div>
@@ -169,32 +171,72 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
+      function validarEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+      }
           $(document).ready(function(){
             $("#btnRegistrar").click(function(event){
               event.preventDefault();
+
+              // Obtener valores de los campos
+            const nombre = $("#nombre").val().trim();
+            const apellidos = $("#apellidos").val().trim();
+            const fecha = $("#fecha").val().trim();
+            const email = $("#email").val().trim();
+            const contraseña = $("#contraseña").val().trim();
+            const repiteContraseña = $("#repiteContraseña").val().trim();
+            const cargo = $("#cargo").val().trim();
+
+            // Validar campos requeridos
+            if (nombre === '' || apellidos === '' || fecha === '' || email === '' || contraseña === '' || repiteContraseña === '' || cargo === 'Elige una opción') {
+                $(".modal").css("display", "none");
+                $("#modalRellenaCampos").css("display", "block");
+                return false;
+            }
+
+            $("#registroBtnText").addClass("visually-hidden"); // Ocultar texto del botón
+            $("#registroBtnLoader").removeClass("d-none");
+
+            // Validar formato de email
+            if (!validarEmail(email)) {
+                $(".modal").css("display", "none"); // Ocultar todos los modales
+                $("#modalEmailInvalido").css("display", "block");
+
+                $("#registroBtnText").removeClass("visually-hidden"); // Mostrar texto del botón
+                $("#registroBtnLoader").addClass("d-none");
+                return false; // Detener la ejecución del formulario
+            }
+
               $.ajax({
                 type: "POST",
                 url: "archivos/registrar.php",
                 data: $("#formRegistro").serialize(),
                 success: function(response){
-                     $("#alertError").hide();
-                  if (response == "registroCorrecto"){
-                    $("#modalRegistroCorrecto").css("display", "block");
-                  } else if (response == "emailYaRegistrado"){
+                  if (response == "emailYaRegistrado"){
                     $("#modalEmailYaRegistrado").css("display", "block");
                   } else if (response == "rellenaCampos") {
                     $("#modalRellenaCampos").css("display", "block");
                   } else if (response == "errorContraseña") {
                     $("#modalErrorContraseña").css("display", "block");
+                  } else if (response == "emailInvalido"){
+                    $("#modalEmailInvalido").css("display", "block");
+                  } else if (response == "dominioInvalido"){
+                    $("#modalDominioInvalido").css("display", "block");
+                  } else if (response == "verificaEmail"){
+                    $("#modalVerificaEmail").css("display", "block");  
                   } else if (response == "error") {
                     $("#alertError").show();
                   }
+
+                  $("#registroBtnText").removeClass("visually-hidden"); // Mostrar texto del botón
+                $("#registroBtnLoader").addClass("d-none");
                 }
               });
               return false;
             });
-            $(".close, #btnAceptar, #btnOk, #btnVale, #btnVolver").click(function(){
-            $("#modalRegistroCorrecto, #modalEmailYaRegistrado, #modalRellenaCampos, #modalErrorContraseña").css("display", "none");
+            $(".close, .close-modal").click(function(){
+            $(".modal").css("display", "none");
             });
           });
         </script>
@@ -213,19 +255,11 @@
             });
         </script>
 
-         <div id="modalRegistroCorrecto" class="modal">
-          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">¡Felicidades!</h1>
-            <p class="text-center">Tu cuenta se ha creado con éxito. Ahora ya puedes iniciar sesión</p>
-            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
-          </div>
-        </div>
-
         <div id="modalEmailYaRegistrado" class="modal">
           <div class="modal-content d-flex flex-column align-items-center justify-content-center">
             <h1 class="h3 mb-3 fw-normal text-center">Email Registrado</h1>
-            <p class="text-center">Por favor, introduce un email válido</p>
-            <button class="btnModal mx-auto" id="btnOk">Aceptar</button>
+            <p class="text-center">Ya existe una cuenta con este email</p>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
           </div>
         </div>
 
@@ -233,7 +267,7 @@
           <div class="modal-content d-flex flex-column align-items-center justify-content-center">
             <h1 class="h3 mb-3 fw-normal text-center">Campos vacíos</h1>
             <p class="text-center">Por favor, completa todos los campos</p>
-            <button class="btnModal mx-auto" id="btnVale">Aceptar</button>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
           </div>
         </div>
 
@@ -241,7 +275,31 @@
           <div class="modal-content d-flex flex-column align-items-center justify-content-center">
             <h1 class="h3 mb-3 fw-normal text-center">Contraseñas distintas</h1>
             <p class="text-center">Las constraseñas no coinciden</p>
-            <button class="btnModal mx-auto" id="btnVolver">Volver</button>
+            <button class="btnModal mx-auto close-modal">Volver</button>
+          </div>
+        </div>
+
+        <div id="modalEmailInvalido" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Email inválido</h1>
+            <p class="text-center">Por favor, introduce una dirección de email válida</p>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
+          </div>
+        </div>
+
+        <div id="modalDominioInvalido" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Dominio inválido</h1>
+            <p class="text-center">Por favor, introduce un dominio válido</p>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
+          </div>
+        </div>
+
+        <div id="modalVerificaEmail" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Verifica tu email</h1>
+            <p class="text-center">Se ha enviado un email de verificación. Revisa tu correo</p>
+            <button class="btnModal mx-auto close-modal" id="btnAceptar">Aceptar</button>
           </div>
         </div>
     
