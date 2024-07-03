@@ -25,7 +25,28 @@ CREATE TABLE participantes(
 CREATE TABLE mentores(
   id_mentor INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT, 
+  token_registro VARCHAR(100) NOT NULL,
+  mentor_registrado BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (id_usuario) REFERENCES registro(id_usuario)
+);
+
+CREATE TABLE perfil_mentores (
+    id_perfil INT AUTO_INCREMENT PRIMARY KEY,
+    id_mentor INT NOT NULL,
+    nombre_completo VARCHAR(255) NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    profesion VARCHAR(255) NOT NULL,
+    empresa VARCHAR(255) NOT NULL,
+    cargo VARCHAR(255) NOT NULL,
+    especializacion VARCHAR(255) NOT NULL,
+    experiencia_mentor ENUM('si', 'no') NOT NULL,
+    descripcion_experiencia TEXT NOT NULL,
+    num_equipos_mentoreados INT NOT NULL,
+    motivacion TEXT NOT NULL,
+    disponibilidad VARCHAR(255) NOT NULL,
+    acepto_terminos BOOLEAN NOT NULL,
+    FOREIGN KEY (id_mentor) REFERENCES mentores(id_mentor)
 );
 
 CREATE TABLE jueces(

@@ -3,11 +3,12 @@ session_start();
 require_once("archivos/conexion.php");
 $currentPage = 'mensajes';
 
-if (empty($_SESSION["nombre"])|| empty($_SESSION["id_usuario"])) {
+if (empty($_SESSION["nombre"])|| empty($_SESSION["id_usuario"]) || empty($_SESSION["email"])) {
     header("location: index.php");   
 } else {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
+  $email = $_SESSION["email"];
 }
   $solicitudesPendientes = "SELECT equipos.*, registro.nombre AS nombre_creador
     FROM equipos
@@ -15,6 +16,13 @@ if (empty($_SESSION["nombre"])|| empty($_SESSION["id_usuario"])) {
     INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
     WHERE mentores.id_usuario =" .$id_usuario;
 $solicitudes = $conn->query($solicitudesPendientes);
+
+$sql_mentor = "SELECT id_mentor from mentores where id_usuario = $id_usuario";
+$resultado_mentor = $conn->query($sql_mentor);
+if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
+  $mentor = $resultado_mentor->fetch_assoc();
+  $id_mentor = $mentor['id_mentor'];
+}
 
 ?>
 <!DOCTYPE html>
@@ -152,6 +160,9 @@ $solicitudes = $conn->query($solicitudesPendientes);
 <script>
     $(document).ready(function() {
       var equipoId, accion;
+      var id_mentor = <?=$id_mentor;?>;
+      var email = "<?= $email; ?>";
+
           $(".aceptar-solicitud").click(function(e) {
              e.preventDefault();
              id = $(this).data('id');
@@ -160,18 +171,32 @@ $solicitudes = $conn->query($solicitudesPendientes);
           });
 
             $("#btnConfirmarSolicitud").click(function() {
+               $("#aceptarBtnText").hide();
+               $("#aceptarBtnLoader").removeClass("d-none");
             $.ajax({
                 type: "POST",
                 url: "archivos/responder-solicitud.php",
-                data: { id: id, accion: accion },
+                data: { id: id, accion: accion, id_mentor:id_mentor, email:email },
                 success: function(response) {
-                   if (response == "correcto") {
-                    $("#contenedorMensajes").load("mensajes.php");
+                   $("#aceptarBtnLoader").addClass("d-none");
+                   $("#aceptarBtnText").show();
+
+                   $("#modalAceptarSolicitud").css("display", "none");
+                   if (response == "registrate") {
+                   $("#modalRegistro").css("display", "block");
+                   } else if (response == "perfilRegistrado"){
+                   $("#contenedorMensajes").load("mensajes.php");
                    } else {
-                    alert ("Error al procesar la solicitud")
+                    alert ("Error al procesar la solicitud");
                    }
-                  $("#modalAceptarSolicitud").css("display", "none");
                 },
+                error: function() {
+            $("#aceptarBtnLoader").addClass("d-none");
+            $("#aceptarBtnText").show();
+
+            alert("Error al procesar la solicitud");
+              }
+
             });
         });
 
@@ -197,6 +222,10 @@ $solicitudes = $conn->query($solicitudesPendientes);
                 },
             });
         });
+            $(".close-modal").click(function(){
+            $(".modal").css("display", "none");
+            $("#contenedorMensajes").load("mensajes.php");
+            });
       });
 </script>
 
@@ -205,8 +234,21 @@ $solicitudes = $conn->query($solicitudesPendientes);
     <h1 class="h3 mb-3 fw-normal text-center">Confirmar solicitud</h1>
     <p class="text-center">¿Desea aceptar la solicitud del equipo?</p>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
-        <button type="button" class="btn btn-primary" id="btnConfirmarSolicitud">Confirmar</button>
+        <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+         <button class="btn btn-primary btn-lg" id="btnConfirmarSolicitud">
+            <span id="aceptarBtnText">Aceptar</span>
+            <span id="aceptarBtnLoader" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
+      </div>
+  </div>
+</div>
+
+ <div id="modalRegistro" class="modal">
+  <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+    <h1 class="h3 mb-3 fw-normal text-center">Revisa tu email</h1>
+    <p class="text-center">Por favor, revisa tu email y accede al formulario para completar tu perfil como mentor</p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary close-modal">Aceptar</button>
       </div>
   </div>
 </div>
@@ -216,7 +258,7 @@ $solicitudes = $conn->query($solicitudesPendientes);
     <h1 class="h3 mb-3 fw-normal text-center">Rechazar solicitud</h1>
     <p class="text-center">¿Desea rechazar la solicitud del equipo?</p>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="btnCerrar">Cancelar</button>
+        <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
         <button type="button" class="btn btn-primary" id="btnRechazarSolicitud">Rechazar</button>
       </div>
   </div>
