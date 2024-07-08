@@ -1,4 +1,5 @@
 <?php 
+// Detalle de equipos relacionados con un juez
 $sql_equipos = "SELECT 
                     eq.nombre_equipo,
                     eq.division,
@@ -21,5 +22,6 @@ $sql_equipos = "SELECT
                     r_juez.id_usuario = $id_usuario
                 GROUP BY 
                     eq.nombre_equipo, eq.division, mentor, je.estado_evaluacion, id_usuario_juez
-                    ORDER BY eq.nombre_equipo ASC";
+                    ORDER BY eq.nombre_equipo ASC"; // Ordenar por nombre de equipo
+
 $consulta_equipos = $conn->query($sql_equipos);

@@ -1,26 +1,12 @@
 <?php
 session_start();
 include "../archivos/conexion.php";
+include "../consultas/sql-admin-evaluaciones.php";
+
 if (empty($_SESSION["admin"])) {
     header("location: ../index.php");   
 }
 $currentPage = 'evaluaciones';
-
-$sql_jueces = "SELECT j.id_juez, r.nombre
-                  FROM jueces j
-                  INNER JOIN registro r ON r.id_usuario = j.id_usuario";
-$resultado_jueces = $conn->query($sql_jueces);
-
-$sql_equipos = "SELECT id_equipo, nombre_equipo FROM equipos";
-$resultado_equipos = $conn->query($sql_equipos);
-
-$sql_jueces_equipo = "SELECT je.id_juez, je.id_equipo, e.nombre_equipo, GROUP_CONCAT(r.nombre SEPARATOR ', ') AS nombre_jueces
-                        FROM jueces_equipos je
-                        JOIN jueces j ON je.id_juez = j.id_juez
-                        JOIN registro r ON r.id_usuario = j.id_usuario
-                        JOIN equipos e ON e.id_equipo = je.id_equipo
-                        GROUP BY je.id_equipo";
-$resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
 
 ?>
 <!DOCTYPE html>
@@ -54,25 +40,25 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
-       html {
+    html {
     position: relative;
     min-height: 100%;
     }
 
     body {
-    margin-bottom: 80px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 80px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
      .navbar-nav .nav-link {
@@ -118,6 +104,7 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
   </head>
   <body>
       <div class="contenedor" id="contenedorEvaluaciones">
+
          <?php include "menu-admin.php" ?>
 
 <div class="responsive bg-dark text-white py-4">
@@ -136,12 +123,15 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
         <div class="card-header bg-primary text-white">Asignación de jueces</div>
           <div class="card-body">
             <div class="table-responsive">
+              
+              <!-- FORMULARIO para asignar juez a equipo -->
 
               <form id="formJuecesEquipos">
               <label for="id_equipo" class="texto-label">Equipo</label>
               <select name="id_equipo" id="id_equipo" class="form-control">
                 <option value="">Selecciona un equipo</option>
-                <?php 
+                <?php
+                //Mostrar todos los equipos registrados 
                 if ($resultado_equipos->num_rows > 0) {
                   while ($equipo = $resultado_equipos->fetch_assoc()) {
                     echo "<option value='".$equipo["id_equipo"]."'>".$equipo['nombre_equipo']. "</option>";
@@ -155,6 +145,7 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
               <select name="id_juez" id="id_juez" class="form-control">
                 <option value="">Selecciona un juez</option>
                <?php 
+               //Mostrar todos los jueces registrados 
                 if ($resultado_jueces->num_rows > 0) {
                   while ($juez = $resultado_jueces->fetch_assoc()) {
                     echo "<option value='".$juez["id_juez"]."'>".$juez['nombre']. "</option>";
@@ -172,6 +163,9 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
         </div>
       </div>
   </div>
+
+  <!-- Tabla para visualizar los jueces asignados a cada equipo -->
+
   <div class="col-md-5 pl-4">
         <div class="card mt-4 mb-4">
         <div class="card-header bg-primary text-white">Jueces de equipos</div>
@@ -211,6 +205,44 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <script>
+
+    // Solicitud para asignar juez a equipo
+
+    $(document).ready(function(){
+      $("#btnAsignarJuez").click(function(event){
+        event.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: "asignar-juez.php",
+          data: $("#formJuecesEquipos").serialize(),
+          success: function(response){
+            if (response == "asignado"){
+              $("#modalJuezAsignado").css("display", "block");
+            } else if (response == "yaAsignado"){
+              $("#modalYaAsignado").css("display", "block");
+            } else if (response == "elige") {
+              $("#modalElige").css("display", "block");
+            } else {
+              $("#modalError").css("display", "block");
+            }
+          }
+        });
+        return false;
+      });
+
+        $(".close-modal").click(function(){
+          $(".modal").css("display", "none");
+            if ($(this).closest(".modal").attr("id") === "modalJuezAsignado") {
+          $("#contenedorEvaluaciones").load("evaluaciones.php", function(){
+            history.pushState(null, null, "evaluaciones.php");
+           });
+          }
+       });
+    });
+  </script>
+
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
@@ -285,39 +317,6 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
   });
     </script>
 
-        <script>
-          $(document).ready(function(){
-            $("#btnAsignarJuez").click(function(event){
-              event.preventDefault();
-              $.ajax({
-                type: "POST",
-                url: "asignar-juez.php",
-                data: $("#formJuecesEquipos").serialize(),
-                success: function(response){
-                  if (response == "asignado"){
-                    $("#modalJuezAsignado").css("display", "block");
-                  } else if (response == "yaAsignado"){
-                    $("#modalYaAsignado").css("display", "block");
-                  } else if (response == "elige") {
-                    $("#modalElige").css("display", "block");
-                  } else {
-                    $("#modalError").css("display", "block");
-                  }
-                }
-              });
-              return false;
-            });
-              $(".close-modal").click(function(){
-                $(".modal").css("display", "none");
-                  if ($(this).closest(".modal").attr("id") === "modalJuezAsignado") {
-                $("#contenedorEvaluaciones").load("evaluaciones.php", function(){
-                  history.pushState(null, null, "evaluaciones.php");
-                 });
-                }
-             });
-          });
-        </script>
-
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">
@@ -335,6 +334,8 @@ $resultado_jueces_equipo = $conn->query($sql_jueces_equipo);
     </div>
   </div>
 </footer>
+
+<!-- MODALES -->
 
 <div id="modalJuezAsignado" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">

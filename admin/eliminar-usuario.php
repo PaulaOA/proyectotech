@@ -2,7 +2,7 @@
 
 if (!empty($_POST['id_usuario'])) {
 
-        $id_usuario = $_POST['id_usuario'];
+    $id_usuario = $_POST['id_usuario'];
 
     include "../archivos/conexion.php";
 

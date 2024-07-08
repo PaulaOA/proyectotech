@@ -1,28 +1,34 @@
 <?php
 include('conexion.php');
+
 // Generar una contraseña temporal aleatoria
-$logitudcontraseña = 4; //longitud de la contraseña temporal
+
+$logitudcontraseña = 4;
 $micontraseña = substr( md5(microtime()), 1, $logitudcontraseña);
 $contraseña = $micontraseña;
 
-$email = trim($_REQUEST['email']); //Quitamos algun espacion en blanco
-// Consultar si el usuario con el correo electrónico proporcionado existe en la base de datos
+$email = trim($_REQUEST['email']); //Quitamos espacios en blanco
+
+// Consultar si el usuario con el correo electrónico proporcionado existe en la BBDD
+
 $consulta = ("SELECT * FROM registro WHERE email ='".$email."'");
 $queryconsulta = mysqli_query($conn, $consulta);
 $cantidadconsulta = mysqli_num_rows($queryconsulta);
 $dataconsulta = mysqli_fetch_array($queryconsulta);
 
 if($cantidadconsulta ==0){ 
-    // Redirigir si no se encuentra ningún usuario con el correo electrónico proporcionado
+    // Redirigir si el usuario no está registrado
     header("Location:index.php");
     exit();
-}else{
-     // Actualizar la contraseña del usuario en la base de datos con la contraseña temporal generada
-    $actualizacontraseña = ("UPDATE registro SET contraseña='$contraseña' WHERE email='$email' ");
-    $queryresult = mysqli_query($conn,$actualizacontraseña);
+} else {
+     // Actualizar contraseña en base de datos con la contraseña temporal generada
+
+        $actualizacontraseña = "UPDATE registro SET contraseña='$contraseña' WHERE email='$email'";
+        $queryresult = mysqli_query($conn,$actualizacontraseña);
 
 if ($queryresult) {
-    // Enviar el correo electrónico con la nueva contraseña temporal al usuario
+    // Enviar correo electrónico con la nueva contraseña temporal al usuario
+
     $destinatario = $email; 
     $asunto = "Recuperando clave - ProyectoTech";
     $cuerpo = '

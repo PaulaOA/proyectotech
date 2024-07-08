@@ -23,7 +23,7 @@
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
 
   footer {
@@ -31,9 +31,9 @@
     margin-top: auto;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
       
     </style>
@@ -65,6 +65,9 @@
                     <div class="card bg-primary text-center text-white">
                         <h4>Actualiza tu contraseña</h4>  
                     </div>
+
+                    <!-- FORMULARIO actualizar contraseña desde MI PERFIL -->
+                    
                     <form action="./archivos/actualizarcontraseña.php" method="POST">
                         <div class="card-body">
                             <div class="row">

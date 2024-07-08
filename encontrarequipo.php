@@ -8,6 +8,8 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   $id_usuario = $_SESSION["id_usuario"];
 }
 
+// RECUPERAR ID DE PARTICIPANTE PARA PROCESO DE INSCRIPCIÓN
+
 $sql_id_participante = "SELECT id_participante FROM participantes WHERE id_usuario = $id_usuario";
 $resultado_id_participante = $conn->query($sql_id_participante);
 $id_participante = ($resultado_id_participante && $resultado_id_participante->num_rows > 0) ? $resultado_id_participante->fetch_assoc()['id_participante'] : null;
@@ -40,14 +42,14 @@ $currentPage = 'encontrarequipo';
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    height: 120px;
     background-color: #343a40;
     color: white;
     }
@@ -92,24 +94,23 @@ $currentPage = 'encontrarequipo';
   </head>
   <body>
     <div class="contenedor" id="contenedorEncontrarEquipo">
+
       <?php include "menu-superior.php" ?>
-<br>
 
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-5">
       <div class="card">
         <div class="card-body">
+
+          <!-- FORMULARIO Encontrar Equipo -->
+
          <form id="formEncuentraEquipo">
             <div class="mb-3">
                 <label class="mb-3" for="busquedaNombre">Búsqueda por nombre</label>
                 <input type="text" class="form-control" id="busquedaNombre" name="busquedaNombre">
                 <input type="hidden" id="idParticipante" name="idParticipante" value="<?= $id_participante; ?>">
             </div>
-            <!--<div class="mb-3">
-                <label class="mb-3" for="busquedaCiudad">Búsqueda por ciudad</label>
-                <input type="text" class="form-control" id="busquedaCiudad" name="busquedaCiudad">
-            </div>-->
             <div class="mb-3">
             <legend class="col-form-label">Búsqueda por División</legend>
              <fieldset class="row-auto">
@@ -138,7 +139,9 @@ $currentPage = 'encontrarequipo';
     <div class="row justify-content-center mt-3">
     <div class="col-md-10">
     <div class="row"  id="resultadoBusqueda">
-                  
+
+                <!-- MOSTRAR RESULTADOS DE LA BÚSQUEDA -->
+
             </div>
         </div>
      </div>
@@ -148,6 +151,8 @@ $currentPage = 'encontrarequipo';
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
+
+// Solicitud para buscar equipo
 
 $(document).ready(function() {
     $('#btnBuscarEquipos').click(function(e) {
@@ -162,16 +167,19 @@ $(document).ready(function() {
         });
     });
 });
+     // Solicitud para unirse a un equipo
 
     $(document).ready(function() {
         $(document).on('click', '#btnQuieroUnirme', function(e) {
             e.preventDefault();
+
             var idEquipo = $(this).data('id-equipo');
             var idParticipante = $(this).data('id-participante');
-             var btn = $(this);
+            var btn = $(this);
     
-            // Desactivar el botón
+            // Desactivar el botón mientras se procesa la solicitud
             btn.prop('disabled', true);
+
             $.ajax({
                 type: 'POST',
                 url: 'archivos/quiero-unirme.php',
@@ -196,7 +204,7 @@ $(document).ready(function() {
             });
         });
 
-       $(".close, .btn-cerrar").click(function(){
+       $(".close-modal").click(function(){
        $(".modal").css("display", "none");
      });
     });
@@ -319,19 +327,21 @@ $(document).ready(function() {
     });
 </script>
 
+<!-- MODALES -->
+
   <div id="modalSolicitudEnviada" class="modal">
-          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">Solicitud enviada</h1>
-            <p class="text-center">Espera a que el equipo acepte la solicitud</p>
-            <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
-          </div>
-        </div>
+    <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+      <h1 class="h3 mb-3 fw-normal text-center">Solicitud enviada</h1>
+      <p class="text-center">Espera a que el equipo acepte la solicitud</p>
+      <button class="btnModal close-modal mx-auto">Aceptar</button>
+    </div>
+  </div>
 
  <div id="modalErrorSolicitud" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
     <p class="text-center">No se pudo enviar la solicitud. Por favor, inténtelo de nuevo</p>
-    <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+    <button class="btnModal close-modal mx-auto">Aceptar</button>
   </div>
 </div>
 
@@ -339,7 +349,7 @@ $(document).ready(function() {
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
     <p class="text-center">Hubo un error al procesar la información</p>
-    <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+    <button class="btnModal close-modal mx-auto">Aceptar</button>
   </div>
 </div>
 
@@ -347,7 +357,7 @@ $(document).ready(function() {
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Solicitud existente</h1>
     <p class="text-center">Ya has enviado una solicitud de unión a este equipo o eres el creador</p>
-    <button class="btnModal btn-cerrar mx-auto">Aceptar</button>
+    <button class="btnModal close-modal mx-auto">Aceptar</button>
   </div>
 </div>
 

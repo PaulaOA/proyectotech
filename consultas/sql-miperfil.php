@@ -1,21 +1,25 @@
 <?php
 require "archivos/conexion.php";
-
+ 
 if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     header("location: index.php");   
 } else {
   $id_usuario = $_SESSION["id_usuario"];
 }
 
+// Obtener vídeos subidos por el usuario
 $sqlVideo = "SELECT * FROM videos WHERE id_usuario = $id_usuario ORDER BY fecha DESC";
-    $queryVideo = mysqli_query($conn, $sqlVideo);
+  $queryVideo = mysqli_query($conn, $sqlVideo);
 
     if (!$queryVideo) {
       die("Error al obtener los videos: " . mysqli_error($conn));
     }
+
+// Obtener documentos subidos por el usuario
 $sqlDocumentos = "SELECT * FROM documentos WHERE id_usuario = $id_usuario";
 $queryDocumentos = mysqli_query($conn, $sqlDocumentos);
 
+//Obtener listado de equipos donde el usuario es participante
 $sql_equiposParticipante = "SELECT e.nombre_equipo, e.id_equipo
                               FROM equipos e 
                               JOIN solicitudes_equipo se ON se.id_equipo = e.id_equipo
@@ -24,6 +28,7 @@ $sql_equiposParticipante = "SELECT e.nombre_equipo, e.id_equipo
                               WHERE se.estado = 'aceptada' AND p.id_usuario = $id_usuario";
 $equiposParticipante = mysqli_query($conn, $sql_equiposParticipante);
 $equiposArray = [];
+
 if ($equiposParticipante->num_rows > 0) {
     while ($equipo = $equiposParticipante->fetch_assoc()) {
         $equiposArray[] = $equipo;

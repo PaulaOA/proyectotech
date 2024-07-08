@@ -38,14 +38,14 @@ $currentPage = 'misequipos';
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    height: 120px;
     background-color: #343a40;
     color: white;
     }
@@ -86,15 +86,18 @@ $currentPage = 'misequipos';
           padding: 10px;
         }
         .modal-footer-this .btn {
-            padding: 10px 20px 10px 20px; /* Aumenta el tamaño de los botones */
-            width: 100px; /* Aumenta el ancho de los botones */
-            margin: 0 20px; /* Agrega espacio entre los botones */
+            padding: 10px 20px 10px 20px;
+            width: 100px;
+            margin: 0 20px;
         }
     </style>
   </head>
   <body>
     <div class="contenedor" id="contenedorMisEquipos">
+
       <?php include "menu-superior.php" ?>
+
+      <!-- TABLA MIS EQUIPOS -->
 
 <div class="container-fluid" style="max-width: 100%;">
   <div class="row justify-content-center">
@@ -105,13 +108,14 @@ $currentPage = 'misequipos';
             <div class="table-responsive">
               <table class="table table-striped mb-2">
 
-              <tbody>
+                <tbody>
+                    <!-- RECUPERAR EQUIPOS DONDE EL USUARIO ES EL CREADOR -->
                     <tr>
                       <th colspan="2" style="background-color: royalblue; color: white;">Equipos como creador</th>
                     </tr>
                     <?php if ($consulta_equiposCreados && $consulta_equiposCreados->num_rows > 0) {
                       while ($equiposCreados = $consulta_equiposCreados->fetch_assoc()): ?>
-                  <tr>
+                    <tr>
                       <td><?=$equiposCreados['nombre_equipo']?></td>
                       <td style="text-align: right;"><a href="#" class="ver-detalles-equipo" data-id="<?=$equiposCreados['id_equipo']?>" data-nombre="<?=$equiposCreados['nombre_equipo']?>" data-mentor="<?=$equiposCreados['nombre_mentor']?>" data-creador="<?=$equiposCreados['nombre_creador']?>" data-participantes="<?=$equiposCreados['nombre_participantes']?>" data-division="<?=$equiposCreados['division']?>">Ver detalles</a></td>
                     </tr>
@@ -121,6 +125,9 @@ $currentPage = 'misequipos';
                       <td colspan="2">Aún no tienes ningún equipo</td>
                     </tr>
                     <?php } ?>
+
+                    <!-- RECUPERAR EQUIPOS DONDE EL USUARIO SOLO ES PARTICIPANTE -->
+
                     <tr>
                       <th colspan="2" style="background-color: royalblue; color: white;">Equipos como participante</th>
                     </tr>
@@ -136,8 +143,11 @@ $currentPage = 'misequipos';
                       <td colspan="2">Aún no tienes ningún equipo</td>
                     </tr>
                     <?php } ?>
+
+                    <!-- RECUPERAR SOLICITUDES PENDIENTES DE UNIÓN A UN EQUIPO -->
+
                     <tr>
-                      <th colspan="2" style="background-color: #4f4f4f; color: white;">Solicitudes para unirte</th>
+                     <th colspan="2" style="background-color: #4f4f4f; color: white;">Solicitudes para unirte</th>
                     </tr>
                     <?php if ($resultado_unirse && $resultado_unirse->num_rows > 0) {
                       while ($solicitudesParaUnirse = $resultado_unirse->fetch_assoc()): ?>
@@ -157,6 +167,9 @@ $currentPage = 'misequipos';
         </div>
       </div>
     </div>
+
+      <!-- SOLICITUDES PENDIENTES DE PARTICIPANTES PARA UNIRSE A EQUIPOS CREADOS POR EL USUARIO -->
+
         <div class="col-md-5 pl-4">
         <div class="card mt-4 mb-2">
         <div class="card-header bg-primary text-white">Solicitudes de participantes</div>
@@ -200,10 +213,15 @@ $currentPage = 'misequipos';
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<!-- RESPONDER SOLICITUDES PARTICIPANTES -->
+
 <script>
+
+  // RESPONDER SOLICITUDES DE PARTICIPANTES
+
     $(document).ready(function() {
         var id, accion, idParticipante, nombreParticipante, nombreEquipo, nombreParticipanteRechazar, nombreEquipoRechazar;
+
+        // ACEPTAR SOLICITUD
 
         $(".aceptar-participante").click(function(e) {
           e.preventDefault();
@@ -232,6 +250,8 @@ $currentPage = 'misequipos';
                 },
             });
         });
+
+          // RECHAZAR SOLICITUD
 
             $(".rechazar-participante").click(function(e) {
              e.preventDefault();
@@ -271,10 +291,13 @@ $currentPage = 'misequipos';
       });
 </script>
 
-<!-- MOSTRAR MODAL DETALLES EQUIPO-->
+
 <script>
 $(document).ready(function() {
   var solicitudParaEliminar;
+
+  // MOSTRAR MODAL DETALLES EQUIPO
+
   $(".ver-detalles-equipo").click(function(e) {
     e.preventDefault();
     
@@ -311,6 +334,8 @@ $(document).ready(function() {
     
     $("#modalDetallesEquipoParticipantes").css("display", "block");
   });
+
+   // ELIMINAR UNA SOLICITUD PENDIENTE PARA UNIRTE A EQUIPO
 
    $(".borrar-solicitud-unirse").click(function(e) {
     e.preventDefault();
@@ -355,7 +380,6 @@ $(document).ready(function() {
     });
 });
 </script>
-
 
 <!-- MANEJAR BOTONES MENÚ -->
 
@@ -451,6 +475,8 @@ $(document).ready(function() {
     </div>
   </div>
 </footer>
+
+<!-- MODALES -->
 
  <div id="modalAceptarParticipante" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">

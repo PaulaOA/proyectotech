@@ -1,5 +1,6 @@
 <?php
 
+// Obtener el nombre de las categorías senior
 $sql_categorias = "SELECT nombre FROM categorias_senior";
 $resultado_categorias = $conn->query($sql_categorias);
 
@@ -12,6 +13,8 @@ if ($resultado_categorias->num_rows > 0) {
     echo "No se encontraron categorías.";
     exit(); 
 }
+
+// Seleccionar el detalle de los items por categoría
 
 $sql_items_1 = "SELECT * FROM items_senior WHERE id_categoria = 1";
 $items_categoria1 = $conn->query($sql_items_1);

@@ -83,9 +83,9 @@
            
               <h3 class="login-heading mb-4 text-center">Iniciar sesión</h3>
 
-             <!-- FORMULARIO inicio sesión -->
+             <!-- FORMULARIO para iniciar sesión-->
 
-              <form method="POST" id="formInicioSesion">
+              <form id="formInicioSesion">
                 <div class="form-floating mb-3">
                   <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
                   <label for="floatingInput">Correo electrónico</label>
@@ -95,23 +95,11 @@
                   <label for="floatingPassword">Contraseña</label>
                 </div>
 
-
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" value="" id="REMEMBERMEFORFUTUREVISITS">
-                  <label class="form-check-label" for="REMEMBERMEFORFUTUREVISITS">
-                    Recuérdame
-                  </label>
-                </div>
-
                 <div id="alertAccesoDenegado" class="alert alert-danger" style="display: none;">Acceso denegado: Usuario o contraseña incorrectos</div>
-
                 <div id="alertRellenaCampos" class="alert alert-primary" style="display: none;">Rellena los campos</div>
-
-
+                
                 <div class="d-grid">
                   <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" id="btnIniciar">INICIAR</button>
-
-                  <!--<button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit" name="iniciar">Inicia</button>-->
 
                   <div class="text-left">
                   ¿Aún no te has registrado?
@@ -123,79 +111,63 @@
                   <a class="small" href="#" id="btnRecuperar">Recuperar contraseña</a>
                   </div>
                 </div>
-
-                <?php
-                if(isset($_GET['message'])){
-               
-                ?>
-                <div class="alert alert-primary" role="alert">
-                <?php
-                switch ($_GET['message']) {
-                  case 'ok';
-                  echo "Por favor, revisa tu correo electrónico";
-                  break;
-
-
-                  default;
-                  echo "Ha ocurrido un error, inténtalo de nuevo";
-                  break;
-                }
-                ?>
-                </div>
-                <?php
-                }
-                ?>
                
               </form>
 
-              <!-- incluyo jquery -->
+              <!-- incluir jquery -->
 
               <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-                <script>
-                  $(document).ready(function(){
-                    $("#btnIniciar").click(function(event){
-                      event.preventDefault();
-                      $.ajax({
-                        type: "POST",
-                        url: "archivos/controlador_index.php",
-                        data: $("#formInicioSesion").serialize(),
-                        success: function(response){
-                          $("#alertAccesoDenegado").hide();
-                          $("#alertRellenaCampos").hide();
-                          if (response == "inicio") {
-                            $("#contenedorIndex").load("inicio.php", function(){
-                              history.pushState(null,null,"inicio.php");
-                            });
-                            window.onpopstate = function(event){
-                              $("#contenedorIndex").load("index.php");
-                               };
-                          } else if (response == "admin") {
-                            $("#contenedorIndex").load("admin.php", function(){
-                              history.pushState(null,null,"admin.php");
-                            });
-                            window.onpopstate = function(event){
-                              $("#contenedorIndex").load("index.php");
-                               };
-                          } else if (response == "juez") {
-                            $("#contenedorIndex").load("juez.php", function(){
-                              history.pushState(null,null,"juez.php");
-                            });
-                            window.onpopstate = function(event){
-                              $("#contenedorIndex").load("index.php");
-                               };
-                          } else if (response == "accesoDenegado"){
-                            $("#alertAccesoDenegado").show();
-                          } else if (response == "rellenaCampos"){
-                            $("#alertRellenaCampos").show();
-                          }
-                        }
-                      });
-                    });
-                  });
-                </script>
+              <!-- Manejo de inicio de sesión -->
 
               <script>
+                $(document).ready(function(){
+                  $("#btnIniciar").click(function(event){
+                    event.preventDefault();
+                    $.ajax({
+                      type: "POST",
+                      url: "archivos/controlador_index.php",
+                      data: $("#formInicioSesion").serialize(),
+                      success: function(response){
+                        $("#alertAccesoDenegado").hide();
+                        $("#alertRellenaCampos").hide();
+
+                        var loadPage = function(page){
+                          $("#contenedorIndex").load(page, function(){
+                            history.pushState(null, null, page);
+                          });
+                        };
+
+                        switch(response) {
+                          case "inicio":
+                            loadPage("inicio.php");
+                            break;
+                          case "admin":
+                            loadPage("admin.php");
+                            break;
+                          case "juez":
+                            loadPage("juez.php");
+                            break;
+                          case "accesoDenegado":
+                            $("#alertAccesoDenegado").show();
+                            break;
+                          case "rellenaCampos":
+                            $("#alertRellenaCampos").show();
+                            break;
+                        }
+                      }
+                    });
+                  });
+
+                  window.onpopstate = function(event){
+                    $("#contenedorIndex").load("index.php");
+                  };
+                });
+              </script>
+
+              <script>
+                //Redirigir a la página de registro
+
                 $(document).ready(function(){
                   $("#btnRegistrarse").click(function(e){
                     e.preventDefault();
@@ -203,14 +175,9 @@
                         history.pushState(null, null, "registro.php");
                       });
                   });
-                  window.onpopstate = function(event) {
-                      $("#contenedorIndex").load("index.php");
-                    };
-                });
-              </script>
 
-               <script>
-                $(document).ready(function(){
+                  //Redirigir para recuperar contraseña
+
                   $("#btnRecuperar").click(function(e){
                     e.preventDefault();
                       $("#contenedorIndex").load("recuperar.php", function(){

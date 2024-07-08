@@ -6,7 +6,7 @@ if (empty($_SESSION["admin"])) {
     exit;  
 }
 
-if(isset($_GET['id_equipo'])){
+if(isset($_GET['id_equipo'])) {
   $id_equipo = $_GET['id_equipo'];
 
  $sql = "SELECT equipos.*, registro.nombre AS nombre_mentor
@@ -56,6 +56,9 @@ if(isset($_GET['id_equipo'])){
   
   </head>
   <body>
+
+    <!-- FORMULARIO EDITAR EQUIPO -->
+
     <form id="formEditarEquipo" method="POST">  
       <label for="id_equipo" style="margin-left: 10px;">ID Equipo</label>
       <input type="number" name="id_equipo" id="id_equipo" class="form-control" value="<?= $equipo['id_equipo']?>" readonly>

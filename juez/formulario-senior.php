@@ -12,6 +12,7 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
 
+  // Obtener id como juez del usuario
   $sql_juez = "SELECT id_juez FROM jueces WHERE id_usuario = $id_usuario";
   $resultado_juez = $conn->query($sql_juez);
   if($resultado_juez->num_rows > 0) {
@@ -20,6 +21,7 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   }
 }
 
+// Obtener nombre del equipo
 if (isset($_GET['id_equipo'])) {
     $id_equipo = $_GET['id_equipo'];
 
@@ -66,7 +68,7 @@ if (isset($_GET['id_equipo'])) {
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
        html {
@@ -75,16 +77,16 @@ if (isset($_GET['id_equipo'])) {
     }
 
     body {
-    margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 140px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
      .navbar-nav .nav-link {
@@ -92,15 +94,15 @@ if (isset($_GET['id_equipo'])) {
     }
 
     table {
-        border-collapse: collapse;
-        border-right: 2px solid  #87CEFA; /* Añade un borde a la derecha de la tabla */
-        width: 100%;
+    border-collapse: collapse;
+    border-right: 2px solid  #87CEFA; /* Añade un borde a la derecha de la tabla */
+    width: 100%;
     }
 
     th, td {
-        border-right: 2px solid #87CEFA; /* Bordes a la derecha de todas las celdas */
-        border-bottom: 2px solid #87CEFA;
-        padding: 8px;
+    border-right: 2px solid #87CEFA; /* Bordes a la derecha de todas las celdas */
+    border-bottom: 2px solid #87CEFA;
+    padding: 8px;
     }
 
     th.titulo {
@@ -169,6 +171,7 @@ if (isset($_GET['id_equipo'])) {
   </head>
   <body>
     <div class="contenedor" id="contenedorFormularioSenior">
+
      <div id="content" class="text-center mt-4">
         <p style="font-size: 18px;"><b>Evaluación División Senior</b> temporada 2023 - 2024</p>
         <p><b>Guía de puntuación para la asignación de puntos por ítem:</b></p>
@@ -176,9 +179,10 @@ if (isset($_GET['id_equipo'])) {
         <p class="mt-2" style="font-size: 22px;">Equipo: <strong><?=$equipo['nombre_equipo']?></strong></p>
     </div>
 
+<!-- FORMULARIO DE EVALUACIÓN EQUIPOS SENIOR -->
+
   <div>
     <form id="formPuntuaciones">
-
     <div class="container mt-2">
         <table>
             <thead>
@@ -384,6 +388,7 @@ if (isset($_GET['id_equipo'])) {
 
 <script>
     $(document).ready(function() {
+        // Seleccionar todos los inputs de puntuación y de puntuación total general
         const itemPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
         const puntuacionTotalInputsGenerales = document.querySelectorAll('.puntuacion-automatica.general');
 
@@ -392,6 +397,7 @@ if (isset($_GET['id_equipo'])) {
             let totalPuntuacion = 0;
             const categorias = new Set();
 
+            // Sumar todas las puntuaciones individuales y almacenar las categorías
             itemPuntuacionInputs.forEach(itemInput => {
                 const valor = parseFloat(itemInput.value) || 0;
                 totalPuntuacion += valor;
@@ -403,7 +409,7 @@ if (isset($_GET['id_equipo'])) {
                 puntuacionTotalInput.value = totalPuntuacion || '';
             });
 
-            // Calcular totales por categoría
+            // Calcular y actualizar totales por categoría
             categorias.forEach(categoria => {
                 let totalPuntuacionCategoria = 0;
                 const categoriaInputs = document.querySelectorAll(`.item-puntuacion[data-categoria="${categoria}"]`);
@@ -420,7 +426,7 @@ if (isset($_GET['id_equipo'])) {
             });
         }
 
-        // Cargar puntuaciones guardadas si se pasó el parámetro 'puntuaciones' en la URL
+        // Cargar puntuaciones guardadas si existe el parámetro 'puntuaciones' en la URL
         <?php if (isset($_GET['puntuaciones'])) { ?>
             $.ajax({
                 type: "GET",
@@ -441,6 +447,7 @@ if (isset($_GET['id_equipo'])) {
                 const clave = partes[0];
                 const valor = partes[1];
                 
+                // Asignar los valores a los inputs correspondientes
                 $('input').filter(function() {
                     return this.id === clave;
                 }).val(valor === '0' ? '' : valor);
@@ -460,7 +467,7 @@ if (isset($_GET['id_equipo'])) {
 
 <script>
 $(document).ready(function(){
-
+// Cargar evaluaciones.php al navegar hacia atrás
     window.onpopstate = function(event) {
         $("#contenedorFormularioSenior").load("evaluaciones.php");
                 history.pushState(null, '', "evaluaciones.php");

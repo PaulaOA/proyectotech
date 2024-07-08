@@ -1,3 +1,4 @@
+<!-- MODAL PARA EDITAR USUARIO, INCLUYE FORMULARIO -->
 <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -36,14 +37,16 @@
 </div>
 
 <script>
+  // Mostrar modal para confirmar cancelar los cambios
     $(document).ready(function() {
         $("#btnCancelar").click(function() {
             $("#modalCancelar").modal("show");
         });
     });
 </script>
-<script>
 
+<script>
+  // Mostrar modal para confirmar guardar los cambios
     $(document).ready(function() {
         $("#btnGuardarCambios").click(function() {
             $("#modalGuardarCambios").modal("show");
@@ -51,6 +54,7 @@
     });
 </script>
 
+<!-- MODAL DE CONFIRMACIÓN GUARDAR CAMBIOS -->
 <div class="modal fade" id="modalGuardarCambios" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -68,6 +72,7 @@
   </div>
 </div>
 
+<!-- MODAL DE CONFIRMACIÓN CANCELAR CAMBIOS -->
 <div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -86,6 +91,7 @@
 </div>
 
 <script>
+  // Cerrar modales
     $(document).ready(function() {
         $("#btnQuieroCancelar").click(function() {
             $("#modalCancelar").modal("hide");
@@ -97,6 +103,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
+  // Solicitud para confirmar actualización de datos del usuario 
     $(document).ready(function() {
         $("#btnConfirmar").click(function(e) {
             e.preventDefault();
@@ -119,6 +126,7 @@
     });
 </script>
 
+<!-- MODAL CREAR NUEVO USUARIO, INCLUYE FORMULARIO -->
 <div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-labelledby="modalNuevoUsuario" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -156,6 +164,7 @@
 </div>
 
 <script>
+  // Mostrar modal para confirmar cancelar nuevo usuario
     $(document).ready(function() {
         $("#btnCancelarUsuario").click(function() {
             $("#modalCancelarUsuario").modal("show");
@@ -163,7 +172,7 @@
     });
 </script>
 <script>
-
+// Mostrar modal para confirmar crear nuevo usuario
     $(document).ready(function() {
         $("#btnCrearUsuario").click(function() {
             $("#modalCrearUsuario").modal("show");
@@ -171,6 +180,7 @@
     });
 </script>
 
+<!-- MODAL DE CONFIRMACIÓN PARA CREAR NUEVO USUARIO -->
 <div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-labelledby="modalCrearUsuarioLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -188,6 +198,7 @@
   </div>
 </div>
 
+<!-- MODAL DE CONFIRMACIÓN PARA CANCELAR CREAR NUEVO USUARIO -->
 <div class="modal fade" id="modalCancelarUsuario" tabindex="-1" aria-labelledby="modalCancelarUsuarioLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -206,6 +217,7 @@
 </div>
 
 <script>
+  // Cerrar los modales
     $(document).ready(function() {
         $("#btnCancelarNuevoUsuario").click(function() {
             $("#modalCancelarUsuario").modal("hide");
@@ -215,6 +227,7 @@
 </script>
 
 <script>
+  // Procesar solicitud de crear nuevo usuario
     $(document).ready(function() {
         $("#btnConfirmarUsuario").click(function(e) {
             e.preventDefault();
@@ -237,6 +250,7 @@
     });
 </script>
 
+<!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR USUARIO EXISTENTE -->
 <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="modalEliminarUsuarioLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

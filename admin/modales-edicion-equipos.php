@@ -1,4 +1,4 @@
-
+<!-- MODAL EDITAR EQUIPO, INCLUYE FORMULARIO -->
 <div class="modal fade" id="modalEditarEquipo" tabindex="-1" aria-labelledby="modalEditarEquipoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -6,7 +6,7 @@
         <h5 class="modal-title" id="modalEditarEquipoLabel">Editar Equipo</h5>
       </div>
       <div class="modal-body">
-    
+
       <form id="formEditarEquipo" method="POST">  
       <label for="id_equipo" style="margin-left: 10px;">ID Equipo</label>
       <input type="number" name="id_equipo" id="id_equipo" class="form-control" value="<?= $equipo['id_equipo']?>" readonly>
@@ -46,6 +46,7 @@
 </div>
 
 <script>
+  // Mostrar modal de confirmación según botón clicado
     $(document).ready(function() {
         $("#btnCancelar").click(function() {
             $("#modalCancelar").modal("show");
@@ -58,6 +59,8 @@
         });
     });
 </script>
+
+<!-- MODAL GUARDAR CAMBIOS -->
 <div class="modal fade" id="modalGuardarCambios" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -74,6 +77,8 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL CANCELAR EDICIÓN -->
 <div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -92,6 +97,7 @@
 </div>
 
 <script>
+  // Cerrar modales
     $(document).ready(function() {
         $("#btnQuieroCancelar").click(function() {
             $("#modalCancelar").modal("hide");
@@ -101,6 +107,7 @@
 </script>
 
 <script>
+  // Procesar solicitud para cambiar los datos del equipo
     $(document).ready(function() {
         $("#btnConfirmar").click(function(e) {
             e.preventDefault();
@@ -123,6 +130,7 @@
     });
 </script>
 
+<!-- Modal de confirmación para eliminar equipo -->
 <div class="modal fade" id="modalEliminarEquipo" tabindex="-1" aria-labelledby="modalEliminarEquipoLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -144,9 +152,9 @@
 include "../archivos/conexion.php";
 $sql = "SELECT registro.nombre AS nombre_mentor, mentores.id_mentor FROM registro INNER JOIN mentores WHERE mentores.id_usuario = registro.id_usuario";
 $resultado = $conn->query($sql);
-
  ?>
 
+<!-- MODAL CREAR NUEVO EQUIPO, INCLUYE FORMULARIO -->
 <div class="modal fade" id="modalNuevoEquipo" tabindex="-1" aria-labelledby="modalNuevoEquipo" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -176,19 +184,16 @@ $resultado = $conn->query($sql);
           <div class="col-sm-10">
             <div class="form-check">
               <input class="form-check-input" type="radio" name="division" id="junior" value="Junior" checked>
-              <label class="form-check-label" for="junior">
-                Junior
-              </label>
+              <label class="form-check-label" for="junior">Junior</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="division" id="senior" value="Senior">
-              <label class="form-check-label" for="senior">
-                Senior
-              </label>
+              <label class="form-check-label" for="senior">Senior</label>
             </div>
           </div>
         </fieldset>
         </form>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="btnCancelarEquipo">Cancelar</button>
@@ -199,6 +204,7 @@ $resultado = $conn->query($sql);
 </div>
 
 <script>
+  // Mostrar modal de confirmación para cancelar la creación del nuevo equipo
     $(document).ready(function() {
         $("#btnCancelarEquipo").click(function() {
             $("#modalCancelarEquipo").modal("show");
@@ -206,7 +212,7 @@ $resultado = $conn->query($sql);
     });
 </script>
 <script>
-
+// Mostrar modal de confirmación para la creación del nuevo equipo
     $(document).ready(function() {
         $("#btnCrearEquipo").click(function() {
             $("#modalCrearEquipo").modal("show");
@@ -214,15 +220,14 @@ $resultado = $conn->query($sql);
     });
 </script>
 
+<!-- MODAL DE CONFIRMACIÓN PARA CREAR NUEVO EQUIPO -->
 <div class="modal fade" id="modalCrearEquipo" tabindex="-1" aria-labelledby="modalCrearEquipoLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalCrearEquipoLabel">¿Crear Equipo?</h5>
       </div>
-      <div class="modal-body">
-        Se creará un nuevo equipo con los datos introducidos
-      </div>
+      <div class="modal-body">Se creará un nuevo equipo con los datos introducidos</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary" id="btnConfirmarEquipo">Crear equipo</button>
@@ -231,15 +236,14 @@ $resultado = $conn->query($sql);
   </div>
 </div>
 
+<!-- MODAL DE CONFIRMACIÓN PARA CANCELAR LA CREACIÓN NUEVO EQUIPO -->
 <div class="modal fade" id="modalCancelarEquipo" tabindex="-1" aria-labelledby="modalCancelarEquipoLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalCancelarEquipoLabel">¿Desea cancelar?</h5>
       </div>
-      <div class="modal-body">
-       Los cambios no se guardarán
-      </div>
+      <div class="modal-body">Los cambios no se guardarán</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir editando</button>
         <button type="button" class="btn btn-primary" id="btnCancelarNuevoEquipo">Sí, quiero cancelar</button>
@@ -249,6 +253,7 @@ $resultado = $conn->query($sql);
 </div>
 
 <script>
+  // Cerrar modales
     $(document).ready(function() {
         $("#btnCancelarNuevoEquipo").click(function() {
             $("#modalCancelarEquipo").modal("hide");
@@ -258,6 +263,7 @@ $resultado = $conn->query($sql);
 </script>
 
 <script>
+  // Solicitud para crear nuevo equipo
     $(document).ready(function() {
         $("#btnConfirmarEquipo").click(function(e) {
             e.preventDefault();

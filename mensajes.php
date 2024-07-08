@@ -10,13 +10,16 @@ if (empty($_SESSION["nombre"])|| empty($_SESSION["id_usuario"]) || empty($_SESSI
   $id_usuario = $_SESSION['id_usuario'];
   $email = $_SESSION["email"];
 }
-  $solicitudesPendientes = "SELECT equipos.*, registro.nombre AS nombre_creador
+
+//Recuperar solicitudes de equipos
+$solicitudesMentor = "SELECT equipos.*, registro.nombre AS nombre_creador
     FROM equipos
     INNER JOIN registro ON equipos.id_creador = registro.id_usuario
     INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
     WHERE mentores.id_usuario =" .$id_usuario;
-$solicitudes = $conn->query($solicitudesPendientes);
+$solicitudes = $conn->query($solicitudesMentor);
 
+//Recuperar id del mentor
 $sql_mentor = "SELECT id_mentor from mentores where id_usuario = $id_usuario";
 $resultado_mentor = $conn->query($sql_mentor);
 if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
@@ -48,19 +51,19 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
       footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40; 
+    color: white; 
     }
 
   .modal {
-      display: none; /* Por defecto, ocultar el modal */
+      display: none;
       position: fixed;
       z-index: 1000;
       left: 0;
@@ -109,6 +112,9 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
   <div class="row justify-content-center">
     <div class="col-md-6 pl-4">
         <div class="card mt-4 mb-2">
+
+          <!-- Solicitudes -->
+
         <div class="card-header bg-primary text-white">Solicitudes</div>
           <div class="card-body">
             <div class="table-responsive">
@@ -131,6 +137,9 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
                       <td class="text-center"><?= $fila['nombre_creador']; ?></td>
                       <td class="text-center"><?= $fila['estado']; ?></td>
                       <td class="text-center">
+
+                      <!-- Si la solicitud está pendiente, mostrar opción de aceptar o rechazar -->
+
                         <?php if ($fila['estado'] == 'pendiente'): ?>
                           <a href="#" class="aceptar-solicitud" data-id="<?= $fila['id_equipo']; ?>" data-accion="aceptar">
                             Aceptar
@@ -163,6 +172,8 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
       var id_mentor = <?=$id_mentor;?>;
       var email = "<?= $email; ?>";
 
+      //Aceptar Solicitud
+
           $(".aceptar-solicitud").click(function(e) {
              e.preventDefault();
              id = $(this).data('id');
@@ -173,6 +184,7 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
             $("#btnConfirmarSolicitud").click(function() {
                $("#aceptarBtnText").hide();
                $("#aceptarBtnLoader").removeClass("d-none");
+
             $.ajax({
                 type: "POST",
                 url: "archivos/responder-solicitud.php",
@@ -180,6 +192,8 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
                 success: function(response) {
                    $("#aceptarBtnLoader").addClass("d-none");
                    $("#aceptarBtnText").show();
+
+                   // Distinguir entre mentor ya registrado o pendiente de registrar
 
                    $("#modalAceptarSolicitud").css("display", "none");
                    if (response == "registrate") {
@@ -199,6 +213,8 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
 
             });
         });
+
+        // Rechazar solicitud
 
           $(".rechazar-solicitud").click(function(e) {
              e.preventDefault();
@@ -228,6 +244,8 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
             });
       });
 </script>
+
+<!-- MODALES -->
 
  <div id="modalAceptarSolicitud" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
@@ -265,7 +283,6 @@ if ($resultado_mentor && $resultado_mentor->num_rows > 0) {
 </div>
 
    <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
-
 
 <script>
   $(document).ready(function() {

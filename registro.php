@@ -66,9 +66,9 @@
     margin-top: auto;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
       
       
@@ -76,25 +76,25 @@
 </head>
 <body>
     <div class="contenedor" id="contenedorRegistro">
-<nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="inicio.php">Inicio</a>
-        </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-<br>    
+      <nav class="navbar navbar-dark bg-success navbar-expand-lg static-top"> 
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/assets/img/logo.png" alt="..." height="36">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="inicio.php">Inicio</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <br>    
 
     <section class="content">
         <div class="container">
@@ -105,9 +105,9 @@
                         <h3>Formulario de registro</h3>  
                     </div>
 
-                    <!-- FORMULARIO -->
+                    <!-- FORMULARIO de registro de nuevo usuario -->
 
-                    <form method="POST" id="formRegistro">
+                    <form id="formRegistro">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -168,18 +168,24 @@
         </div>
     </section>
 
+    <!-- Incluir jquery -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
+
       function validarEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
       }
+          // Manejar solicitud de registro
+
           $(document).ready(function(){
             $("#btnRegistrar").click(function(event){
               event.preventDefault();
 
-              // Obtener valores de los campos
+            // Obtener valores de los campos
+
             const nombre = $("#nombre").val().trim();
             const apellidos = $("#apellidos").val().trim();
             const fecha = $("#fecha").val().trim();
@@ -189,21 +195,25 @@
             const cargo = $("#cargo").val().trim();
 
             // Validar campos requeridos
+
             if (nombre === '' || apellidos === '' || fecha === '' || email === '' || contraseña === '' || repiteContraseña === '' || cargo === 'Elige una opción') {
                 $(".modal").css("display", "none");
                 $("#modalRellenaCampos").css("display", "block");
                 return false;
             }
 
-            $("#registroBtnText").addClass("visually-hidden"); // Ocultar texto del botón
+            // Botón de registrar muestra símbolo de proceso
+
+            $("#registroBtnText").addClass("visually-hidden"); 
             $("#registroBtnLoader").removeClass("d-none");
 
-            // Validar formato de email
+            // Validar formato de email antes de procesar solicitud
+
             if (!validarEmail(email)) {
-                $(".modal").css("display", "none"); // Ocultar todos los modales
+                $(".modal").css("display", "none");
                 $("#modalEmailInvalido").css("display", "block");
 
-                $("#registroBtnText").removeClass("visually-hidden"); // Mostrar texto del botón
+                $("#registroBtnText").removeClass("visually-hidden");
                 $("#registroBtnLoader").addClass("d-none");
                 return false; // Detener la ejecución del formulario
             }
@@ -213,23 +223,34 @@
                 url: "archivos/registrar.php",
                 data: $("#formRegistro").serialize(),
                 success: function(response){
-                  if (response == "emailYaRegistrado"){
-                    $("#modalEmailYaRegistrado").css("display", "block");
-                  } else if (response == "rellenaCampos") {
-                    $("#modalRellenaCampos").css("display", "block");
-                  } else if (response == "errorContraseña") {
-                    $("#modalErrorContraseña").css("display", "block");
-                  } else if (response == "emailInvalido"){
-                    $("#modalEmailInvalido").css("display", "block");
-                  } else if (response == "dominioInvalido"){
-                    $("#modalDominioInvalido").css("display", "block");
-                  } else if (response == "verificaEmail"){
-                    $("#modalVerificaEmail").css("display", "block");  
-                  } else if (response == "error") {
-                    $("#alertError").show();
+                  switch(response) {
+
+                    case "emailYaRegistrado":
+                      $("#modalEmailYaRegistrado").css("display", "block");
+                      break;
+                    case "rellenaCampos":
+                      $("#modalRellenaCampos").css("display", "block");
+                      break;
+                    case "errorContraseña":
+                      $("#modalErrorContraseña").css("display", "block");
+                      break;
+                    case "emailInvalido":
+                      $("#modalEmailInvalido").css("display", "block");
+                      break;
+                    case "dominioInvalido":
+                      $("#modalDominioInvalido").css("display", "block");
+                      break;
+                    case "verificaEmail":
+                      $("#modalVerificaEmail").css("display", "block");
+                      break;
+                    case "error":
+                      $("#alertError").show();
+                      break;
+                    default:
+                      console.log("Respuesta no esperada: " + response);
                   }
 
-                  $("#registroBtnText").removeClass("visually-hidden"); // Mostrar texto del botón
+                $("#registroBtnText").removeClass("visually-hidden");
                 $("#registroBtnLoader").addClass("d-none");
                 }
               });
@@ -242,6 +263,8 @@
         </script>
 
          <script>
+          // Redirigir a index si el proceso de registro ha sido correcto al cerrar el modal mostrado
+
           $(document).ready(function(){
             $("#btnAceptar").click(function(e){
               e.preventDefault();
@@ -254,6 +277,8 @@
                 });
             });
         </script>
+
+        <!-- Modales -->
 
         <div id="modalEmailYaRegistrado" class="modal">
           <div class="modal-content d-flex flex-column align-items-center justify-content-center">
@@ -303,7 +328,6 @@
           </div>
         </div>
     
-    <br>
     <footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">

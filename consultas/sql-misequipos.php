@@ -1,5 +1,5 @@
 <?php
-
+// Obtener detalles en relación a los equipos creados por el usuario
 $sql_equiposCreados = "SELECT e.*, 
                               r_mentor.nombre AS nombre_mentor,
                               r_creador.nombre AS nombre_creador,
@@ -25,6 +25,7 @@ $sql_equiposCreados = "SELECT e.*,
                               e.id_equipo, r_mentor.nombre, r_creador.nombre";
 $consulta_equiposCreados = $conn->query($sql_equiposCreados);
 
+// Obtener detalles de las solicitudes pendientes para equipos creados por el usuario
 $sql_participantes = "SELECT
                           e.id_equipo,
                           e.nombre_equipo,
@@ -45,6 +46,7 @@ $sql_participantes = "SELECT
                           
 $consulta_participantes = $conn->query($sql_participantes);
 
+// Obtener detalles en relación a los equipos donde el usuario es participante pero no creador del equipo
 $sql_equiposParticipante= "SELECT 
                               e.nombre_equipo, 
                               e.id_equipo,
@@ -81,6 +83,7 @@ $sql_equiposParticipante= "SELECT
                               e.id_equipo, e.nombre_equipo, r_creador.nombre, r_mentor.nombre";
 $resultado_equiposParticipante = $conn->query($sql_equiposParticipante);
 
+// Obtener las solicitudes pendientes para unirse a un equipo realizadas por el usuario
 $solicitudes_unirse = "SELECT e.nombre_equipo, e.id_equipo, se.id_participante, se.id_solicitud, p.id_usuario
                               FROM equipos e
                               JOIN solicitudes_equipo se ON e.id_equipo = se.id_equipo

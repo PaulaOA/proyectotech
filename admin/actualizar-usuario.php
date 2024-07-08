@@ -6,7 +6,7 @@ if (empty($_POST['id_usuario']) ||
     empty($_POST['email']) || 
     empty($_POST['contraseña']) || 
     empty($_POST['cargo'])) {
-    echo "rellenaCampos";
+    echo "rellenaCampos"; // COMPROBAR QUE ESTÁN COMPLETOS TODOS LOS CAMPOS
 } else {
     $id_usuario = $_POST['id_usuario'];
     $nombre = $_POST['nombre'];
@@ -18,14 +18,18 @@ if (empty($_POST['id_usuario']) ||
 
     include "../archivos/conexion.php";
 
+    // ACTUALIZAR DATOS DE USUARIO
+
     $sql = "UPDATE registro SET nombre='$nombre', apellidos='$apellidos', fecha='$fecha', cargo='$cargo' WHERE id_usuario='$id_usuario'";
 
-    $messages = ""; // Variable to accumulate messages
+    $messages = ""; // VARIABLE PARA DEVOLVER COMO RESPUESTA DE ÉXITO O ERROR
 
     if ($conn->query($sql) === TRUE) {
-        $messages .= "usuarioEditado";
+        $messages .= "usuarioEditado"; // SE HAN ACTUALIZADO LOS DATOS DEL USUARIO EN LA TABLA REGISTRO
 
-        if ($cargo === 'Participante') {
+// SI EL NUEVO CARGO ES PARTICIPANTE, SE COMPRUEBA SI EXISTE EN TABLA MENTORES Y SE ELIMINA EL REGISTRO
+
+        if ($cargo === 'Participante') { 
             $check_sql = "SELECT * FROM mentores WHERE id_usuario='$id_usuario'";
             $result = $conn->query($check_sql);
 
@@ -34,6 +38,16 @@ if (empty($_POST['id_usuario']) ||
                 $conn->query($delete_sql);
             }
 
+            // MISMA COMPROBACIÓN PARA TABLA JUECES
+            $check_sql_juez = "SELECT * FROM jueces WHERE id_usuario='$id_usuario'";
+            $result_juez = $conn->query($check_sql);
+
+            if ($result_juez->num_rows > 0) {
+                $delete_sql = "DELETE FROM jueces WHERE id_usuario='$id_usuario'";
+                $conn->query($delete_sql);
+            }
+
+            // SE COMPRUEBA QUE NO EXISTA EL REGISTRO EN TABLA PARTICIPANTES Y SE PROCEDE A REGISTRAR
             $check_sql_participante = "SELECT * FROM participantes WHERE id_usuario='$id_usuario'";
             $result_participante = $conn->query($check_sql_participante);
 
@@ -43,15 +57,9 @@ if (empty($_POST['id_usuario']) ||
             }
         }
 
+// SI EL NUEVO CARGO ES MENTOR, SE COMPRUEBA SI EXISTE EN TABLA PARTICIPANTES Y SE ELIMINA EL REGISTRO        
+
         if ($cargo === 'Mentor') {
-            $check_sql = "SELECT * FROM mentores WHERE id_usuario='$id_usuario'";
-            $result = $conn->query($check_sql);
-
-            if ($result->num_rows == 0) {
-                $insert_sql = "INSERT INTO mentores (id_usuario) VALUES ('$id_usuario')";
-                $conn->query($insert_sql);
-            }
-
             $check_sql_participante = "SELECT * FROM participantes WHERE id_usuario='$id_usuario'";
             $result_participante = $conn->query($check_sql_participante);
 
@@ -59,10 +67,29 @@ if (empty($_POST['id_usuario']) ||
                 $delete_sql = "DELETE FROM participantes WHERE id_usuario='$id_usuario'";
                 $conn->query($delete_sql);
             }
+
+            // MISMA COMPROBACIÓN PARA TABLA JUECES
+            $check_sql_juez = "SELECT * FROM jueces WHERE id_usuario='$id_usuario'";
+            $result_juez = $conn->query($check_sql);
+
+            if ($result_juez->num_rows > 0) {
+                $delete_sql = "DELETE FROM jueces WHERE id_usuario='$id_usuario'";
+                $conn->query($delete_sql);
+            }
+
+            // SE COMPRUEBA QUE NO EXISTA EL REGISTRO EN TABLA MENTORES Y SE PROCEDE A REGISTRAR
+            $check_sql = "SELECT * FROM mentores WHERE id_usuario='$id_usuario'";
+            $result = $conn->query($check_sql);
+
+            if ($result->num_rows == 0) {
+                $insert_sql = "INSERT INTO mentores (id_usuario) VALUES ('$id_usuario')";
+                $conn->query($insert_sql);
+            }
         }
 
+// SI EL NUEVO CARGO ES JUEZ, SE INSERTA EL REGISTRO EN TABLA JUECES Y SE COMPRUEBA SI EXISTE EN TABLA PARTICIPANTES O TABLA MENTORES
+
         if ($cargo === 'Juez') {
-            // Logic for 'Juez'
             $check_sql_juez = "SELECT * FROM jueces WHERE id_usuario='$id_usuario'";
             $result_juez = $conn->query($check_sql_juez);
 
@@ -71,7 +98,7 @@ if (empty($_POST['id_usuario']) ||
                 $conn->query($insert_sql);
             }
 
-            // Remove from 'mentores' if exists
+            // BORRAR DE TABLA MENTORES SI EXISTE
             $check_sql_mentor = "SELECT * FROM mentores WHERE id_usuario='$id_usuario'";
             $result_mentor = $conn->query($check_sql_mentor);
 
@@ -80,7 +107,7 @@ if (empty($_POST['id_usuario']) ||
                 $conn->query($delete_sql);
             }
 
-            // Remove from 'participantes' if exists
+            // BORRAR DE TABLA PARTICIPANTES SI EXISTE
             $check_sql_participante = "SELECT * FROM participantes WHERE id_usuario='$id_usuario'";
             $result_participante = $conn->query($check_sql_participante);
 
@@ -95,5 +122,4 @@ if (empty($_POST['id_usuario']) ||
 
     echo $messages;
     $conn->close();
-}
-?>
+} ?>
