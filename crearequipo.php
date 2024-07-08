@@ -8,13 +8,7 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
 }
-
-$consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
-  FROM equipos
-  INNER JOIN mentores ON equipos.id_mentor = mentores.id_mentor
-  INNER JOIN registro ON mentores.id_usuario = registro.id_usuario
-  WHERE equipos.id_creador = $id_usuario";
-  $solicitudes = $conn->query($consultaEquipos);
+ include "consultas/sql-crearequipo.php";
 
 ?>
 <!DOCTYPE html>
@@ -37,7 +31,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
       }
 
        .modal {
-          display: none; /* Por defecto, ocultar el modal */
+          display: none;
           position: fixed;
           z-index: 1000;
           left: 0;
@@ -78,16 +72,16 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
     </style>
   </head>
@@ -97,8 +91,6 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
       <?php
       include "menu-superior.php";
       include "archivos/conexion.php";
-      $sql = "SELECT registro.nombre, mentores.id_mentor FROM registro JOIN mentores ON registro.id_usuario = mentores.id_usuario";
-      $resultado = $conn->query($sql);
       ?>
 
         <div class="container mt-4 mb-4">
@@ -108,6 +100,9 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                     <div class="card bg-primary text-left text-white">
                         <h4 style="margin-left: 10px;">Crea tu equipo</h4>  
                     </div>
+
+                    <!-- FORMULARIO para crear nuevo equipo -->
+
                     <form id="formCrearEquipo" method="POST">
                         <div class="card-body">
                             <div class="row">
@@ -158,6 +153,9 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                         </div>
                     </form>
                 </div>
+
+                <!-- Estado de las solicitudes de creación de equipo -->
+
                 <div class="col-md-2"></div>
                 <div class="col-md-5">
                   <div class="card bg-secondary text-left text-white">
@@ -203,6 +201,9 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
      <script>
+
+      //Solicitud Crear Equipo
+
         $(document).ready(function(){
           $("#btnCrearEsteEquipo").click(function(event){
             event.preventDefault();
@@ -224,18 +225,24 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
             });
             return false;
           });
-           $(".close, #btnAceptar").click(function(){
-           $("#modalSolicitudEnviada, #modalRellenaCampos, #modalError").css("display", "none");
+           $(".close-modal").click(function(){
+           $(".modal").css("display", "none");
            $("#contenedorCrearEquipo").load("crearequipo.php")
          });
         });
       </script>
+
       <script>
+
+        // Eliminar solicitud pendiente de creación de equipo
+
         $(document).ready(function() {
             $(".borrar-solicitud").click(function(e) {
                 e.preventDefault();
+
                 var id_equipo = $(this).data('id');
                 var nombre_equipo = $(this).data('nombre');
+
                 $(".nombreEquipoEliminar").text(nombre_equipo);
                 $('#modalEliminarSolicitud').css("display", "block");
               
@@ -254,48 +261,13 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
                       }
                   });
               });
-           $(".close, #btnCancelarEliminar").click(function(){
-           $("#modalEliminarSolicitud").css("display", "none");
+           $(".close-modal").click(function(){
+           $(".modal").css("display", "none");
            $("#contenedorCrearEquipo").load("crearequipo.php")
          });
         });
       });
       </script>
-
-        <div id="modalEliminarSolicitud" class="modal">
-          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">¿Eliminar solicitud?</h1>
-            <p>Los datos del equipo "<span class="nombreEquipoEliminar"></span>" serán eliminados</p>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" id="btnCancelarEliminar">Cancelar</button>
-              <button type="button" class="btn btn-danger" id="btnEliminarSolicitud">Eliminar Solicitud</button>
-            </div>
-          </div>
-        </div>
-
-       <div id="modalSolicitudEnviada" class="modal">
-          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">¡Solicitud enviada!</h1>
-            <p>El mentor responderá a tu solicitud</p>
-            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
-          </div>
-        </div>
-
-        <div id="modalRellenaCampos" class="modal">
-          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">Solicitud incompleta</h1>
-            <p class="text-center">Por favor, elige un nombre y un mentor para tu equipo</p>
-            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
-          </div>
-        </div>
-
-         <div id="modalError" class="modal">
-          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
-            <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
-            <p class="text-center">No se pudo crear el equipo</p>
-            <button class="btnModal mx-auto" id="btnAceptar">Aceptar</button>
-          </div>
-        </div>
 
     <!-- Manejar botones menú superior -->
 
@@ -359,6 +331,7 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
             });
           });
         </script>
+
         <script>
 
         $(document).ready(function(){
@@ -379,8 +352,45 @@ $consultaEquipos = "SELECT equipos.*, registro.nombre AS nombre_mentor
             });
         });
     </script>
+
+    <!-- MODALES -->
+
+        <div id="modalEliminarSolicitud" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">¿Eliminar solicitud?</h1>
+            <p>Los datos del equipo "<span class="nombreEquipoEliminar"></span>" serán eliminados</p>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+              <button type="button" class="btn btn-danger" id="btnEliminarSolicitud">Eliminar Solicitud</button>
+            </div>
+          </div>
+        </div>
+
+       <div id="modalSolicitudEnviada" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">¡Solicitud enviada!</h1>
+            <p>El mentor responderá a tu solicitud</p>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
+          </div>
+        </div>
+
+        <div id="modalRellenaCampos" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Solicitud incompleta</h1>
+            <p class="text-center">Por favor, elige un nombre y un mentor para tu equipo</p>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
+          </div>
+        </div>
+
+         <div id="modalError" class="modal">
+          <div class="modal-content d-flex flex-column align-items-center justify-content-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
+            <p class="text-center">No se pudo crear el equipo</p>
+            <button class="btnModal mx-auto close-modal">Aceptar</button>
+          </div>
+        </div>
     
-    <footer class="footer bg-dark text-white py-4">
+<footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">
       <div class="text-center">

@@ -1,12 +1,21 @@
 <?php
 require_once('conexion.php');
-$fecha    	 = $_REQUEST['fecha']; 
 
-$sqlDeleteProd    = ("DELETE FROM videos WHERE  fecha='$fecha'");
-$resultProd 	  = mysqli_query($conn, $sqlDeleteProd);
+// Recibir parámetro necesario
+if (isset ($_GET['id'])) {
+ $id_video = $_GET['id'];
 
+// Borrar registro
+$sqlDelete= "DELETE FROM videos WHERE id='$id_video'";
+$result	= mysqli_query($conn, $sqlDelete);
+ 
+ if ($result == TRUE) {
+ 	header("Location:../miperfil.php");
+ }
 
-header("Location:../miperfil.php");
-exit();
+ $conn->close();
 
+} else {
+	echo "errorParámetro";
+}
 ?>

@@ -88,7 +88,7 @@ $currentPage = 'proyectos';
               <table class="table table-striped mb-2">
               <thead>
                   <tr>
-                      <th class="text-center">ID</th>
+                      <th class="text-center"></th>
                      
                   </tr>
               </thead>

@@ -12,6 +12,7 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
   $nombre = $_SESSION['nombre'];
   $id_usuario = $_SESSION['id_usuario'];
 
+  // Obtener id como juez del usuario
   $sql_juez = "SELECT id_juez FROM jueces WHERE id_usuario = $id_usuario";
   $resultado_juez = $conn->query($sql_juez);
   if($resultado_juez->num_rows > 0) {
@@ -19,6 +20,8 @@ if (empty($_SESSION["nombre"]) || empty($_SESSION["id_usuario"])) {
     $id_juez = $juez['id_juez'];
   }
 }
+
+// Obtener nombre del equipo
 if (isset($_GET['id_equipo'])) {
     $id_equipo = $_GET['id_equipo'];
 
@@ -65,7 +68,7 @@ if (isset($_GET['id_equipo'])) {
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
        html {
@@ -74,31 +77,32 @@ if (isset($_GET['id_equipo'])) {
     }
 
     body {
-    margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 140px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
      .navbar-nav .nav-link {
     font-size: 18px; 
     }
-        table {
-        border-collapse: collapse;
-        border-right: 2px solid  #87CEFA; /* Añade un borde a la derecha de la tabla */
-        width: 100%;
+
+    table {
+    border-collapse: collapse;
+    border-right: 2px solid  #87CEFA; /* Añade un borde a la derecha de la tabla */
+    width: 100%;
     }
 
     th, td {
-        border-right: 2px solid #87CEFA; /* Bordes a la derecha de todas las celdas */
-        border-bottom: 2px solid #87CEFA;
-        padding: 8px;
+    border-right: 2px solid #87CEFA; /* Bordes a la derecha de todas las celdas */
+    border-bottom: 2px solid #87CEFA;
+    padding: 8px;
     }
 
     th.titulo {
@@ -107,15 +111,15 @@ if (isset($_GET['id_equipo'])) {
     }
 
     td.descripcion {
-        width: 90%; /* Ancho de la columna de descripción */
+    width: 90%; /* Ancho de la columna de descripción */
     }
 
     td.puntuacion {
-        width: 10%; /* Ancho de la columna de puntuación */
+    width: 10%; /* Ancho de la columna de puntuación */
     }
 
     th.titulo:first-child, td.descripcion:first-child {
-        border-left: none; /* Quitar el borde izquierdo de la primera celda en el encabezado y en el cuerpo de la tabla */
+    border-left: none; /* Quitar el borde izquierdo de la primera celda en el encabezado y en el cuerpo de la tabla */
     }
     th, td:last-child {
         border-right: none; /* Quitar el borde derecho de la última celda en todas las filas */
@@ -129,7 +133,7 @@ if (isset($_GET['id_equipo'])) {
     }
 
   .modal {
-      display: none; /* Por defecto, ocultar el modal */
+      display: none;
       position: fixed;
       z-index: 1000;
       left: 0;
@@ -174,9 +178,10 @@ if (isset($_GET['id_equipo'])) {
         <p><b>1</b> - Insuficiente <span style="margin-left: 30px;"><b>2</b> - Mejorable </span> <span style="margin-left: 30px;"><b>3</b> - Bueno</span><span style="margin-left: 30px;"><b>4</b> - Excelente</span><span style="margin-left: 30px;"><b>5</b> - Asombroso</span></p>
         <p class="mt-2" style="font-size: 22px;">Equipo: <strong><?=$equipo['nombre_equipo']?></strong></p>
     </div>
+
+<!-- FORMULARIO DE EVALUACIÓN EQUIPOS JUNIOR -->
   <div>
     <form id="formPuntuaciones">
-
     <div class="container mt-2">
         <table>
             <thead>
@@ -199,11 +204,10 @@ if (isset($_GET['id_equipo'])) {
         </table>
     </div>
 
-        <div class="container mt-5">
+    <div class="container mt-5">
         <table>
             <thead>
                 <tr>
-
                     <th colspan="3" class="titulo" style="background-color: deeppink;"><?=$categorias_nombre[1]; ?></th>
                 </tr>
             </thead>
@@ -226,48 +230,48 @@ if (isset($_GET['id_equipo'])) {
         </table>
     </div>
 
-<div class="container mt-5">
-    <p style="margin-bottom: 0px;"><b>Puntuación para 1 de las siguientes categorías de vídeo técnico: Aplicación móvil o Prototipo de IA</b></p>
-    <table>
-        <thead>
-            <tr>
-                <th colspan="3" class="titulo" style="background-color: forestgreen;"><?=$categorias_nombre[2]; ?></th>
-            </tr>
-            <tr>
-                <th colspan="3" class="titulo" style="background-color: lightgreen; color: black; font-weight: normal;"><b>Opción 1:</b> Presentación de aplicaciones móviles Puntuación técnica de vídeos</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $i = 0;
-            while ($descripcion_item3 = $items_categoria3->fetch_assoc()):
-                $i++;
-                ?>
-                <tr>
-                    <td class="descripcion" colspan="2"><?= $descripcion_item3['descripcion']; ?></td>
-                    <td class="puntuacion">
-                        <input type="text" class="centrado especial item-puntuacion" data-categoria="categoria3" id="<?= $descripcion_item3['id_item']; ?>" data-especial="true">
-                    </td>
-                </tr>
-                <?php if ($i == 3): ?>
-                <tr>
-                    <td colspan="3" class="descripcion" style="background-color: lightgreen; color: black;"><b>Opción 2:</b> Presentación del prototipo de IA. Puntuación del vídeo técnico</td>
-                </tr>
-                <?php endif; ?>
-            <?php endwhile ?>
-            <tr>
-                <td class="descripcion" colspan="2" style="text-align: right;"><b>Puntuación técnica total del vídeo</b></td>
-                <td class="puntuacion"><input type="text" class="centrado puntuacion-automatica" data-categoria="categoria3" readonly></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-            <div class="container mt-5">
+    <div class="container mt-5">
+        <p style="margin-bottom: 0px;"><b>Puntuación para 1 de las siguientes categorías de vídeo técnico: Aplicación móvil o Prototipo de IA</b>
+        </p>
         <table>
             <thead>
                 <tr>
+                    <th colspan="3" class="titulo" style="background-color: forestgreen;"><?=$categorias_nombre[2]; ?></th>
+                </tr>
+                <tr>
+                    <th colspan="3" class="titulo" style="background-color: lightgreen; color: black; font-weight: normal;"><b>Opción 1:</b> Presentación de aplicaciones móviles Puntuación técnica de vídeos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $i = 0;
+                while ($descripcion_item3 = $items_categoria3->fetch_assoc()):
+                    $i++;
+                    ?>
+                    <tr>
+                        <td class="descripcion" colspan="2"><?= $descripcion_item3['descripcion']; ?></td>
+                        <td class="puntuacion">
+                            <input type="text" class="centrado especial item-puntuacion" data-categoria="categoria3" id="<?= $descripcion_item3['id_item']; ?>" data-especial="true">
+                        </td>
+                    </tr>
+                    <?php if ($i == 3): ?>
+                    <tr>
+                        <td colspan="3" class="descripcion" style="background-color: lightgreen; color: black;"><b>Opción 2:</b> Presentación del prototipo de IA. Puntuación del vídeo técnico</td>
+                    </tr>
+                    <?php endif; ?>
+                <?php endwhile ?>
+                <tr>
+                    <td class="descripcion" colspan="2" style="text-align: right;"><b>Puntuación técnica total del vídeo</b></td>
+                    <td class="puntuacion"><input type="text" class="centrado puntuacion-automatica" data-categoria="categoria3" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
+    <div class="container mt-5">
+        <table>
+            <thead>
+                <tr>
                     <th colspan="3" class="titulo" style="background-color: deeppink;"><?=$categorias_nombre[3]; ?></th>
                 </tr>
             </thead>
@@ -292,7 +296,6 @@ if (isset($_GET['id_equipo'])) {
         <table>
             <thead>
                 <tr>
-
                     <th colspan="3" class="titulo" style="background-color: darkorange;"><?=$categorias_nombre[4]; ?></th>
                 </tr>
             </thead>
@@ -313,7 +316,7 @@ if (isset($_GET['id_equipo'])) {
         </table>
     </div>
 
-          <div class="container mt-5" style="max-width: 700px;">
+        <div class="container mt-5" style="max-width: 700px;">
         <table>
             <thead>
                 <tr>
@@ -362,28 +365,11 @@ if (isset($_GET['id_equipo'])) {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<footer class="footer bg-dark text-white py-4">
-  <div class="container">
-    <div class="row">
-      <div class="text-center">
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#"><i class="bi bi-facebook text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-twitter text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-instagram text-white"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin text-white"></i></a></li>
-        </ul>
-      </div>
-      <div class="text-center">
-        <p class="text-sm text-center">© 2024 Technovation. Todos los derechos reservados.</p>
-      </div>
-    </div>
-  </div>
-</footer>
-
 <script src="funciones.js"></script>
 
 <script>
     $(document).ready(function() {
+        // Seleccionar todos los inputs de puntuación y de puntuación total general
         const itemPuntuacionInputs = document.querySelectorAll('.item-puntuacion');
         const puntuacionTotalInputsGenerales = document.querySelectorAll('.puntuacion-automatica.general');
 
@@ -392,6 +378,7 @@ if (isset($_GET['id_equipo'])) {
             let totalPuntuacion = 0;
             const categorias = new Set();
 
+            // Sumar todas las puntuaciones individuales y almacenar las categorías
             itemPuntuacionInputs.forEach(itemInput => {
                 const valor = parseFloat(itemInput.value) || 0;
                 totalPuntuacion += valor;
@@ -403,7 +390,7 @@ if (isset($_GET['id_equipo'])) {
                 puntuacionTotalInput.value = totalPuntuacion || '';
             });
 
-            // Calcular totales por categoría
+            // Calcular y actualizar totales por categoría
             categorias.forEach(categoria => {
                 let totalPuntuacionCategoria = 0;
                 const categoriaInputs = document.querySelectorAll(`.item-puntuacion[data-categoria="${categoria}"]`);
@@ -420,7 +407,7 @@ if (isset($_GET['id_equipo'])) {
             });
         }
 
-        // Cargar puntuaciones guardadas si se pasó el parámetro 'puntuaciones' en la URL
+        // Cargar puntuaciones guardadas si existe el parámetro 'puntuaciones' en la URL
         <?php if (isset($_GET['puntuaciones'])) { ?>
             $.ajax({
                 type: "GET",
@@ -440,13 +427,14 @@ if (isset($_GET['id_equipo'])) {
                 const partes = puntuacion.split(':');
                 const clave = partes[0];
                 const valor = partes[1];
-                
+
+                // Asignar los valores a los inputs correspondientes
                 $('input').filter(function() {
                     return this.id === clave;
                 }).val(valor === '0' ? '' : valor);
             });
 
-            // Después de cargar las puntuaciones, calcular los totales
+            // Después de cargar las puntuaciones, calcular totales
             calcularTotales();
         }
 
@@ -457,10 +445,9 @@ if (isset($_GET['id_equipo'])) {
     });
 </script>
 
-
 <script>
 $(document).ready(function(){
-
+    // Cargar evaluaciones.php al navegar hacia atrás
     window.onpopstate = function(event) {
         $("#contenedorFormularioJunior").load("evaluaciones.php");
                 history.pushState(null, '', "evaluaciones.php");
@@ -472,6 +459,24 @@ $(document).ready(function(){
 <?php include "botones.php"; ?>
 
 <?php include "modales.php";?>
+
+<footer class="footer bg-dark text-white py-4">
+  <div class="container">
+    <div class="row">
+      <div class="text-center">
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#"><i class="bi bi-facebook text-white"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-twitter text-white"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-instagram text-white"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="bi bi-linkedin text-white"></i></a></li>
+        </ul>
+      </div>
+      <div class="text-center">
+        <p class="text-sm text-center">© 2024 Technovation. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </div>

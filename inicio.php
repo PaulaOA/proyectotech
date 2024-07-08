@@ -62,15 +62,15 @@ $currentPage = 'inicio';
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px; /* Ajustar valor según altura de footer */
     }
       footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
   .modal {
@@ -130,60 +130,64 @@ $currentPage = 'inicio';
   </head>
   <body>
 
-    <div class="contenedor" id="contenedorInicio">
+   <div class="contenedor" id="contenedorInicio">
 
- <?php include "menu-superior.php" ?>
+    <!-- Incluir menú superior -->
 
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active d-item">
-      <img src="images/imagen1.jpg" class="d-block w-100 darken-img" alt="slider 1">
-      <div class="carousel-caption top-0 mt-4">
-      <h1 class="display-1 fw-bolder text-capitalize">Proyectos</h1>
-      <a href="https://technovation.tgmbp.com/eventos/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
-      </div>  
-    </div>
-    <div class="carousel-item d-item">
-      <img src="images/imagen2.jpg" class="d-block w-100 darken-img" alt="slider 2">
-      <div class="carousel-caption top-0 mt-4">
-      <h1 class="display-1 fw-bolder text-capitalize">Concursos</h1>
-      <a href="https://technovation.tgmbp.com/ediciones-anteriores/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
-      </div>  
-    </div>
-    <div class="carousel-item d-item">
-      <img src="images/imagen3.jpg" class="d-block w-100 darken-img" alt="slider 3">
-      <div class="carousel-caption top-0 mt-4">
-      <h1 class="display-1 fw-bolder text-capitalize">Sobre nosotros</h1>
-      <a href="https://technovation.tgmbp.com/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+   <?php include "menu-superior.php" ?>
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
       </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active d-item">
+          <img src="images/imagen1.jpg" class="d-block w-100 darken-img" alt="slider 1">
+          <div class="carousel-caption top-0 mt-4">
+          <h1 class="display-1 fw-bolder text-capitalize">Proyectos</h1>
+          <a href="https://technovation.tgmbp.com/eventos/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+          </div>  
+        </div>
+        <div class="carousel-item d-item">
+          <img src="images/imagen2.jpg" class="d-block w-100 darken-img" alt="slider 2">
+          <div class="carousel-caption top-0 mt-4">
+          <h1 class="display-1 fw-bolder text-capitalize">Concursos</h1>
+          <a href="https://technovation.tgmbp.com/ediciones-anteriores/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+          </div>  
+        </div>
+        <div class="carousel-item d-item">
+          <img src="images/imagen3.jpg" class="d-block w-100 darken-img" alt="slider 3">
+          <div class="carousel-caption top-0 mt-4">
+          <h1 class="display-1 fw-bolder text-capitalize">Sobre nosotros</h1>
+          <a href="https://technovation.tgmbp.com/" class="btn btn-primary px-4 py-2 fs-5 mt-5">Información</a>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
     </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Anterior</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Siguiente</span>
-  </button>
-</div>
 
-<div class="container">
-  <h1 class="mt-4">
-  <?php
-   echo "¡Bienvenid@,"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"]."!";
-  ?>
-  </h1>
-  <p></p>
-</div>
+    <!-- Mensaje bienvenida personalizado -->
+
+    <div class="container">
+      <h1 class="mt-4">
+      <?php
+       echo "¡Bienvenid@,"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"]."!";
+      ?>
+      </h1>
+      <p></p>
+    </div>
 <hr>
 
-<!--MOSTRAR GALERIA DE VIDEOS SUBIDOS-->
+<!--GALERÍA DE VÍDEOS COMPARTIDOS-->
 
     <div class="container">
        <div class="col-md-8">
@@ -203,6 +207,8 @@ $currentPage = 'inicio';
         </div>
       </div>
 <hr>
+
+<!-- ARCHIVOS COMPARTIDOS -->
 
 <div class="container">
 <div class="col-md-8">
@@ -329,6 +335,9 @@ $currentPage = 'inicio';
     </script>
 
     <script>
+
+      // Mostrar modal de Solicitudes pendientes si existen y no ha sido mostrado
+
       $(document).ready(function() {
         <?php
           if ($solicitudes->num_rows > 0) {
@@ -345,6 +354,8 @@ $currentPage = 'inicio';
           });
       });
     </script>
+
+    <!-- Comprobar si existen solicitudes pendientes de participantes -->
 
         <?php
           if ($solicitudesParticipantes && $solicitudesParticipantes->num_rows > 0) {

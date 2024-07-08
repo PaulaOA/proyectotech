@@ -52,6 +52,9 @@ if(isset($_GET['id_usuario'])){
   
   </head>
   <body>
+
+    <!-- FORMULARIO EDITAR USUARIO -->
+    
     <form id="formEditarUsuario" method="POST">
       <label for="id_usuario" style="margin-left: 10px;">ID</label>
       <input type="number" name="id_usuario" id="id_usuario" class="form-control" value="<?= $usuario['id_usuario']?>" readonly>

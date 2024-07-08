@@ -1,7 +1,7 @@
 <?php
 
-if (empty($_POST['nombre']) ||  
-    empty($_POST['id_mentor'])) {
+//Comprobar variables POST
+if (empty($_POST['nombre']) || empty($_POST['id_mentor'])) {
     echo "rellenaCampos";
     } else {
         $nombre_equipo = $_POST['nombre'];
@@ -9,7 +9,8 @@ if (empty($_POST['nombre']) ||
         $division = $_POST['division'];
 
  include "../archivos/conexion.php";
-
+ 
+    // Registrar equipo
     $sql = "INSERT INTO equipos (nombre_equipo, id_creador, id_mentor, division, estado) VALUES ('".$nombre_equipo."', 1, $id_mentor, '".$division."', 'aceptada')";
 
          if ($conn->query($sql) === TRUE) {

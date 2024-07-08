@@ -16,7 +16,6 @@ $currentPage = 'admin';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href= "css/bootstrap.min.css">
     <style>
-    /* Estilo para las imágenes del carousel */
     .carousel-item img {
       width: 100%;
       height: 300px; /* Altura deseada para las imágenes */
@@ -41,15 +40,15 @@ $currentPage = 'admin';
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
       footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white; 
     }
     </style>
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
@@ -101,7 +100,6 @@ $currentPage = 'admin';
     <span class="visually-hidden">Siguiente</span>
   </button>
 </div>
-
 
 <div class="container">
   <h1 class="mt-4">

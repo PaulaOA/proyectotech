@@ -48,7 +48,7 @@ $currentPage = 'evaluaciones';
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
        html {
@@ -57,16 +57,16 @@ $currentPage = 'evaluaciones';
     }
 
     body {
-    margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 140px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
      .navbar-nav .nav-link {
@@ -76,8 +76,11 @@ $currentPage = 'evaluaciones';
   
   </head>
   <body>
-      <div class="contenedor" id="contenedorEvaluaciones">
-         <?php include "menu-juez.php" ?>
+    <div class="contenedor" id="contenedorEvaluaciones">
+
+      <?php include "menu-juez.php" ?>
+
+<!-- TABLA DE EQUIPOS A EVALUAR POR EL JUEZ -->
 
 <div class="container-fluid">
   <div class="row justify-content-center">
@@ -107,6 +110,8 @@ $currentPage = 'evaluaciones';
                       <td class="text-center"><?=$equipo['mentor']?></td>
                       <td class="text-center"><?=$equipo['nombre_participantes']?></td>
                       <td class="text-center"><?=$equipo['estado_evaluacion']?></td>
+
+                      <!-- Distinguir según el estado de la evaluación -->
                       <?php if ($equipo['estado_evaluacion'] == "sin evaluaciones") { ?>
                         <td class="text-center"><a href="#" class="evaluar" data-equipo="<?=$equipo['id_equipo']?>" data-division="<?=$equipo['division']?>">Evaluar</a></td>
                       <?php } else if ($equipo['estado_evaluacion'] == "guardada") {  ?>
@@ -117,7 +122,9 @@ $currentPage = 'evaluaciones';
                   </tr>
                <?php endwhile; 
                } else { ?>
-                <p>Aún no tienes equipos para evaluar</p>
+                <tr>
+                  <td colspan="6">Aún no tienes equipos para evaluar</td>
+                </tr>
               <?php } ?>
               </tbody>
             </table>
@@ -132,13 +139,15 @@ $currentPage = 'evaluaciones';
 
 <script>
 $(document).ready(function(){
+  // Solicitud para equipo nunca evaluado
     $(".evaluar").click(function(e){
         e.preventDefault();
 
         var division = $(this).data('division');
         var id_equipo = $(this).data('equipo');
         var url;
-
+        
+        // Cargar formulario según división
         if (division == "Junior") {
           url = "formulario-junior.php?id_equipo=" + id_equipo;
         } else if (division == "Senior") {
@@ -150,6 +159,7 @@ $(document).ready(function(){
             });
     });
 
+    // Solicitud para equipo con puntuaciones guardadas
     $('.consultar').click(function() {
 
         var division = $(this).data('division');
@@ -167,6 +177,7 @@ $(document).ready(function(){
             });
       }); 
 
+    // Solicitud para equipo con puntuaciones definitivas
     $('.ver').click(function() {
 
         var division = $(this).data('division');
@@ -176,7 +187,6 @@ $(document).ready(function(){
 
         if (division == "Junior") {
           url = "revisar-junior.php?id_equipo=" + id_equipo + "&id_juez=" + id_juez;
-
         } else if (division == "Senior") {
           url = "revisar-senior.php?id_equipo=" + id_equipo + "&id_juez=" + id_juez;
         }
@@ -191,49 +201,48 @@ $(document).ready(function(){
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
   <script>
-          $(document).ready(function(){
-            $("#btnJuez").click(function(e){
-              e.preventDefault();
-                $("#contenedorEvaluaciones").load("../juez.php", function(){
-                  history.pushState(null,null,"../juez.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorEvaluaciones").load("evaluaciones.php");
-                  };
-            });
-
-            $("#btnEvaluaciones").click(function(e){
-              e.preventDefault();
-                $("#contenedorEvaluaciones").load("evaluaciones.php", function(){
-                  history.pushState(null,null,"evaluaciones.php");
-                });
-                window.onpopstate = function(event){
-                $("#contenedorEvaluaciones").load("evaluaciones.php");
-              };
-            });
+    $(document).ready(function(){
+      $("#btnJuez").click(function(e){
+        e.preventDefault();
+          $("#contenedorEvaluaciones").load("../juez.php", function(){
+            history.pushState(null,null,"../juez.php");
           });
+          window.onpopstate = function(event){
+          $("#contenedorEvaluaciones").load("evaluaciones.php");
+            };
+      });
 
-        </script>
+      $("#btnEvaluaciones").click(function(e){
+        e.preventDefault();
+          $("#contenedorEvaluaciones").load("evaluaciones.php", function(){
+            history.pushState(null,null,"evaluaciones.php");
+          });
+          window.onpopstate = function(event){
+          $("#contenedorEvaluaciones").load("evaluaciones.php");
+        };
+      });
+    });
+  </script>
 
-         <script>
-        $(document).ready(function(){
-        $("#btnSalir").click(function(e){
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "../archivos/controlador_cerrarsesion.php",
-                success: function(data){
-                    $("#contenedorEvaluaciones").load("../index.php", function(){
-                      history.pushState(null,null,"../index.php");
-                    });
-                    window.onpopstate = function(event){
-                    $("#contenedorEvaluaciones").load("../index.php");
-                  };
-                    }
+  <script>
+    $(document).ready(function(){
+    $("#btnSalir").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "../archivos/controlador_cerrarsesion.php",
+            success: function(data){
+                $("#contenedorEvaluaciones").load("../index.php", function(){
+                  history.pushState(null,null,"../index.php");
                 });
+                window.onpopstate = function(event){
+                $("#contenedorEvaluaciones").load("../index.php");
+              };
+                }
             });
         });
-    </script>
+    });
+  </script>
 
 <footer class="footer bg-dark text-white py-4">
   <div class="container">

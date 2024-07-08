@@ -1,5 +1,6 @@
 <?php
 
+// Obtener nombre de las categorías junior
 $sql_categorias = "SELECT nombre FROM categorias_junior";
 $resultado_categorias = $conn->query($sql_categorias);
 
@@ -13,6 +14,8 @@ if ($resultado_categorias->num_rows > 0) {
     echo "No se encontraron categorías.";
     exit();
 }
+
+// Seleccionar los items por categoría
 
 $sql_items_1 = "SELECT * FROM items_junior WHERE id_categoria = 1";
 $items_categoria1 = $conn->query($sql_items_1);
@@ -28,6 +31,5 @@ $items_categoria4 = $conn->query($sql_items_4);
 
 $sql_items_5 = "SELECT * FROM items_junior WHERE id_categoria = 5";
 $items_categoria5 = $conn->query($sql_items_5);
-
 
 ?>

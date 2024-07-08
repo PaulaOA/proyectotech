@@ -26,7 +26,7 @@ include('./archivos/conexion.php');
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
 
   footer {
@@ -34,9 +34,9 @@ include('./archivos/conexion.php');
     margin-top: auto;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
       
     </style>
@@ -59,7 +59,8 @@ include('./archivos/conexion.php');
     </div>
   </div>
 </nav>
-<br>    
+<br> 
+
 <section class="content">
         <div class="container">
             <div class="row">
@@ -68,6 +69,9 @@ include('./archivos/conexion.php');
                     <div class="card bg-primary text-center text-white">
                         <h4>Restablece tu contraseña</h4>  
                     </div>
+
+                    <!-- FORMULARIO restablecer contraseña -->
+                    
                     <form action="./archivos/recuperarcontraseña.php" method="POST">
                         <div class="card-body">
                             <div class="row">
@@ -93,7 +97,7 @@ include('./archivos/conexion.php');
     </section>
     <br>
 
-    <footer class="footer bg-dark text-white py-4">
+<footer class="footer bg-dark text-white py-4">
   <div class="container">
     <div class="row">
       <div class="text-center">

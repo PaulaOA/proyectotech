@@ -41,7 +41,7 @@ $usuarios = $conn->query($sql);
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
        html {
@@ -50,15 +50,15 @@ $usuarios = $conn->query($sql);
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
       footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
      .navbar-nav .nav-link {
@@ -70,6 +70,7 @@ $usuarios = $conn->query($sql);
   </head>
   <body>
       <div class="contenedor" id="contenedorUsuarios">
+
          <?php include "menu-admin.php" ?>
 
 <div class="responsive bg-dark text-white py-4">
@@ -80,6 +81,8 @@ $usuarios = $conn->query($sql);
     </div>
   </div>
 </div>
+
+<!-- Tabla para mostrar listado de usuarios registrados -->
 
 <div class="container-fluid" style="max-width: 100%;">
   <div class="row justify-content-center">
@@ -132,7 +135,7 @@ $usuarios = $conn->query($sql);
         </div>
       </div>
       <div class="text-end mb-4">
-          <button class="btn btn-primary py-3 px-3" id="btnNuevoUsuario">Nuevo usuario</button>
+          <button class="btn btn-primary py-3 px-3" id="btnNuevoUsuario">Nuevo usuario</button> <!-- Botón para crear nuevo usuario -->
         </div>
     </div>
   </div>
@@ -142,10 +145,13 @@ $usuarios = $conn->query($sql);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
+  // Abrir modal de edición de usuario
     $(document).ready(function() {
         $(".editar-usuario").click(function(e) {
             e.preventDefault();
+
             var id_usuario = $(this).data('id');
+
             $.ajax({
                 url: "editar-usuario.php",
                 method: "GET",
@@ -160,7 +166,8 @@ $usuarios = $conn->query($sql);
             });
         });
     });
-
+    
+    // Abrir modal de creación de usuario
     $(document).ready(function() {
         $("#btnNuevoUsuario").click(function() {
             $('#modalNuevoUsuario').modal('show');
@@ -169,13 +176,17 @@ $usuarios = $conn->query($sql);
 </script>
 
 <script>
+  // Abrir modal para eliminar usuario
     $(document).ready(function() {
         $(".borrar-usuario").click(function(e) {
             e.preventDefault();
+
             var id_usuario = $(this).data('id');
             var nombre_usuario = $(this).data('nombre');
+
             $("#idUsuarioEliminar").text(id_usuario);
             $("#nombreUsuarioEliminar").text(nombre_usuario);
+
             $('#modalEliminarUsuario').modal('show');
 
             $("#btnEliminarUsuario").click(function(e) {
@@ -254,6 +265,7 @@ $usuarios = $conn->query($sql);
         });
       });
  </script>
+ 
  <script>
     $(document).ready(function(){
     $("#btnSalir").click(function(e){

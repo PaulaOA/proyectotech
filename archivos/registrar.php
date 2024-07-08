@@ -1,5 +1,7 @@
 <?php
 
+// Incluir PHPMailer para enviar email de verificación de correo
+
 require "../PHPMailer/PHPMailer.php";
 require "../PHPMailer/SMTP.php";
 require "../PHPMailer/Exception.php";
@@ -27,6 +29,8 @@ function enviarEmailVerificacion($email, $token) {
 
     try {
 
+        // Declarar variables de entorno
+
         $smtp_user = getenv('SMTP_USER');
         $smtp_password = getenv('SMTP_PASSWORD');
 
@@ -43,6 +47,7 @@ function enviarEmailVerificacion($email, $token) {
         $mail->Port = 587;
 
         // Configuración del mensaje
+
         $mail->setFrom('proyectotech.pruebas@gmail.com', 'Technovation Platform');
         $mail->addAddress($email);
         $mail->Subject = 'Verifica tu correo';
@@ -50,6 +55,7 @@ function enviarEmailVerificacion($email, $token) {
         $mail->Body .= "http://localhost/proyectotech/archivos/verificar-email.php?email=$email&token=$token";
 
         // Envío del correo
+
         $mail->send();
         return true;
     } catch (Exception $e) {
@@ -57,6 +63,8 @@ function enviarEmailVerificacion($email, $token) {
         return false;
     }
 }
+
+// Comprobar que no hay campos vacíos
 
 if (empty($_POST['nombre']) || 
     empty($_POST['apellidos']) || 
@@ -84,6 +92,8 @@ if (empty($_POST['nombre']) ||
     } else {
         include "conexion.php";
 
+        // Comprobar que no el email no está ya registrado
+
         $sql = "SELECT * FROM registro WHERE email='".$email."'";
         $resultado = $conn->query($sql);
 
@@ -91,11 +101,15 @@ if (empty($_POST['nombre']) ||
             echo "emailYaRegistrado";
         } else {
             $token = generarToken();
+
+            // Registrar nuevo usuario
+
             $insertar = "INSERT INTO registro (nombre, apellidos, fecha, email, contraseña, cargo, token) 
                          VALUES ('$nombre', '$apellidos', '$fecha', '$email', '$contraseña', '$cargo', '$token')";
 
             if ($conn->query($insertar) === true) {
                 if (enviarEmailVerificacion($email, $token)) {
+                    // Envío correcto del email
                     echo "verificaEmail";
                 } else {
                     echo "errorEnvioEmail";

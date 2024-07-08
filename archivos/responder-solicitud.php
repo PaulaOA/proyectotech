@@ -1,4 +1,7 @@
 <?php
+
+// Incluir PHPMailer
+
 require "../PHPMailer/PHPMailer.php";
 require "../PHPMailer/SMTP.php";
 require "../PHPMailer/Exception.php";
@@ -11,6 +14,7 @@ function enviarEmailVerificacion($email, $token) {
     $mail = new PHPMailer(true);
 
     try {
+        // Recuperar datos de variables de entorno
         $smtp_user = getenv('SMTP_USER');
         $smtp_password = getenv('SMTP_PASSWORD');
 
@@ -40,12 +44,16 @@ function enviarEmailVerificacion($email, $token) {
     }
 }
 
+// Script para aceptar o rechazar ser mentor de equipo y registrar perfil de mentor si no existe
+
 include "conexion.php";
 
+// Comprobar parámetros
 if (isset($_POST['accion'], $_POST['id'])) {
     $accion = $_POST['accion'];
     $id_equipo = $_POST['id'];
-
+    
+    // Obtener el id como participante del creador del equipo
     $sql_obtenerParticipante = "SELECT p.id_participante
                                 FROM participantes AS p
                                 INNER JOIN equipos AS e ON p.id_usuario = e.id_creador
@@ -57,6 +65,7 @@ if (isset($_POST['accion'], $_POST['id'])) {
         $fila_participante = $resultado_participante->fetch_assoc();
         $id_participante = $fila_participante['id_participante'];
 
+        // Se acepta la solicitud para ser mentor del equipo
         if ($accion == "aceptar" && isset($_POST['id_mentor'], $_POST['email'])) {
             $id_mentor = $_POST['id_mentor'];
             $email = $_POST['email'];
@@ -68,7 +77,8 @@ if (isset($_POST['accion'], $_POST['id'])) {
             if ($resultado_verificacion && $resultado_verificacion->num_rows > 0) {
                 $fila_registro = $resultado_verificacion->fetch_assoc();
                 $registrado = $fila_registro['mentor_registrado'];
-
+                
+                // Perfil de mentor no registrado, se envía email para el registro
                 if (!$registrado) {
                     // Generar token y enviar email
                     $token = bin2hex(random_bytes(16));
@@ -92,7 +102,7 @@ if (isset($_POST['accion'], $_POST['id'])) {
                             echo "errorEnvioEmail";
                         }
                     }
-                } else {
+                } else { // Perfil de mentor ya registrado
                     // Actualizar estado del equipo y solicitud
                     $sql = "UPDATE equipos SET estado = 'aceptada' WHERE id_equipo = $id_equipo";
                     $sql_participante = "UPDATE solicitudes_equipo SET estado = 'aceptada' WHERE id_participante = $id_participante AND id_equipo = $id_equipo";

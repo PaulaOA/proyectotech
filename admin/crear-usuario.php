@@ -1,5 +1,6 @@
 <?php
 
+//Comprobar que no hay ningún campo vacío
 if (empty($_POST['nombre']) || 
     empty($_POST['apellidos']) || 
     empty($_POST['fecha']) || 
@@ -17,11 +18,13 @@ if (empty($_POST['nombre']) ||
 
  include "../archivos/conexion.php";
 
+    // Registrar usuario
     $sql = "INSERT INTO registro (nombre, apellidos, fecha, email, contraseña, cargo, admin) VALUES ('".$nombre."', '".$apellidos."', '".$fecha."', '".$email."', '".$contraseña."', '".$cargo."', 0)";
 
          if ($conn->query($sql) === TRUE) {
             $id_usuario = $conn->insert_id;
-
+            
+            // Insertar en la tabla correspondiente según cargo
             if ($cargo == "Mentor") {
                 $insertarMentor = "INSERT INTO mentores (id_usuario) VALUES ('$id_usuario')";
                 $conn->query($insertarMentor);

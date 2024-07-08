@@ -3,7 +3,6 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
     $email = $_GET['email'];
     $token = $_GET['token'];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -130,6 +129,8 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
         <p style="font-size: 18px;"><b>Concurso Technovation CV</b> 2023 - 2024</p>
         <p><b>Formulario de registro para mentores</b></p>
     </div>
+
+    <!-- FORMULARIO MENTOR -->
         <form  id="formularioMentor">
             <h2>Información Personal</h2>
             <label for="nombre_completo">Nombre Completo:</label>
@@ -190,6 +191,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
+    // Mostrar campos relacionados con la experiencia como mentor si indica "Sí"
     $(document).ready(function() {
         $("#experiencia_mentor").change(function() {
             if ($(this).val() === "si") {
@@ -199,20 +201,22 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
             }
         });
 
+    // Solicitud para enviar los datos del formulario
         $("#btnEnviar").click(function(e) {
             e.preventDefault();
-
+           // Si no se ha marcado el campo de Aceptar Términos, mostrar modal y detener el proceso
             if (!$("#acepto_terminos").is(":checked")) {
                 $("#modalAceptarTerminos").css("display", "block");
                 return;
             }
 
             var formularioValido = true;
-
+           
+           // Comprobar que los campos requeridos no están vacíos
             $("#formularioMentor input[required], #formularioMentor select[required], #formularioMentor textarea[required]").each(function() {
                 if ($(this).val().trim() === '') {
                     formularioValido = false;
-                    return false; // Salir del bucle si encontramos un campo vacío
+                    return false;
                 }
             });
 
@@ -240,7 +244,8 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
                     console.error(error);
                 }
             });
-            } else {
+             } else {
+                // Mostrar modal para informar que existen campos vacíos
                 $("#modalRellenaCampos").css("display", "block");
             }
         });
@@ -251,6 +256,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
     
 </script>
 
+<!-- MODALES -->
  <div id="modalMentorRegistrado" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Perfil Registrado</h1>
@@ -260,6 +266,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
       </div>
   </div>
 </div>
+
  <div id="modalRegistrado" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">¡Enhorabuena!</h1>
@@ -269,6 +276,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
       </div>
   </div>
 </div>
+
  <div id="modalErrorPost" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Error</h1>
@@ -288,6 +296,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
       </div>
   </div>
 </div>
+
  <div id="modalRellenaCampos" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Campos vacíos</h1>
@@ -297,6 +306,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
       </div>
   </div>
 </div>
+
  <div id="modalAceptarTerminos" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">
     <h1 class="h3 mb-3 fw-normal text-center">Aceptar términos</h1>

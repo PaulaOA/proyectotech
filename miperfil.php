@@ -44,14 +44,14 @@ $currentPage = 'miperfil';
     }
 
     body {
-    margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 140px;
     }
 
     footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
+    height: 120px;
     background-color: #343a40;
     color: white;
     }
@@ -108,9 +108,9 @@ $currentPage = 'miperfil';
           padding: 10px;
         }
         .modal-footer-this .btn {
-            padding: 10px 20px 10px 20px; /* Aumenta el tamaño de los botones */
-            width: 100px; /* Aumenta el ancho de los botones */
-            margin: 0 20px; /* Agrega espacio entre los botones */
+            padding: 10px 20px 10px 20px;
+            width: 100px;
+            margin: 0 20px;
         }
 
   </style>
@@ -125,46 +125,51 @@ $currentPage = 'miperfil';
   <div class="row">
     <div class="col-md-8"> 
     <h1 class="texto-margen-izquierdo">
-  <?= "Perfil de"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"];?>
-  </h1>
-  <p class="texto-margen-izquierdo">Aquí aparecerá toda la información de <?= $_SESSION["nombre"];?></p>
+      <?= "Perfil de"." ".$_SESSION["nombre"]." ". $_SESSION["apellidos"];?>
+    </h1>
+    <p class="texto-margen-izquierdo">Aquí aparecerá toda la información de <?= $_SESSION["nombre"];?></p>
     </div>
   </div>
 </div>
 
+<!-- TABLA DATOS DE USUARIO RECUPERADOS CON VARIABLES DE SESIÓN -->
+
 <div class="container">
  <div class="row"> 
-<div class="col-md-8">
-    <div class="card mt-4 mb-4">
+  <div class="col-md-8">
+   <div class="card mt-4 mb-4">
     <div class="card-header bg-primary text-white">Datos usuario</div>
       <div class="card-body">
         <table class="table table-striped mb-2">
-        <thead>
+         <thead>
+           <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Fecha</th>
+            <th>Email</th>
+            <th>Contraseña</th>
+            <th>Cargo</th>
+           </tr>
+         </thead>
+         <tbody>
             <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Fecha</th>
-                <th>Email</th>
-                <th>Contraseña</th>
-                <th>Cargo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><?= $_SESSION["nombre"]; ?></td>
-                <td><?= $_SESSION["apellidos"]; ?></td>
-                <td><?= $_SESSION["fecha"]; ?></td>
-                <td><?= $_SESSION["email"]; ?></td>
-                <td><?= $_SESSION["contraseña"]; ?><br><a class="small" href="contraseña.php" id="btnRecuperar">Actualizar contraseña</a></td>
-                <td><?= $_SESSION["cargo"]; ?></td>
+              <td><?= $_SESSION["nombre"]; ?></td>
+              <td><?= $_SESSION["apellidos"]; ?></td>
+              <td><?= $_SESSION["fecha"]; ?></td>
+              <td><?= $_SESSION["email"]; ?></td>
+              <td><?= $_SESSION["contraseña"]; ?><br><a class="small" href="contraseña.php" id="btnRecuperar">Actualizar contraseña</a></td>
+              <td><?= $_SESSION["cargo"]; ?></td>
             </tr>
         </tbody>
       </table>
     </div>
+   </div>
   </div>
+ </div>
 </div>
-</div>
-</div>
+
+<!-- FORMULARIO SUBIDA DE CONTENIDO -->
+
 <div class="container">
   <div class="row">
     <div class="col-md-6">
@@ -172,7 +177,7 @@ $currentPage = 'miperfil';
         <div class="card mt-4 mb-4">
           <div class="card-header bg-primary text-white">Subida de contenido</div>
           <div class="card-body">
-            <!-- Contenido del primer formulario -->
+           
             <div class="mb-3">
               <label for="file" class="form-label">Archivo</label>
               <input type="file" class="form-control" id="file" name="file" aria-describedby="file1">
@@ -180,6 +185,8 @@ $currentPage = 'miperfil';
             <div class="mb-3">
               <label for="desc" class="form-label">Descripción</label>
               <input type="text" class="form-control" id="desc" name="desc">
+
+              <!-- Campo oculto para enviar id de usuario -->
 
               <input type="hidden" class="form-control" id="id_usuario" name="id_usuario" value="<?=$id_usuario?>" >
 
@@ -189,12 +196,15 @@ $currentPage = 'miperfil';
         </div>
       </form>
     </div>
+
+    <!-- FORMULARIO AUTORIZACIÓN PATERNA -->
+
     <div class="col-md-6">
       <form action="./archivos/subirautorizacion.php" method="POST" enctype="multipart/form-data">
         <div class="card mt-4 mb-4">
           <div class="card-header bg-primary text-white">Envío de autorización paterna</div>
           <div class="card-body">
-            <!-- Contenido del formulario de envio de autorización-->
+            
             <div class="mb-3">
               <label for="file" class="form-label">Archivo</label>
               <input type="file" class="form-control" id="file" name="file" accept=".pdf" aria-describedby="file1">
@@ -204,12 +214,15 @@ $currentPage = 'miperfil';
         </div>
       </form>
     </div>
+
+    <!-- FORMULARIO SUBIDA DE VÍDEO YOUTUBE -->
+
     <div class="col-md-6">
       <form action="./archivos/recibvideo.php" method="POST">
         <div class="card mt-4 mb-4">
           <div class="card-header bg-primary text-white">Subida de vídeo <em>(Desde Youtube)</em></div>
           <div class="card-body">
-            <!-- Contenido del segundo formulario -->
+            
             <div class="mb-3">
               <label for="nombrevideo" class="form-label">Nombre</label>
               <input type="text" class="form-control" id="nombrevideo" name="nombrevideo">
@@ -228,7 +241,8 @@ $currentPage = 'miperfil';
     </div>
   </div>
 </div>
-<!--SUBIDA DE VIDEOS Y EDICION-->
+
+<!-- MOSTRAR VÍDEOS SUBIDOS -->
 
 <hr> 
 <div class="container">
@@ -256,6 +270,8 @@ $currentPage = 'miperfil';
         <td>
           <select name="id_equipo_video" id="equipoSeleccionadoVideo" class="form-control" style="margin-bottom:10px">
             <option value="">Selecciona un equipo</option>
+
+            <!-- MOSTRAR EQUIPOS DEL PARTICIPANTE -->
             <?php 
                 if (!empty($equiposArray)) {
                     foreach ($equiposArray as $equipo) {
@@ -271,7 +287,7 @@ $currentPage = 'miperfil';
           <a href="#" id="compartirVideo" data-video="<?=$dataVideo['id']?>" data-user="<?=$id_usuario?>" class="btn btn-primary"><i class="fas fa-check-circle"></i></a>
         </td>
         <td>
-        <a href="./archivos/borrarvideo.php?fecha=<?php echo htmlspecialchars($dataVideo['fecha']); ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');"><i class="bi bi-trash"></i></a>
+        <a href="./archivos/borrarvideo.php?id=<?= htmlspecialchars($dataVideo['id']); ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar el video?');"><i class="bi bi-trash"></i></a>
         </td>
       </tr>
       <?php } ?>
@@ -284,6 +300,8 @@ $currentPage = 'miperfil';
     <?php endif; ?>
 </div>
 </div>
+
+<!-- MOSTRAR ARCHIVOS SUBIDOS -->
 
 <div class="container">
 <div class="col-md-12">
@@ -313,6 +331,9 @@ $currentPage = 'miperfil';
         <td>
           <select name="id_equipo" id="equipoSeleccionado" class="form-control" style="margin-bottom:10px">
             <option value="">Selecciona un equipo</option>
+
+            <!-- MOSTRAR EQUIPOS DEL PARTICIPANTE -->
+
             <?php 
                 if (!empty($equiposArray)) {
                     foreach ($equiposArray as $equipo) {
@@ -346,6 +367,9 @@ $currentPage = 'miperfil';
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
+
+      // SOLICITUD SUBIDA DE CONTENIDO 
+
       $(document).ready(function() {
         var idDocumentoAEliminar;
 
@@ -369,6 +393,8 @@ $currentPage = 'miperfil';
             }
         });
     });
+
+       // BORRAR DOCUMENTO SUBIDO
 
       $(".borrar-documento").click(function(event) {
           event.preventDefault();
@@ -406,6 +432,8 @@ $currentPage = 'miperfil';
 
 <script>
 
+  // SOLICITUD COMPARTIR DOCUMENTO CON EQUIPO
+
 $(document).ready(function() {
     $('#compartirDocumento').on('click', function(event) {
         event.preventDefault();
@@ -441,6 +469,8 @@ $(document).ready(function() {
             }
         });
     });
+
+  // SOLICITUD COMPARTIR VÍDEO CON EQUIPO
 
        $('#compartirVideo').on('click', function(event) {
         event.preventDefault();
@@ -583,6 +613,8 @@ $(document).ready(function() {
     </div>
   </div>
 </footer>
+
+<!-- MODALES -->
 
 <div id="modalEliminarDocumento" class="modal">
   <div class="modal-content d-flex flex-column align-items-center justify-content-center">

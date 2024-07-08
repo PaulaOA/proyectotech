@@ -1,4 +1,5 @@
 <?php
+// Comprobar parámetros necesarios
 if (isset($_POST['email']) && isset($_POST['token']) && isset($_POST['formulario'])) {
     $email = $_POST['email'];
     $token = $_POST['token'];
@@ -27,7 +28,7 @@ if (isset($_POST['email']) && isset($_POST['token']) && isset($_POST['formulario
         die("Conexión fallida: " . $conn->connect_error);
     }
 
-    // Consultar el ID de usuario y el ID de mentor asociado al correo electrónico
+    // Recuperar id de usuario e id de mentor asociado al email
     $sql_usuario = "SELECT r.id_usuario, m.id_mentor
                     FROM registro r
                     INNER JOIN mentores m ON r.id_usuario = m.id_usuario
@@ -40,7 +41,7 @@ if (isset($_POST['email']) && isset($_POST['token']) && isset($_POST['formulario
         $id_usuario = $usuario['id_usuario'];
         $id_mentor = $usuario['id_mentor'];
 
-        // Verificar si ya existe un perfil para este mentor
+        // Verificar si ya existe un perfil registrado para este mentor
         $sql_verificar_perfil = "SELECT id_perfil FROM perfil_mentores WHERE id_mentor = '$id_mentor'";
         $resultado_verificacion = $conn->query($sql_verificar_perfil);
 

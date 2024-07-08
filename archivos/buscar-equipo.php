@@ -1,25 +1,29 @@
 <?php
 require_once("conexion.php");
 
+// Comprobamos que exista al menos uno de los parámetros necesarios
 if (isset($_POST['busquedaNombre']) || isset($_POST['division'])) {
     $nombreEquipo = isset($_POST['busquedaNombre']) ? mysqli_real_escape_string($conn, $_POST['busquedaNombre']) : '';
     $division = isset($_POST['division']) ? mysqli_real_escape_string($conn, $_POST['division']) : '';
 
+    // Consulta base para buscar equipo
     $sql_equipos = "SELECT *, registro.nombre AS nombre_creador
                     FROM equipos
                     INNER JOIN registro ON equipos.id_creador = registro.id_usuario
                     WHERE estado = 'aceptada'";
 
+    // Completar consulta si se ha introducido un nombre de equipo
     if (!empty($nombreEquipo)) {
         $sql_equipos .= " AND LOWER(nombre_equipo) LIKE LOWER('%$nombreEquipo%')";
     }
-
+    // Completar consulta si se ha seleccionado una división
     if (!empty($division)) {
         $sql_equipos .= " AND division = '$division'";
     }
 
     $equiposEncontrados = $conn->query($sql_equipos);
-
+    
+    // Si existen equipos con los criterios seleccionados, mostrar resultados
     if ($equiposEncontrados && $equiposEncontrados->num_rows > 0) {
         echo "<h3>Resultados de la búsqueda:</h3>";
 
@@ -39,7 +43,7 @@ if (isset($_POST['busquedaNombre']) || isset($_POST['division'])) {
                          </div>
                         </div>
                       </div>";
-            }
+            }           
         } else {
             echo "<p>Error al obtener tu identificador como participante.</p>";
         }

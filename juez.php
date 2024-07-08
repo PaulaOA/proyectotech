@@ -44,7 +44,7 @@ $currentPage = 'juez';
     }
 
     body {
-    margin-bottom: 80px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 80px;
     }
 
     .navbar-nav .nav-link {
@@ -55,9 +55,9 @@ $currentPage = 'juez';
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    height: 120px;
+    background-color: #343a40;
+    color: white;
     }
 
     </style>

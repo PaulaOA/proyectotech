@@ -1,59 +1,6 @@
 <?php
 include "../archivos/conexion.php";
-
-if(isset($_GET['id_equipo']) && isset($_GET['id_juez'])) {
-    $id_equipo = $_GET['id_equipo'];
-    $id_juez = $_GET['id_juez'];
-
-    $sql_nombre = "SELECT nombre_equipo FROM equipos WHERE id_equipo = $id_equipo";
-    $resultado_nombre = $conn->query($sql_nombre);
-     if ($resultado_nombre->num_rows > 0) {
-    $equipo = $resultado_nombre->fetch_assoc();
-    $nombre_equipo = $equipo['nombre_equipo'];
-    }
-
-    $sql_puntuaciones_totales = "SELECT * FROM puntuaciones_totales WHERE id_equipo = $id_equipo AND id_juez=$id_juez";
-    $result_puntuaciones_totales = $conn->query($sql_puntuaciones_totales);
-    $puntuaciones_totales = $result_puntuaciones_totales->fetch_assoc();
-
-    $sql_puntuaciones_definitivas = "SELECT COUNT(*) as count FROM puntuaciones_definitivas_junior WHERE id_equipo = $id_equipo AND id_juez=$id_juez";
-    $result_puntuaciones_definitivas = $conn->query($sql_puntuaciones_definitivas);
-    $row_puntuaciones_definitivas = $result_puntuaciones_definitivas->fetch_assoc();
-    $count_puntuaciones_definitivas = $row_puntuaciones_definitivas['count'];
-
-    if ($count_puntuaciones_definitivas > 0) {
-        $sql_equipo = "SELECT 
-                        i.id_item,
-                        i.descripcion,
-                        p.puntuacion,
-                        e.nombre_equipo
-                    FROM 
-                        items_junior AS i
-                    LEFT JOIN 
-                        puntuaciones_definitivas_junior AS p ON i.id_item = p.id_item
-                    LEFT JOIN
-                        equipos AS e ON p.id_equipo = e.id_equipo
-                    WHERE 
-                        p.id_equipo = $id_equipo AND id_juez = $id_juez
-                    ORDER BY 
-                        i.id_item ASC;";
-
-    $puntuaciones_equipo = $conn->query($sql_equipo);
-
-    $sql_categorias = "SELECT nombre FROM categorias_junior";
-    $resultado_categorias = $conn->query($sql_categorias);
-
-    if ($resultado_categorias->num_rows > 0) {
-        $categorias_nombre = array();
-        while ($fila_categoria = $resultado_categorias->fetch_assoc()) {
-            $categorias_nombre[] = $fila_categoria['nombre'];
-        }
-    } else {
-        echo "<p>No se encontraron categorías.</p>";
-        exit();
-    }
-  }
-}
+include "../consultas/sql-revisar-junior.php";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -67,7 +14,6 @@ if(isset($_GET['id_equipo']) && isset($_GET['id_juez'])) {
     <link rel="shortcut icon" type="image/png" href="https://www.technovation.org/wp-content/themes/technovation_1.0.6_HC/favicon.png?v=1.0"/>
     <title>Revisar Puntuaciones</title>
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-  
 <style>
 
     .texto-margen-izquierdo {
@@ -94,16 +40,7 @@ if(isset($_GET['id_equipo']) && isset($_GET['id_juez'])) {
     }
 
     body {
-    margin-bottom: 140px; /* Ajusta este valor según la altura de tu footer */
-    }
-
-    footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 120px; /* Ajusta la altura de tu footer según lo necesites */
-    background-color: #343a40; /* Color de fondo del footer */
-    color: white; /* Color del texto del footer */
+    margin-bottom: 140px;
     }
 
      .navbar-nav .nav-link {
@@ -118,76 +55,77 @@ if(isset($_GET['id_equipo']) && isset($_GET['id_juez'])) {
 
 <div id="tablaPuntuaciones">
     <div class='container container-fluid' style='max-width: 100%;'>
-                <div class='row justify-content-center'>
-                    <div class='col-md-10 pl-4'>
-                        <div class='card mt-4 mb-2'>
-                            <div class='card-header text-center'>Viendo las puntuaciones definitivas del equipo <b><?="$nombre_equipo"?></b></div>
-                                <div class='card-body'>
-                                    <div class='table-responsive'>
-                                        <table class='table table-striped mb-2' id='tabla_puntuaciones'>
-                                            <thead>
-                                                <tr>
-                                                    <th class='text-center' style='width: 10%;'>ID Item</th>
-                                                    <th class='text-center' style='width: 80%;'>Item</th>
-                                                    <th class='text-center' style='width: 10%;'>Puntuación</th>
+        <div class='row justify-content-center'>
+            <div class='col-md-10 pl-4'>
+                <div class='card mt-4 mb-2'>
+                    <div class='card-header text-center'>Viendo las puntuaciones definitivas del equipo <b><?="$nombre_equipo"?></b></div>
+                        <div class='card-body'>
+                            <div class='table-responsive'>
+                                <table class='table table-striped mb-2' id='tabla_puntuaciones'>
+                                    <thead>
+                                        <tr>
+                                            <th class='text-center' style='width: 10%;'>ID Item</th>
+                                            <th class='text-center' style='width: 80%;'>Item</th>
+                                            <th class='text-center' style='width: 10%;'>Puntuación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class='text-center' colspan='3' style='background-color: blue; color: white;'><?=$categorias_nombre[0]?></td>
+                                        </tr>
+                                        <?php 
+                                        $i = 0;
+                                        while ($puntuacion = $puntuaciones_equipo->fetch_assoc()):
+                                            $i++; ?>
+                                                   <tr>
+                                                    <td class='text-center'><?=$puntuacion['id_item']?></td>
+                                                    <td><?=$puntuacion['descripcion']?></td>
+                                                    <td class='text-center'><?=($puntuacion['puntuacion'] == 0 ? '' : $puntuacion['puntuacion'])?></td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class='text-center' colspan='3' style='background-color: blue; color: white;'><?=$categorias_nombre[0]?></td>
-                                                </tr>
-                                                <?php 
-                                                $i = 0;
-                                                while ($puntuacion = $puntuaciones_equipo->fetch_assoc()):
-                                                    $i++; ?>
-                                                           <tr>
-                                                            <td class='text-center'><?=$puntuacion['id_item']?></td>
-                                                            <td><?=$puntuacion['descripcion']?></td>
-                                                            <td class='text-center'><?=($puntuacion['puntuacion'] == 0 ? '' : $puntuacion['puntuacion'])?></td>
-                                                        </tr>
-                                                        <?php
-                                                    if ($i == 1) { ?>
-                                                               <tr>
-                                                                <td class='text-center' colspan='3' style='background-color: deeppink; color: white;'><?=$categorias_nombre[1]?></td>
-                                                            </tr>
-                                                    <?php } if ($i == 9) { ?>
-                                                              <tr>
-                                                                <td class='text-center' colspan='3' style='background-color: forestgreen; color: white;'><?=$categorias_nombre[2]?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan='3' class='titulo' style='background-color: lightgreen; color: black; font-weight: normal;'><b>Opción 1:</b> Presentación de aplicaciones móviles Puntuación técnica de vídeos</td>
-                                                            </tr>
-                                                            <?php
-                                                    }
-                                                    if ($i == 12) { ?>
-                                                              <tr>
-                                                                <td colspan='3' class='descripcion' style='background-color: lightgreen; color: black;'><b>Opción 2:</b> Presentación del prototipo de IA. Puntuación del vídeo técnico</td>
-                                                            </tr>
-                                                            <?php
-                                                    }
-                                                    if ($i == 15) { ?>
-                                                              <tr>
-                                                                <td class='text-center' colspan='3' style='background-color: deeppink; color: white;'><?=$categorias_nombre[3]?></td>
-                                                            </tr>
-                                                            <?php
-                                                    }
-                                                    if ($i == 17) { ?>
-                                                              <tr>
-                                                                <td class='text-center' colspan='3' style='background-color: darkorange; color: white;'><?=$categorias_nombre[4]?></td>
-                                                            </tr>
-                                                            <?php
-                                                        }
-                                                endwhile; ?>
-                                               </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                <?php
+                                            if ($i == 1) { ?>
+                                                       <tr>
+                                                        <td class='text-center' colspan='3' style='background-color: deeppink; color: white;'><?=$categorias_nombre[1]?></td>
+                                                    </tr>
+                                            <?php } if ($i == 9) { ?>
+                                                      <tr>
+                                                        <td class='text-center' colspan='3' style='background-color: forestgreen; color: white;'><?=$categorias_nombre[2]?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan='3' class='titulo' style='background-color: lightgreen; color: black; font-weight: normal;'><b>Opción 1:</b> Presentación de aplicaciones móviles Puntuación técnica de vídeos</td>
+                                                    </tr>
+                                                    <?php
+                                            }
+                                            if ($i == 12) { ?>
+                                                      <tr>
+                                                        <td colspan='3' class='descripcion' style='background-color: lightgreen; color: black;'><b>Opción 2:</b> Presentación del prototipo de IA. Puntuación del vídeo técnico</td>
+                                                    </tr>
+                                                    <?php
+                                            }
+                                            if ($i == 15) { ?>
+                                                      <tr>
+                                                        <td class='text-center' colspan='3' style='background-color: deeppink; color: white;'><?=$categorias_nombre[3]?></td>
+                                                    </tr>
+                                                    <?php
+                                            }
+                                            if ($i == 17) { ?>
+                                                      <tr>
+                                                        <td class='text-center' colspan='3' style='background-color: darkorange; color: white;'><?=$categorias_nombre[4]?></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                        endwhile; ?>
+                                       </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                </div>
                 <div class='container container-fluid' style='max-width: 100%;'>
-                <div class='row justify-content-center'>
+                  <div class='row justify-content-center'>
                     <div class='col-md-5 pl-4'>
                         <div class='card mt-4 mb-2'>
                             <div class='card-header text-center' style='background-color: darkblue; color: white;'>Puntuaciones totales</div>
@@ -219,10 +157,8 @@ if(isset($_GET['id_equipo']) && isset($_GET['id_juez'])) {
                                                     <td style='text-align: right;' style='width: 90%;'><b>Puntuación total</b></td>
                                                     <td class='text-center' colspan='1' style='width: 10%;'><?=$puntuaciones_totales['total_general']?></td>
                                                 </tr>
-                                            
                                              </tbody>
-                                            </table>
-                                        </div>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -230,14 +166,14 @@ if(isset($_GET['id_equipo']) && isset($_GET['id_juez'])) {
                     </div>
                 </div>
             </div>
-
+        </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
 $(document).ready(function(){
-
+// Cargar evaluaciones.php al volver atrás
     window.onpopstate = function(event) {
         $("#contenedorRevisarJunior").load("evaluaciones.php");
                 history.pushState(null, '', "evaluaciones.php");

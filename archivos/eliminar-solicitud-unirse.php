@@ -1,10 +1,13 @@
 <?php
-if (!empty($_POST['id_solicitud'])) {
+
+// Comprobar parámetro necesario
+if (isset($_POST['id_solicitud'])) {
 
    $id_solicitud = $_POST['id_solicitud'];
 
     include "conexion.php";
-
+    
+    // Borrar la solicitud de unión a equipo
     $sql = "DELETE FROM solicitudes_equipo WHERE id_solicitud=$id_solicitud";
 
          if ($conn->query($sql) === TRUE) {

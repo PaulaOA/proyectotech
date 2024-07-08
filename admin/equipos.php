@@ -1,13 +1,12 @@
 <?php
 session_start();
 include "../archivos/conexion.php";
+include "../consultas/sql-equipos-admin.php";
+
 if (empty($_SESSION["admin"])) {
     header("location: ../index.php");   
 }
 $currentPage = 'equipos';
-
-$sql = "SELECT * FROM equipos";
-$equipos = $conn->query($sql);
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +40,7 @@ $equipos = $conn->query($sql);
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* color semitransparente */
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
        html {
@@ -50,7 +49,7 @@ $equipos = $conn->query($sql);
     }
 
     body {
-    margin-bottom: 120px; /* Ajusta este valor según la altura de tu footer */
+    margin-bottom: 120px;
     }
 
     footer {
@@ -70,6 +69,7 @@ $equipos = $conn->query($sql);
   </head>
   <body>
       <div class="contenedor" id="contenedorEquipos">
+
          <?php include "menu-admin.php" ?>
 
 <div class="responsive bg-dark text-white py-4">
@@ -80,6 +80,8 @@ $equipos = $conn->query($sql);
     </div>
   </div>
 </div>
+
+<!-- TABLA EQUIPOS -->
 
 <div class="container-fluid">
   <div class="row justify-content-center">
@@ -104,23 +106,14 @@ $equipos = $conn->query($sql);
                   </tr>
               </thead>
               <tbody>
-                <?php
-                 while ($equipo = $equipos->fetch_assoc()):
-                  $consulta_mentor = "SELECT registro.nombre FROM registro INNER JOIN mentores ON registro.id_usuario = mentores.id_usuario WHERE mentores.id_mentor = " .$equipo['id_mentor'];
-                  $resultado_mentor = $conn->query($consulta_mentor);
-                  $nombre_mentor = $resultado_mentor->fetch_assoc()['nombre'];
-                  
-                  $consulta_creador = "SELECT registro.nombre FROM registro INNER JOIN equipos ON registro.id_usuario = equipos.id_creador WHERE equipos.id_creador =" .$equipo['id_creador'];
-                  $resultado_creador = $conn->query($consulta_creador);
-                  $nombre_creador = $resultado_creador->fetch_assoc()['nombre'];
-                 ?>
+                <?php foreach ($equipos_data as $equipo): ?>
                   <tr>
                       <td class="text-center"><?= $equipo['id_equipo']; ?></td>
                       <td class="text-center"><?= $equipo['nombre_equipo']; ?></td>
                       <td class="text-center"><?= $equipo['id_creador']; ?></td>
                       <td class="text-center"><?= $nombre_creador; ?></td>
                       <td class="text-center"><?= $equipo['id_mentor']; ?></td>
-                      <td class="text-center"><?= $nombre_mentor; ?></td>
+                      <td class="text-center"><?= $equipo['nombre_mentor']; ?></td>
                       <td class="text-center"><?= $equipo['division']; ?></td>
                       <td class="text-center"><?= $equipo['estado']; ?></td>
                       <td class="text-center">
@@ -134,12 +127,15 @@ $equipos = $conn->query($sql);
                         </a>
                       </td>
                   </tr>
-               <?php endwhile ?>
+               <?php endforeach ?>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+
+      <!-- Botón para crear nuevo equipo -->
+
       <div class="text-end mb-4">
           <button class="btn btn-primary py-3 px-3" id="btnNuevoEquipo">Nuevo equipo</button>
         </div>
@@ -150,6 +146,7 @@ $equipos = $conn->query($sql);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
+  // Abrir formulario de edición de equipo
     $(document).ready(function() {
         $(".editar-equipo").click(function(e) {
             e.preventDefault();
@@ -168,21 +165,30 @@ $equipos = $conn->query($sql);
             });
         });
     });
-     $(document).ready(function() {
-        $("#btnNuevoEquipo").click(function() {
-            $('#modalNuevoEquipo').modal('show');
-        });
-    });
+
+  // Abrir formulario nuevo equipo
+   $(document).ready(function() {
+      $("#btnNuevoEquipo").click(function() {
+          $('#modalNuevoEquipo').modal('show');
+      });
+  });
 </script>
 
 <script>
+
+  // Manejar solicitud para eliminar equipo
+
     $(document).ready(function() {
         $(".borrar-equipo").click(function(e) {
             e.preventDefault();
+
             var id_equipo = $(this).data('id');
             var nombre_equipo = $(this).data('nombre');
+
             $("#idEquipoEliminar").text(id_equipo);
             $("#nombreEquipoEliminar").text(nombre_equipo);
+            
+            // Mostrar modal de confirmación
             $('#modalEliminarEquipo').modal('show');
 
             $("#btnEliminarEquipo").click(function(e) {
@@ -206,7 +212,6 @@ $equipos = $conn->query($sql);
 </script>
 
 <?php require "modales-edicion-equipos.php"; ?>
-
 
 <!-- MANEJAR BOTONES MENÚ SUPERIOR -->
 
@@ -279,7 +284,7 @@ $equipos = $conn->query($sql);
           });
       });
   });
-    </script>
+</script>
 
 <footer class="footer bg-dark text-white py-4">
   <div class="container">
